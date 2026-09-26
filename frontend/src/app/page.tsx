@@ -346,8 +346,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Real-time Finnhub Market Watchlist */}
-            <Watchlist apiBase={API_BASE} />
+
 
             {/* Recent Transactions */}
             <section className={styles.section}>

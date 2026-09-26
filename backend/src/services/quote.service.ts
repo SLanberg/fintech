@@ -13,13 +13,43 @@ export interface QuoteResponse {
   t?: number;
 }
 
+export type StockTimeframe = "1M" | "3M" | "6M" | "1Y";
+export type CandleSource = "finnhub" | "demo";
+
+export interface StockCandle {
+  time: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+}
+
+export interface StockHistory {
+  source: CandleSource;
+  candles: StockCandle[];
+}
+
 interface CacheEntry {
   data: QuoteResponse;
   timestamp: number;
 }
 
+interface CandleCacheEntry {
+  data: StockHistory;
+  timestamp: number;
+}
+
 const CACHE_TTL_MS = 60 * 1000; // 60 seconds
 const cache = new Map<string, CacheEntry>();
+const candleCache = new Map<string, CandleCacheEntry>();
+const CANDLE_RANGES: Record<StockTimeframe, number> = {
+  "1M": 30 * 24 * 60 * 60,
+  "3M": 90 * 24 * 60 * 60,
+  "6M": 180 * 24 * 60 * 60,
+  "1Y": 365 * 24 * 60 * 60,
+};
+const DEMO_TRADING_DAYS = 252;
 
 /**
  * Loads .env configuration from candidate directories into process.env
@@ -100,6 +130,61 @@ function getMockQuote(symbol: string): QuoteResponse | null {
   return null;
 }
 
+function createDemoHistory(
+  symbol: string,
+  currentPrice: number,
+  timeframe: StockTimeframe
+): StockHistory {
+  if (!Number.isFinite(currentPrice) || currentPrice <= 0) {
+    return { source: "demo", candles: [] };
+  }
+
+  let seed = symbol.split("").reduce((value, character) => value + character.charCodeAt(0), 0);
+  const random = () => {
+    seed = (seed * 9301 + 49297) % 233280;
+    return seed / 233280;
+  };
+
+  const dates: number[] = [];
+  const cursor = new Date();
+  cursor.setUTCHours(0, 0, 0, 0);
+  while (dates.length < DEMO_TRADING_DAYS) {
+    const weekday = cursor.getUTCDay();
+    if (weekday !== 0 && weekday !== 6) {
+      dates.unshift(Math.floor(cursor.getTime() / 1000));
+    }
+    cursor.setUTCDate(cursor.getUTCDate() - 1);
+  }
+
+  const closes = new Array<number>(dates.length);
+  closes[closes.length - 1] = currentPrice;
+  for (let index = closes.length - 1; index > 0; index--) {
+    const dailyChange = (random() - 0.5) * 0.04;
+    closes[index - 1] = closes[index] / (1 + dailyChange);
+  }
+
+  const allCandles = dates.map((time, index): StockCandle => {
+    const open = index === 0 ? closes[index] : closes[index - 1];
+    const close = closes[index];
+    const wick = 0.002 + random() * 0.01;
+    return {
+      time,
+      open,
+      high: Math.max(open, close) * (1 + wick),
+      low: Math.min(open, close) * (1 - wick),
+      close,
+      volume: Math.round(10_000_000 + random() * 40_000_000),
+    };
+  });
+
+  const now = Math.floor(Date.now() / 1000);
+  const from = now - CANDLE_RANGES[timeframe];
+  return {
+    source: "demo",
+    candles: allCandles.filter((candle) => candle.time >= from && candle.time <= now),
+  };
+}
+
 function isEmptyOrError(data: any): boolean {
   if (!data || typeof data !== "object") return true;
   if (data.error) return true;
@@ -177,6 +262,100 @@ export class QuoteService {
     }
   }
 
+  public static async getCandles(
+    symbol: string,
+    timeframe: StockTimeframe
+  ): Promise<StockHistory> {
+    const ticker = symbol.trim().toUpperCase();
+    const cacheKey = `${ticker}:${timeframe}`;
+    const cached = candleCache.get(cacheKey);
+    if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
+      return cached.data;
+    }
+
+    const apiKey = process.env.FINNHUB_KEY;
+    if (process.env.QUOTES_MOCK === "true" || !apiKey) {
+      const quote = getMockQuote(ticker);
+      const history = quote
+        ? createDemoHistory(ticker, quote.c, timeframe)
+        : { source: "demo" as const, candles: [] };
+      candleCache.set(cacheKey, { data: history, timestamp: Date.now() });
+      return history;
+    }
+
+    const to = Math.floor(Date.now() / 1000);
+    const from = to - CANDLE_RANGES[timeframe];
+    const url = new URL("https://finnhub.io/api/v1/stock/candle");
+    url.searchParams.set("symbol", ticker);
+    url.searchParams.set("resolution", "D");
+    url.searchParams.set("from", String(from));
+    url.searchParams.set("to", String(to));
+    url.searchParams.set("token", apiKey);
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        console.warn(`Finnhub returned HTTP ${response.status} for ${ticker} candles.`);
+        throw new Error(`Finnhub returned HTTP ${response.status}`);
+      }
+
+      const data = (await response.json()) as {
+        s?: string;
+        t?: number[];
+        o?: number[];
+        h?: number[];
+        l?: number[];
+        c?: number[];
+        v?: number[];
+      };
+
+      if (
+        data.s !== "ok" ||
+        !Array.isArray(data.t) ||
+        !Array.isArray(data.o) ||
+        !Array.isArray(data.h) ||
+        !Array.isArray(data.l) ||
+        !Array.isArray(data.c)
+      ) {
+        throw new Error("Finnhub returned no historical candles.");
+      }
+
+      const candles = data.t.flatMap((time, index): StockCandle[] => {
+        const values = [time, data.o![index], data.h![index], data.l![index], data.c![index]];
+        if (!values.every((value) => Number.isFinite(value))) {
+          return [];
+        }
+
+        return [{
+          time,
+          open: data.o![index],
+          high: data.h![index],
+          low: data.l![index],
+          close: data.c![index],
+          volume: Number.isFinite(data.v?.[index]) ? data.v![index] : 0,
+        }];
+      }).sort((first, second) => first.time - second.time);
+
+      const history: StockHistory = candles.length
+        ? { source: "finnhub", candles }
+        : this.getDemoHistory(ticker, timeframe);
+      candleCache.set(cacheKey, { data: history, timestamp: Date.now() });
+      return history;
+    } catch (err: any) {
+      console.warn(`Error fetching Finnhub candles for ${ticker}: ${err.message}`);
+      const history = this.getDemoHistory(ticker, timeframe);
+      candleCache.set(cacheKey, { data: history, timestamp: Date.now() });
+      return history;
+    }
+  }
+
+  private static getDemoHistory(ticker: string, timeframe: StockTimeframe): StockHistory {
+    const quote = getMockQuote(ticker);
+    return quote
+      ? createDemoHistory(ticker, quote.c, timeframe)
+      : { source: "demo", candles: [] };
+  }
+
   private static fallback(ticker: string): QuoteResponse {
     const mockQuote = getMockQuote(ticker);
     if (mockQuote) {
@@ -202,5 +381,6 @@ export class QuoteService {
    */
   public static clearCache(): void {
     cache.clear();
+    candleCache.clear();
   }
 }

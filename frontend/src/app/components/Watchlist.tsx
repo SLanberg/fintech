@@ -18,6 +18,10 @@ export interface StockQuote {
   t?: number;
 }
 
+interface CandleHistoryResponse {
+  candles: Array<{ close: number }>;
+}
+
 interface WatchlistProps {
   apiBase?: string;
 }
@@ -34,6 +38,7 @@ export default function Watchlist({
   apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api",
 }: WatchlistProps) {
   const [quotes, setQuotes] = useState<Record<string, StockQuote>>({});
+  const [priceHistory, setPriceHistory] = useState<Record<string, number[]>>({});
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -87,13 +92,48 @@ export default function Watchlist({
   useEffect(() => {
     fetchQuotes();
 
-    // Auto-refresh every 60 seconds
+    // Auto-refresh every 5 minutes
     const intervalId = setInterval(() => {
       fetchQuotes();
-    }, 60000);
+    }, 300000);
 
     return () => clearInterval(intervalId);
   }, [fetchQuotes]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const loadPriceHistory = async () => {
+      const histories = await Promise.all(
+        WATCHLIST_SYMBOLS.map(async ({ symbol }) => {
+          try {
+            const response = await fetch(
+              `${apiBase}/candles/${encodeURIComponent(symbol)}?timeframe=1M`,
+              { signal: controller.signal }
+            );
+            if (!response.ok) return [symbol, []] as const;
+
+            const payload = (await response.json()) as CandleHistoryResponse;
+            const closes = Array.isArray(payload.candles)
+              ? payload.candles
+                  .map((candle) => candle.close)
+                  .filter((close) => Number.isFinite(close) && close > 0)
+              : [];
+            return [symbol, closes] as const;
+          } catch {
+            return [symbol, []] as const;
+          }
+        })
+      );
+
+      if (!controller.signal.aborted) {
+        setPriceHistory(Object.fromEntries(histories));
+      }
+    };
+
+    void loadPriceHistory();
+    return () => controller.abort();
+  }, [apiBase]);
 
   return (
     <>
@@ -101,10 +141,6 @@ export default function Watchlist({
         <div className={styles.headerRow}>
           <div className={styles.titleArea}>
             <h2 className={styles.sectionTitle}>Market Watchlist</h2>
-            <span className={styles.liveBadge} title="Real-time Finnhub stock quotes">
-              <span className={styles.liveDot} />
-              60s Live
-            </span>
           </div>
 
           <div className={styles.refreshControls}>
@@ -223,6 +259,7 @@ export default function Watchlist({
                       h={quote.h}
                       l={quote.l}
                       pc={quote.pc}
+                      prices={priceHistory[symbol]}
                       width={80}
                       height={32}
                     />
