@@ -93,6 +93,9 @@ def to_frames(world: World) -> dict[str, pd.DataFrame]:
     merch = pd.DataFrame(world.merchants)
 
     tx = pd.DataFrame(world.rows, columns=TX_COLUMNS)
+    # MCC belongs to the merchant; non-merchant transfers have no MCC.
+    tx["mcc"] = tx["merchant_id"].map({m["id"]: m["mcc"] for m in world.merchants})
+    tx["mcc"] = tx["mcc"].where(tx["mcc"].notna(), None)
     tx["timestamp"] = tx["timestamp"].map(lambda t: t.strftime("%Y-%m-%dT%H:%M:%SZ"))
     for c in ("amount", "balance_after"):
         tx[c] = tx[c] / 100

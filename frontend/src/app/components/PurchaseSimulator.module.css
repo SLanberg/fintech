@@ -1,0 +1,26 @@
+.section { display: flex; flex-direction: column; gap: 14px; color: #18181b; }
+.demo, .waiting { border: 1px solid #e4e4e7; border-radius: 18px; padding: 22px; }
+.demo summary { cursor: pointer; font-size: 13px; font-weight: 600; }
+.section label { display: flex; flex-direction: column; gap: 6px; font-size: 12px; margin: 14px 0; }
+.section input, .section select { border: 1px solid #d4d4d8; border-radius: 8px; padding: 10px; color: #18181b; background: #fff; font: inherit; }
+.section button, .dialog button { border: 1px solid #d4d4d8; border-radius: 9px; background: #fff; color: #18181b; padding: 10px 12px; cursor: pointer; margin: 4px 6px 4px 0; font-size: 12px; }
+.section button:disabled { opacity: .45; cursor: not-allowed; }
+.section button:focus-visible, .dialog button:focus-visible { outline: 2px solid #18181b; outline-offset: 3px; }
+.note { font-size: 12px; color: #71717a; line-height: 1.6; margin: 8px 0; }
+.waiting h2 { font-size: 16px; margin: 0; }
+.waitingItem { display: flex; flex-direction: column; gap: 8px; border-top: 1px solid #e4e4e7; padding: 16px 0; font-size: 13px; }
+.waitingItem > span { color: #71717a; }
+.buttons { display: flex; gap: 4px; flex-wrap: wrap; }
+.dialog { width: min(480px, calc(100vw - 32px)); max-height: calc(100dvh - 40px); margin: auto; border: 1px solid #e4e4e7; border-radius: 24px; padding: 28px; background: white; color: #18181b; box-shadow: 0 24px 70px #0003; }
+.dialog::backdrop { background: #18181b88; backdrop-filter: blur(4px); }
+.dialog h2 { font-size: 22px; margin: 14px 0; }
+.eyebrow { font-size: 11px; color: #71717a; letter-spacing: .8px; text-transform: uppercase; }
+.merchant { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; font-size: 16px; }
+.merchant > span { font-size: 34px; font-weight: 700; letter-spacing: -1px; }
+.work { padding: 14px 0; font-size: 16px; font-weight: 600; }
+.nudge { border: 1px solid #fde68a; border-radius: 14px; padding: 16px; background: #fffbeb; color: #854d0e; }
+.nudge h3 { font-size: 14px; margin: 0 0 8px; }
+.nudge ul { margin: 0; padding-left: 18px; font-size: 12px; line-height: 1.7; }
+.impact { margin: 20px 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px; }
+.warning { color: #b91c1c; font-size: 12px; }
+.dialog .buttons button:first-child { background: #18181b; color: #fff; border-color: #18181b; }

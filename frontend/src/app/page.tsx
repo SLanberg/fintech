@@ -4,9 +4,18 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
 import Watchlist from "./components/Watchlist";
+import SafeToSpend from "./components/SafeToSpend";
+import { spendingScenario } from "../lib/mock-spending";
+import { calendarDate, dateKey } from "../lib/safe-to-spend";
+import SpendingSettings from "./components/SpendingSettings";
+import PurchaseSimulator from "./components/PurchaseSimulator";
+import { useSpendingState } from "../lib/use-spending-state";
+import { categoryForMcc, CATEGORY_LABELS } from "../lib/purchase-nudge";
+import type { SpendingSettings as SpendingPreferences } from "../lib/spending-settings";
 import { AnimatedBalance } from "@/components/AnimatedBalance";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
+const createTransferRequestId = () => typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : `tx-${Date.now()}`;
 
 const REVOLUT_CONTACTS = [
   { initials: "AB", name: "Alexander B.", tag: "alexander", digits: "€50.00", gradient: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)" },
@@ -38,6 +47,7 @@ interface Transaction {
   amount_cents?: number;
   isIncome: boolean;
   icon?: string;
+  mcc?: string | null;
   status?: string;
 }
 
@@ -51,15 +61,30 @@ interface AccountState {
   };
 }
 
+const monthTransactions = spendingScenario.transactions.filter(tx => tx.date.startsWith(spendingScenario.asOfDate.slice(0, 7)));
+const DEMO_ACCOUNT: AccountState = {
+  user: { name: "Tyler Durden", accountType: "EUR demo account", avatarUrl: "/Tyler.jpg" },
+  balance: spendingScenario.balance,
+  currency: spendingScenario.currency,
+  stats: {
+    monthlyIncome: monthTransactions.filter(tx => tx.isIncome).reduce((sum, tx) => sum + tx.amount, 0),
+    monthlyExpenses: monthTransactions.filter(tx => !tx.isIncome).reduce((sum, tx) => sum + tx.amount, 0),
+  },
+};
+const DEMO_TRANSACTIONS: Transaction[] = spendingScenario.transactions.map(tx => ({ ...tx, amount: `${tx.isIncome ? "+" : "−"} €${tx.amount.toFixed(2)}` }));
+
 export default function Home() {
+  const { state: spendingState, setState: setSpendingState, ready: settingsReady, storageUnavailable } = useSpendingState();
+  const changeSpendingSettings = (settings: SpendingPreferences) => setSpendingState(current => ({ ...current, settings }));
+  const [isDemo, setIsDemo] = useState(true);
   const [showBalance, setShowBalance] = useState(true);
-  const [account, setAccount] = useState<AccountState | null>(null);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [account, setAccount] = useState<AccountState | null>(DEMO_ACCOUNT);
+  const [transactions, setTransactions] = useState<Transaction[]>(DEMO_TRANSACTIONS);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Tab navigation state
-  const [activeTab, setActiveTab] = useState<"home" | "invest" | "payments">("home");
+  const [activeTab, setActiveTab] = useState<"home" | "invest" | "payments" | "settings">("home");
   const [paymentViewFilter, setPaymentViewFilter] = useState<"all" | "contacts">("all");
   const [txVisibleCount, setTxVisibleCount] = useState(10);
 
@@ -72,18 +97,9 @@ export default function Home() {
   const [transferSuccessData, setTransferSuccessData] = useState<{ amount: number; recipient: string } | null>(null);
   const [actionLoading, setActionLoading] = useState(false);
   const successTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const getContactSummary = (tag: string) => {
-    const clean = tag.toLowerCase().replace(/^@/, "");
-    const tx = transactions.find(
-      (t) =>
-        t.other_tag?.toLowerCase() === clean ||
-        t.recipient_tag?.toLowerCase() === clean ||
-        t.sender_tag?.toLowerCase() === clean ||
-        t.name.toLowerCase().includes(`@${clean}`)
-    );
-    return tx ? tx.amount : "€0.00";
-  };
+  useEffect(() => () => {
+    if (successTimeoutRef.current) clearTimeout(successTimeoutRef.current);
+  }, []);
 
   const getContactInfo = (tx: Transaction) => {
     const cleanOtherTag = (tx.other_tag || tx.recipient_tag || tx.sender_tag || "").toLowerCase().replace(/^@/, "");
@@ -130,10 +146,16 @@ export default function Home() {
     setTransferError(null);
   };
 
-  const fetchData = async () => {
+  const fetchData = async (demo = isDemo) => {
     try {
       setLoading(true);
       setError(null);
+
+      if (demo) {
+        setAccount(DEMO_ACCOUNT);
+        setTransactions(DEMO_TRANSACTIONS);
+        return;
+      }
 
       const [accRes, txRes] = await Promise.all([
         fetch(`${API_BASE}/account`),
@@ -149,17 +171,25 @@ export default function Home() {
 
       setAccount(accData);
       setTransactions(txData);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Error fetching data:", err);
-      setError(err.message || "Cannot connect to backend server");
+      setError(err instanceof Error ? err.message : "Cannot connect to backend server");
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const recordDemoTransaction = (amount: number, isIncome: boolean, name: string, category: string) => {
+    setAccount(current => current ? {
+      ...current,
+      balance: Math.round((current.balance + (isIncome ? amount : -amount)) * 100) / 100,
+      stats: {
+        monthlyIncome: current.stats.monthlyIncome + (isIncome ? amount : 0),
+        monthlyExpenses: current.stats.monthlyExpenses + (isIncome ? 0 : amount),
+      },
+    } : current);
+    setTransactions(current => [{ id: `demo-${Date.now()}`, name, category, mcc: null, date: spendingScenario.asOfDate, amount: `${isIncome ? "+" : "−"} €${amount.toFixed(2)}`, isIncome }, ...current]);
+  };
 
   const handleQuickAction = async (type: "deposit" | "transfer") => {
     if (type === "transfer") {
@@ -171,8 +201,13 @@ export default function Home() {
     if (!amountStr) return;
 
     const amount = parseFloat(amountStr);
-    if (isNaN(amount) || amount <= 0) {
+    if (!Number.isFinite(amount) || amount <= 0) {
       alert("Please enter a valid positive number.");
+      return;
+    }
+
+    if (isDemo) {
+      recordDemoTransaction(amount, true, "Top Up Deposit", "Deposit");
       return;
     }
 
@@ -194,8 +229,8 @@ export default function Home() {
       }
 
       await fetchData();
-    } catch (err: any) {
-      alert(err.message || "Failed to complete deposit.");
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : "Failed to complete deposit.");
     } finally {
       setActionLoading(false);
     }
@@ -206,12 +241,12 @@ export default function Home() {
     setTransferError(null);
 
     const amount = parseFloat(transferAmountInput);
-    if (isNaN(amount) || amount <= 0) {
+    if (!Number.isFinite(amount) || amount <= 0) {
       setTransferError("Please enter a valid amount greater than €0.00.");
       return;
     }
 
-    const currentBalance = account?.balance ?? 0;
+    const currentBalance = balance;
     if (amount > currentBalance) {
       setTransferError(`Insufficient funds. Available balance: €${currentBalance.toFixed(2)}.`);
       return;
@@ -223,9 +258,22 @@ export default function Home() {
       return;
     }
 
+    if (isDemo) {
+      recordDemoTransaction(amount, false, transferDescInput.trim() || `Transfer to @${cleanTag}`, "Transfer");
+      setTransferSuccessData({ amount, recipient: cleanTag });
+      setTransferAmountInput("");
+      setTransferDescInput("");
+      if (successTimeoutRef.current) clearTimeout(successTimeoutRef.current);
+      successTimeoutRef.current = setTimeout(() => {
+        setIsTransferModalOpen(false);
+        setTransferSuccessData(null);
+      }, 2600);
+      return;
+    }
+
     try {
       setActionLoading(true);
-      const idempotencyKey = typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : `tx-${Date.now()}`;
+      const idempotencyKey = createTransferRequestId();
       const res = await fetch(`${API_BASE}/transfers`, {
         method: "POST",
         headers: {
@@ -256,8 +304,8 @@ export default function Home() {
         setIsTransferModalOpen(false);
         setTransferSuccessData(null);
       }, 2600);
-    } catch (err: any) {
-      setTransferError(err.message || "Transfer failed. Please check recipient tag.");
+    } catch (err: unknown) {
+      setTransferError(err instanceof Error ? err.message : "Transfer failed. Please check recipient tag.");
     } finally {
       setActionLoading(false);
     }
@@ -290,7 +338,7 @@ export default function Home() {
             Make sure Express backend server is running on http://localhost:5001
           </p>
           <button
-            onClick={fetchData}
+            onClick={() => void fetchData()}
             style={{
               marginTop: "16px",
               padding: "8px 16px",
@@ -303,6 +351,7 @@ export default function Home() {
           >
             Retry Connection
           </button>
+          <button type="button" className={styles.actionBtn} style={{ margin: "16px auto" }} onClick={() => { setIsDemo(true); void fetchData(true); }}>Use demo account</button>
         </div>
       </div>
     );
@@ -314,10 +363,15 @@ export default function Home() {
     avatarUrl: "/Tyler.jpg",
   };
 
-  const balance = account?.balance ?? 0;
+  const simulatedSpending = isDemo ? spendingState.purchases.reduce((sum, purchase) => sum + Math.round(purchase.amount * 100), 0) / 100 : 0;
+  const balance = Math.round(((account?.balance ?? 0) - simulatedSpending) * 100) / 100;
+  const displayTransactions: Transaction[] = isDemo ? [
+    ...[...spendingState.purchases].reverse().map(purchase => ({ id: purchase.id, name: purchase.merchantName, category: CATEGORY_LABELS[categoryForMcc(purchase.mcc)], mcc: purchase.mcc, date: purchase.localDate, amount: `− €${purchase.amount.toFixed(2)}`, isIncome: false })),
+    ...transactions,
+  ] : transactions;
   const currency = account?.currency || "EUR";
   const monthlyIncome = account?.stats.monthlyIncome ?? 0;
-  const monthlyExpenses = account?.stats.monthlyExpenses ?? 0;
+  const monthlyExpenses = (account?.stats.monthlyExpenses ?? 0) + simulatedSpending;
 
   return (
     <div className={styles.container}>
@@ -339,7 +393,18 @@ export default function Home() {
       </header>
 
       <main className={styles.main}>
+        {storageUnavailable && <p role="status" className={styles.storageNote}>Device storage is unavailable. Your settings and waiting list will last for this visit only.</p>}
         <div style={{ display: activeTab === "home" ? "contents" : "none" }}>
+            <div className={styles.demoControls}>
+              <p>{isDemo ? `Demo · ${spendingScenario.asOfDate} · Four days after rent` : "Live balance · Demo recurring plan and savings goal"}</p>
+              <button type="button" onClick={() => { setAccount(null); setIsDemo(!isDemo); void fetchData(!isDemo); }}>
+                {isDemo ? "Use live account" : "Use demo account"}
+              </button>
+            </div>
+            {settingsReady ? <>
+              <SafeToSpend balance={balance} today={isDemo ? spendingScenario.asOfDate : dateKey(calendarDate(new Date()))} visible={showBalance} settings={spendingState.settings} onSettingsChange={changeSpendingSettings} onOpenSettings={() => setActiveTab('settings')} />
+              {isDemo && <PurchaseSimulator state={spendingState} setState={setSpendingState} balance={balance} today={spendingScenario.asOfDate} visible={showBalance} />}
+            </> : <p className={styles.storageNote}>Loading your spending settings…</p>}
             {/* Balance Card */}
             <section className={styles.balanceCard}>
               <div className={styles.balanceHeader}>
@@ -430,8 +495,6 @@ export default function Home() {
               </div>
             </div>
 
-
-
             {/* Recent Transactions */}
             <section className={styles.section}>
               <div className={styles.sectionHeader}>
@@ -442,10 +505,10 @@ export default function Home() {
               </div>
 
               <div className={styles.transactionList}>
-                {transactions.length === 0 ? (
+                {displayTransactions.length === 0 ? (
                   <div className={styles.emptyTransactions}>No recent transactions</div>
                 ) : (
-                  transactions.slice(0, 5).map((t) => (
+                  displayTransactions.slice(0, 5).map((t) => (
                     <div key={t.id} className={styles.transactionItem}>
                       <div className={styles.transactionLeft}>
                         <div className={styles.iconCircle}>
@@ -464,7 +527,7 @@ export default function Home() {
                         <div className={styles.transactionDetails}>
                           <span className={styles.transactionName}>{t.name}</span>
                           <span className={styles.transactionDate}>
-                            {t.date} • {t.category}
+                            {t.date} • {t.mcc ? CATEGORY_LABELS[categoryForMcc(t.mcc)] : t.category}
                           </span>
                         </div>
                       </div>
@@ -482,6 +545,7 @@ export default function Home() {
             </section>
         </div>
 
+        {activeTab === "settings" && settingsReady && <SpendingSettings settings={spendingState.settings} onChange={changeSpendingSettings} onBack={() => setActiveTab('home')} />}
         <div style={{ display: activeTab === "invest" ? "contents" : "none" }}>
           <section className={styles.section}>
             <div className={styles.balanceCard}>
@@ -553,7 +617,7 @@ export default function Home() {
                       className={`${styles.filterPill} ${paymentViewFilter === "all" ? styles.filterPillActive : ""}`}
                       onClick={() => { setPaymentViewFilter("all"); setTxVisibleCount(10); }}
                     >
-                      All ({transactions.length})
+                      All ({displayTransactions.length})
                     </button>
                     <button
                       type="button"
@@ -617,13 +681,13 @@ export default function Home() {
                           </div>
                         </button>
                       ))
-                    : transactions.length === 0
+                    : displayTransactions.length === 0
                     ? (
                         <div style={{ padding: "24px 16px", textAlign: "center", color: "var(--text-secondary, #6b7280)", fontSize: "14px" }}>
                           No transactions yet
                         </div>
                       )
-                    : transactions.slice(0, txVisibleCount).map((t) => {
+                    : displayTransactions.slice(0, txVisibleCount).map((t) => {
                         const info = getContactInfo(t);
                         const senderTag = t.sender_tag || (t.isIncome ? info.tag : "tyler");
                         const recipientTag = t.recipient_tag || (t.isIncome ? "tyler" : info.tag);
@@ -673,7 +737,7 @@ export default function Home() {
                 </div>
 
                 {/* Load more button */}
-                {paymentViewFilter === "all" && txVisibleCount < transactions.length && (
+                {paymentViewFilter === "all" && txVisibleCount < displayTransactions.length && (
                   <button
                     type="button"
                     onClick={() => setTxVisibleCount((n) => n + 10)}
@@ -700,7 +764,7 @@ export default function Home() {
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                       <polyline points="6 9 12 15 18 9" />
                     </svg>
-                    Load more ({transactions.length - txVisibleCount} remaining)
+                    Load more ({displayTransactions.length - txVisibleCount} remaining)
                   </button>
                 )}
 
@@ -778,6 +842,9 @@ export default function Home() {
             <line x1="2" x2="22" y1="10" y2="10" />
           </svg>
           <span>Payments</span>
+        </button>
+        <button className={`${styles.navItem} ${activeTab === 'settings' ? styles.navItemActive : ''}`} type="button" onClick={() => setActiveTab('settings')}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3" fill="currentColor"/><circle cx="15" cy="17" r="3" fill="currentColor"/></svg><span>Settings</span>
         </button>
       </nav>
 

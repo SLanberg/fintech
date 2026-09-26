@@ -66,6 +66,17 @@ def test_currency_rules(run_a):
         assert ccy in ("EUR", home.get(country, "EUR"))
 
 
+def test_transaction_mcc_matches_merchant(run_a):
+    _, frames, _ = run_a
+    merchants = frames["merchants"].set_index("id")
+    transactions = frames["transactions"]
+    assert merchants.mcc.str.fullmatch(r"\d{4}").all()
+    assert "mcc" in transactions.columns
+    with_merchant = transactions[transactions.merchant_id.notna()]
+    assert (with_merchant.mcc == with_merchant.merchant_id.map(merchants.mcc)).all()
+    assert transactions[transactions.merchant_id.isna()].mcc.isna().all()
+
+
 def test_scenarios_materialise(run_a):
     _, frames, _ = run_a
     s = frames["scenarios"].set_index("type")
