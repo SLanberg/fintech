@@ -1,0 +1,9 @@
+# Pinned: Faker and numpy output can change between versions, which would break "same seed = same data".
+Faker==40.39.0
+schwifty==2026.7.3
+numpy==2.5.3
+pandas==3.0.6
+PyYAML==6.0.3
+tzdata==2026.4   # IANA time zones on Windows
+pytest==9.1.1
+# optional: pyarrow (for output.formats: [parquet])
