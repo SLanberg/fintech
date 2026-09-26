@@ -1,0 +1,333 @@
+.watchlistSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titleArea {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #09090b;
+  letter-spacing: -0.3px;
+  margin: 0;
+}
+
+.liveBadge {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.liveDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #10b981;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
+
+.refreshControls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lastUpdated {
+  font-size: 11px;
+  color: #a1a1aa;
+}
+
+.refreshBtn {
+  background: transparent;
+  border: 1px solid #e4e4e7;
+  color: #71717a;
+  border-radius: 8px;
+  padding: 4px 9px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.15s ease;
+}
+
+.refreshBtn:hover:not(:disabled) {
+  background: #f4f4f5;
+  color: #09090b;
+  border-color: #d4d4d8;
+}
+
+.refreshBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  background: #ffffff;
+  border: 1px solid #f4f4f5;
+  border-radius: 16px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  user-select: none;
+  text-align: left;
+  width: 100%;
+}
+
+.card:hover {
+  background: #fafafa;
+  border-color: #d4d4d8;
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.card:active {
+  transform: translateY(0);
+}
+
+.stockLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 130px;
+}
+
+.stockMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ticker {
+  font-size: 14px;
+  font-weight: 600;
+  color: #09090b;
+  line-height: 1.2;
+}
+
+.companyName {
+  font-size: 11.5px;
+  color: #71717a;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.sparklineCol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+}
+
+.stockRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.priceGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.price {
+  font-size: 15px;
+  font-weight: 600;
+  color: #09090b;
+  letter-spacing: -0.3px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 6px;
+  line-height: 1.2;
+}
+
+.badgePositive {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.badgeNegative {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.badgeNeutral {
+  background: #f4f4f5;
+  color: #71717a;
+}
+
+.chevron {
+  color: #d4d4d8;
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.card:hover .chevron {
+  color: #09090b;
+  transform: translateX(2px);
+}
+
+/* Skeleton Loading State */
+.skeletonCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background: #ffffff;
+  border: 1px solid #f4f4f5;
+  border-radius: 16px;
+}
+
+.skeletonIcon {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  background: #f4f4f5;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.skeletonTextGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.skeletonBarLong {
+  width: 60px;
+  height: 14px;
+  border-radius: 4px;
+  background: #f4f4f5;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.skeletonBarShort {
+  width: 90px;
+  height: 10px;
+  border-radius: 4px;
+  background: #f4f4f5;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.skeletonSparkline {
+  width: 76px;
+  height: 28px;
+  border-radius: 6px;
+  background: #f4f4f5;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.skeletonBarPrice {
+  width: 55px;
+  height: 16px;
+  border-radius: 4px;
+  background: #f4f4f5;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.skeletonBarBadge {
+  width: 48px;
+  height: 14px;
+  border-radius: 4px;
+  background: #f4f4f5;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+/* Error State */
+.errorContainer {
+  padding: 18px 20px;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.errorMessage {
+  font-size: 13px;
+  color: #be123c;
+  font-weight: 500;
+  margin: 0;
+}
+
+.retryBtn {
+  margin-top: 4px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  background: #be123c;
+  color: #ffffff;
+  border: none;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.retryBtn:hover {
+  opacity: 0.9;
+}

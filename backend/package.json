@@ -5,9 +5,9 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "test": "npm run build && node --test test/*.test.cjs && vitest run",
+    "test:watch": "vitest",
+    "start": "node dist/server.js"
   },
   "dependencies": {
     "better-sqlite3": "^12.11.1",

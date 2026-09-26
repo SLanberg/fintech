@@ -2,7 +2,7 @@
 
 Base URL: `http://localhost:5001`
 
-All endpoints are prefixed with `/api`.  
+All endpoints are prefixed with `/api`.
 All monetary values are returned **both** in major units (e.g. `amount: 10.50`) and in integer minor units (e.g. `amount_cents: 1050`) for precision.
 
 ---
@@ -15,8 +15,8 @@ All monetary values are returned **both** in major units (e.g. `amount: 10.50`) 
 
 ## Idempotency
 
-`POST` endpoints support the `Idempotency-Key` request header.  
-Sending the same key with the same payload returns the **original cached response** — no duplicate operation is performed.  
+`POST` endpoints support the `Idempotency-Key` request header.
+Sending the same key with the same payload returns the **original cached response** — no duplicate operation is performed.
 Sending the same key with a **different payload** returns `409 Conflict`.
 
 ```
