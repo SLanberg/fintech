@@ -1,9 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
 import Watchlist from "./components/Watchlist";
+import SafeToSpend from "./components/SafeToSpend";
+import { spendingScenario } from "../lib/mock-spending";
+import { calendarDate, dateKey } from "../lib/safe-to-spend";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
 
@@ -24,7 +27,7 @@ interface UserInfo {
 }
 
 interface Transaction {
-  id: number;
+  id: number | string;
   name: string;
   category: string;
   date: string;
@@ -43,11 +46,24 @@ interface AccountState {
   };
 }
 
+const monthTransactions = spendingScenario.transactions.filter(tx => tx.date.startsWith(spendingScenario.asOfDate.slice(0, 7)));
+const DEMO_ACCOUNT: AccountState = {
+  user: { name: "Tyler Durden", accountType: "EUR demo account", avatarUrl: "/Tyler.jpg" },
+  balance: spendingScenario.balance,
+  currency: spendingScenario.currency,
+  stats: {
+    monthlyIncome: monthTransactions.filter(tx => tx.isIncome).reduce((sum, tx) => sum + tx.amount, 0),
+    monthlyExpenses: monthTransactions.filter(tx => !tx.isIncome).reduce((sum, tx) => sum + tx.amount, 0),
+  },
+};
+const DEMO_TRANSACTIONS: Transaction[] = spendingScenario.transactions.map(tx => ({ ...tx, amount: `${tx.isIncome ? "+" : "−"} €${tx.amount.toFixed(2)}` }));
+
 export default function Home() {
+  const [isDemo, setIsDemo] = useState(true);
   const [showBalance, setShowBalance] = useState(true);
-  const [account, setAccount] = useState<AccountState | null>(null);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [account, setAccount] = useState<AccountState | null>(DEMO_ACCOUNT);
+  const [transactions, setTransactions] = useState<Transaction[]>(DEMO_TRANSACTIONS);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Tab navigation state
@@ -59,10 +75,16 @@ export default function Home() {
   const [transferDesc, setTransferDesc] = useState("");
   const [actionLoading, setActionLoading] = useState(false);
 
-  const fetchData = async () => {
+  const fetchData = async (demo = isDemo) => {
     try {
       setLoading(true);
       setError(null);
+
+      if (demo) {
+        setAccount(DEMO_ACCOUNT);
+        setTransactions(DEMO_TRANSACTIONS);
+        return;
+      }
 
       const [accRes, txRes] = await Promise.all([
         fetch(`${API_BASE}/account`),
@@ -78,17 +100,25 @@ export default function Home() {
 
       setAccount(accData);
       setTransactions(txData);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Error fetching data:", err);
-      setError(err.message || "Cannot connect to backend server");
+      setError(err instanceof Error ? err.message : "Cannot connect to backend server");
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const recordDemoTransaction = (amount: number, isIncome: boolean, name: string, category: string) => {
+    setAccount(current => current ? {
+      ...current,
+      balance: Math.round((current.balance + (isIncome ? amount : -amount)) * 100) / 100,
+      stats: {
+        monthlyIncome: current.stats.monthlyIncome + (isIncome ? amount : 0),
+        monthlyExpenses: current.stats.monthlyExpenses + (isIncome ? 0 : amount),
+      },
+    } : current);
+    setTransactions(current => [{ id: `demo-${Date.now()}`, name, category, date: spendingScenario.asOfDate, amount: `${isIncome ? "+" : "−"} €${amount.toFixed(2)}`, isIncome }, ...current]);
+  };
 
   const handleQuickAction = async (type: "deposit" | "transfer") => {
     const amountStr = prompt(
@@ -99,8 +129,13 @@ export default function Home() {
     if (!amountStr) return;
 
     const amount = parseFloat(amountStr);
-    if (isNaN(amount) || amount <= 0) {
+    if (!Number.isFinite(amount) || amount <= 0) {
       alert("Please enter a valid positive number.");
+      return;
+    }
+
+    if (isDemo) {
+      recordDemoTransaction(amount, type === "deposit", type === "deposit" ? "Top Up Deposit" : "Transfer to @alexander", type === "deposit" ? "Deposit" : "Transfer");
       return;
     }
 
@@ -127,8 +162,8 @@ export default function Home() {
       }
 
       await fetchData();
-    } catch (err: any) {
-      alert(err.message || "Failed to complete transaction.");
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : "Failed to complete transaction.");
     } finally {
       setActionLoading(false);
     }
@@ -137,7 +172,7 @@ export default function Home() {
   const handleDirectTransfer = async (e: React.FormEvent) => {
     e.preventDefault();
     const amount = parseFloat(transferAmount);
-    if (isNaN(amount) || amount <= 0) {
+    if (!Number.isFinite(amount) || amount <= 0) {
       alert("Please enter a valid amount.");
       return;
     }
@@ -145,6 +180,13 @@ export default function Home() {
     const cleanTag = recipientTag.replace("@", "").trim();
     if (!cleanTag) {
       alert("Please enter a recipient tag.");
+      return;
+    }
+
+    if (isDemo) {
+      recordDemoTransaction(amount, false, transferDesc.trim() || `Transfer to @${cleanTag}`, "Transfer");
+      setTransferAmount("");
+      setTransferDesc("");
       return;
     }
 
@@ -168,8 +210,8 @@ export default function Home() {
       setTransferAmount("");
       setTransferDesc("");
       await fetchData();
-    } catch (err: any) {
-      alert(err.message || "Failed to complete transfer.");
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : "Failed to complete transfer.");
     } finally {
       setActionLoading(false);
     }
@@ -202,7 +244,7 @@ export default function Home() {
             Make sure Express backend server is running on http://localhost:5001
           </p>
           <button
-            onClick={fetchData}
+            onClick={() => void fetchData()}
             style={{
               marginTop: "16px",
               padding: "8px 16px",
@@ -215,6 +257,7 @@ export default function Home() {
           >
             Retry Connection
           </button>
+          <button type="button" className={styles.actionBtn} style={{ margin: "16px auto" }} onClick={() => { setIsDemo(true); void fetchData(true); }}>Use demo account</button>
         </div>
       </div>
     );
@@ -253,6 +296,13 @@ export default function Home() {
       <main className={styles.main}>
         {activeTab === "home" && (
           <>
+            <div className={styles.demoControls}>
+              <p>{isDemo ? `Demo · ${spendingScenario.asOfDate} · Four days after rent` : "Live balance · Demo recurring plan and savings goal"}</p>
+              <button type="button" onClick={() => { setAccount(null); setIsDemo(!isDemo); void fetchData(!isDemo); }}>
+                {isDemo ? "Use live account" : "Use demo account"}
+              </button>
+            </div>
+            <SafeToSpend balance={balance} today={isDemo ? spendingScenario.asOfDate : dateKey(calendarDate(new Date()))} visible={showBalance} />
             {/* Balance Card */}
             <section className={styles.balanceCard}>
               <div className={styles.balanceHeader}>
@@ -345,9 +395,6 @@ export default function Home() {
                 </span>
               </div>
             </div>
-
-            {/* Real-time Finnhub Market Watchlist */}
-            <Watchlist apiBase={API_BASE} />
 
             {/* Recent Transactions */}
             <section className={styles.section}>

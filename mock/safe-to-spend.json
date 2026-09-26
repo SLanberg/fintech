@@ -1,0 +1,1304 @@
+{
+  "asOfDate": "2026-06-05",
+  "historyStartDate": "2026-04-07",
+  "currency": "EUR",
+  "balance": 840,
+  "openingHistoryBalance": 838.35,
+  "note": "Demo: four days after rent, with a moderately tight budget. Today uses the opening balance.",
+  "recurring": [
+    {
+      "id": "salary",
+      "name": "Salary",
+      "amount": 2600,
+      "dayOfMonth": 25,
+      "type": "income"
+    },
+    {
+      "id": "rent",
+      "name": "Rent",
+      "amount": 850,
+      "dayOfMonth": 1,
+      "type": "outflow"
+    },
+    {
+      "id": "electricity",
+      "name": "Electricity",
+      "amount": 78,
+      "dayOfMonth": 12,
+      "type": "outflow"
+    },
+    {
+      "id": "phone",
+      "name": "Phone",
+      "amount": 19,
+      "dayOfMonth": 10,
+      "type": "outflow"
+    },
+    {
+      "id": "internet",
+      "name": "Internet",
+      "amount": 29,
+      "dayOfMonth": 15,
+      "type": "outflow"
+    },
+    {
+      "id": "netflix",
+      "name": "Netflix",
+      "amount": 13.99,
+      "dayOfMonth": 7,
+      "type": "outflow"
+    },
+    {
+      "id": "gym",
+      "name": "Gym",
+      "amount": 29,
+      "dayOfMonth": 9,
+      "type": "outflow"
+    },
+    {
+      "id": "icloud",
+      "name": "iCloud storage",
+      "amount": 2.99,
+      "dayOfMonth": 11,
+      "type": "outflow"
+    },
+    {
+      "id": "spotify",
+      "name": "Spotify",
+      "amount": 10.99,
+      "dayOfMonth": 13,
+      "type": "outflow"
+    },
+    {
+      "id": "youtube",
+      "name": "YouTube Premium",
+      "amount": 12.99,
+      "dayOfMonth": 16,
+      "type": "outflow"
+    },
+    {
+      "id": "prime",
+      "name": "Prime Video",
+      "amount": 5.99,
+      "dayOfMonth": 18,
+      "type": "outflow"
+    },
+    {
+      "id": "disney",
+      "name": "Disney+",
+      "amount": 8.99,
+      "dayOfMonth": 20,
+      "type": "outflow"
+    },
+    {
+      "id": "dropbox",
+      "name": "Dropbox",
+      "amount": 9.99,
+      "dayOfMonth": 21,
+      "type": "outflow"
+    },
+    {
+      "id": "notion",
+      "name": "Notion",
+      "amount": 8,
+      "dayOfMonth": 22,
+      "type": "outflow"
+    },
+    {
+      "id": "todoist",
+      "name": "Todoist",
+      "amount": 4,
+      "dayOfMonth": 23,
+      "type": "outflow"
+    },
+    {
+      "id": "headspace",
+      "name": "Headspace",
+      "amount": 5.99,
+      "dayOfMonth": 24,
+      "type": "outflow"
+    },
+    {
+      "id": "strava",
+      "name": "Strava",
+      "amount": 5,
+      "dayOfMonth": 26,
+      "type": "outflow"
+    },
+    {
+      "id": "audible",
+      "name": "Audible",
+      "amount": 7.99,
+      "dayOfMonth": 27,
+      "type": "outflow"
+    },
+    {
+      "id": "kindle",
+      "name": "Kindle Unlimited",
+      "amount": 9.99,
+      "dayOfMonth": 28,
+      "type": "outflow"
+    },
+    {
+      "id": "apple",
+      "name": "Apple TV+",
+      "amount": 6.99,
+      "dayOfMonth": 31,
+      "type": "outflow"
+    },
+    {
+      "id": "google",
+      "name": "Google One",
+      "amount": 1.99,
+      "dayOfMonth": 6,
+      "type": "outflow"
+    },
+    {
+      "id": "adobe",
+      "name": "Adobe Photography",
+      "amount": 11.99,
+      "dayOfMonth": 8,
+      "type": "outflow"
+    },
+    {
+      "id": "patreon",
+      "name": "Patreon",
+      "amount": 3,
+      "dayOfMonth": 14,
+      "type": "outflow"
+    },
+    {
+      "id": "newspaper",
+      "name": "Digital newspaper",
+      "amount": 4.99,
+      "dayOfMonth": 17,
+      "type": "outflow"
+    },
+    {
+      "id": "language",
+      "name": "Language learning",
+      "amount": 5.99,
+      "dayOfMonth": 19,
+      "type": "outflow"
+    },
+    {
+      "id": "passwords",
+      "name": "Password manager",
+      "amount": 2.99,
+      "dayOfMonth": 4,
+      "type": "outflow"
+    },
+    {
+      "id": "vpn",
+      "name": "VPN",
+      "amount": 3.49,
+      "dayOfMonth": 3,
+      "type": "outflow"
+    },
+    {
+      "id": "gaming",
+      "name": "Gaming subscription",
+      "amount": 8.99,
+      "dayOfMonth": 2,
+      "type": "outflow"
+    }
+  ],
+  "goals": [
+    {
+      "id": "holiday",
+      "name": "Summer holiday",
+      "monthlyReservation": 120
+    }
+  ],
+  "transactions": [
+    {
+      "id": "2026-06-04-everyday",
+      "name": "Lunch & coffee",
+      "category": "Everyday",
+      "date": "2026-06-04",
+      "amount": 18.4,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-06-04-passwords",
+      "name": "Password manager",
+      "category": "Recurring",
+      "date": "2026-06-04",
+      "amount": 2.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-06-03-everyday",
+      "name": "Public transport & essentials",
+      "category": "Everyday",
+      "date": "2026-06-03",
+      "amount": 11.2,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-06-03-vpn",
+      "name": "VPN",
+      "category": "Recurring",
+      "date": "2026-06-03",
+      "amount": 3.49,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-06-02-one-off",
+      "name": "Clothing & shoes",
+      "amount": 68,
+      "category": "Shopping",
+      "date": "2026-06-02",
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-06-02-everyday",
+      "name": "Rimi groceries",
+      "category": "Everyday",
+      "date": "2026-06-02",
+      "amount": 24.9,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-06-02-gaming",
+      "name": "Gaming subscription",
+      "category": "Recurring",
+      "date": "2026-06-02",
+      "amount": 8.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-06-01-everyday",
+      "name": "Lunch & coffee",
+      "category": "Everyday",
+      "date": "2026-06-01",
+      "amount": 16.5,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-06-01-rent",
+      "name": "Rent",
+      "category": "Recurring",
+      "date": "2026-06-01",
+      "amount": 850,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-31-everyday",
+      "name": "Public transport & essentials",
+      "category": "Everyday",
+      "date": "2026-05-31",
+      "amount": 27.8,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-31-apple",
+      "name": "Apple TV+",
+      "category": "Recurring",
+      "date": "2026-05-31",
+      "amount": 6.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-30-everyday",
+      "name": "Rimi groceries",
+      "category": "Everyday",
+      "date": "2026-05-30",
+      "amount": 18.4,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-29-one-off",
+      "name": "Train tickets",
+      "amount": 59.9,
+      "category": "Travel",
+      "date": "2026-05-29",
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-29-everyday",
+      "name": "Lunch & coffee",
+      "category": "Everyday",
+      "date": "2026-05-29",
+      "amount": 11.2,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-28-everyday",
+      "name": "Public transport & essentials",
+      "category": "Everyday",
+      "date": "2026-05-28",
+      "amount": 24.9,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-28-kindle",
+      "name": "Kindle Unlimited",
+      "category": "Recurring",
+      "date": "2026-05-28",
+      "amount": 9.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-27-everyday",
+      "name": "Rimi groceries",
+      "category": "Everyday",
+      "date": "2026-05-27",
+      "amount": 16.5,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-27-audible",
+      "name": "Audible",
+      "category": "Recurring",
+      "date": "2026-05-27",
+      "amount": 7.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-26-one-off",
+      "name": "Replacement fridge",
+      "amount": 880,
+      "category": "Home",
+      "date": "2026-05-26",
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-26-everyday",
+      "name": "Lunch & coffee",
+      "category": "Everyday",
+      "date": "2026-05-26",
+      "amount": 27.8,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-26-strava",
+      "name": "Strava",
+      "category": "Recurring",
+      "date": "2026-05-26",
+      "amount": 5,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-25-everyday",
+      "name": "Public transport & essentials",
+      "category": "Everyday",
+      "date": "2026-05-25",
+      "amount": 18.4,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-25-salary",
+      "name": "Salary",
+      "category": "Salary",
+      "date": "2026-05-25",
+      "amount": 2600,
+      "isIncome": true,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-24-everyday",
+      "name": "Rimi groceries",
+      "category": "Everyday",
+      "date": "2026-05-24",
+      "amount": 11.2,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-24-headspace",
+      "name": "Headspace",
+      "category": "Recurring",
+      "date": "2026-05-24",
+      "amount": 5.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-23-everyday",
+      "name": "Lunch & coffee",
+      "category": "Everyday",
+      "date": "2026-05-23",
+      "amount": 24.9,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-23-todoist",
+      "name": "Todoist",
+      "category": "Recurring",
+      "date": "2026-05-23",
+      "amount": 4,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-22-everyday",
+      "name": "Public transport & essentials",
+      "category": "Everyday",
+      "date": "2026-05-22",
+      "amount": 16.5,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-22-notion",
+      "name": "Notion",
+      "category": "Recurring",
+      "date": "2026-05-22",
+      "amount": 8,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-21-everyday",
+      "name": "Rimi groceries",
+      "category": "Everyday",
+      "date": "2026-05-21",
+      "amount": 27.8,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-21-dropbox",
+      "name": "Dropbox",
+      "category": "Recurring",
+      "date": "2026-05-21",
+      "amount": 9.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-20-one-off",
+      "name": "Bicycle repair",
+      "amount": 95,
+      "category": "Transport",
+      "date": "2026-05-20",
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-20-everyday",
+      "name": "Lunch & coffee",
+      "category": "Everyday",
+      "date": "2026-05-20",
+      "amount": 18.4,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-20-disney",
+      "name": "Disney+",
+      "category": "Recurring",
+      "date": "2026-05-20",
+      "amount": 8.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-19-everyday",
+      "name": "Public transport & essentials",
+      "category": "Everyday",
+      "date": "2026-05-19",
+      "amount": 11.2,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-19-language",
+      "name": "Language learning",
+      "category": "Recurring",
+      "date": "2026-05-19",
+      "amount": 5.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-18-everyday",
+      "name": "Rimi groceries",
+      "category": "Everyday",
+      "date": "2026-05-18",
+      "amount": 24.9,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-18-prime",
+      "name": "Prime Video",
+      "category": "Recurring",
+      "date": "2026-05-18",
+      "amount": 5.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-17-everyday",
+      "name": "Lunch & coffee",
+      "category": "Everyday",
+      "date": "2026-05-17",
+      "amount": 16.5,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-17-newspaper",
+      "name": "Digital newspaper",
+      "category": "Recurring",
+      "date": "2026-05-17",
+      "amount": 4.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-16-one-off",
+      "name": "Summer holiday booking deposit",
+      "amount": 280,
+      "category": "Travel",
+      "date": "2026-05-16",
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-16-everyday",
+      "name": "Public transport & essentials",
+      "category": "Everyday",
+      "date": "2026-05-16",
+      "amount": 27.8,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-16-youtube",
+      "name": "YouTube Premium",
+      "category": "Recurring",
+      "date": "2026-05-16",
+      "amount": 12.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-15-everyday",
+      "name": "Rimi groceries",
+      "category": "Everyday",
+      "date": "2026-05-15",
+      "amount": 18.4,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-15-internet",
+      "name": "Internet",
+      "category": "Recurring",
+      "date": "2026-05-15",
+      "amount": 29,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-14-everyday",
+      "name": "Lunch & coffee",
+      "category": "Everyday",
+      "date": "2026-05-14",
+      "amount": 11.2,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-14-patreon",
+      "name": "Patreon",
+      "category": "Recurring",
+      "date": "2026-05-14",
+      "amount": 3,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-13-everyday",
+      "name": "Public transport & essentials",
+      "category": "Everyday",
+      "date": "2026-05-13",
+      "amount": 24.9,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-13-spotify",
+      "name": "Spotify",
+      "category": "Recurring",
+      "date": "2026-05-13",
+      "amount": 10.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-12-everyday",
+      "name": "Rimi groceries",
+      "category": "Everyday",
+      "date": "2026-05-12",
+      "amount": 16.5,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-12-electricity",
+      "name": "Electricity",
+      "category": "Recurring",
+      "date": "2026-05-12",
+      "amount": 78,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-11-everyday",
+      "name": "Lunch & coffee",
+      "category": "Everyday",
+      "date": "2026-05-11",
+      "amount": 27.8,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-11-icloud",
+      "name": "iCloud storage",
+      "category": "Recurring",
+      "date": "2026-05-11",
+      "amount": 2.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-10-everyday",
+      "name": "Public transport & essentials",
+      "category": "Everyday",
+      "date": "2026-05-10",
+      "amount": 18.4,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-10-phone",
+      "name": "Phone",
+      "category": "Recurring",
+      "date": "2026-05-10",
+      "amount": 19,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-09-everyday",
+      "name": "Rimi groceries",
+      "category": "Everyday",
+      "date": "2026-05-09",
+      "amount": 11.2,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-09-gym",
+      "name": "Gym",
+      "category": "Recurring",
+      "date": "2026-05-09",
+      "amount": 29,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-08-everyday",
+      "name": "Lunch & coffee",
+      "category": "Everyday",
+      "date": "2026-05-08",
+      "amount": 24.9,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-08-adobe",
+      "name": "Adobe Photography",
+      "category": "Recurring",
+      "date": "2026-05-08",
+      "amount": 11.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-07-one-off",
+      "name": "Dentist appointment",
+      "amount": 180,
+      "category": "Health",
+      "date": "2026-05-07",
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-07-everyday",
+      "name": "Public transport & essentials",
+      "category": "Everyday",
+      "date": "2026-05-07",
+      "amount": 16.5,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-07-netflix",
+      "name": "Netflix",
+      "category": "Recurring",
+      "date": "2026-05-07",
+      "amount": 13.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-06-everyday",
+      "name": "Rimi groceries",
+      "category": "Everyday",
+      "date": "2026-05-06",
+      "amount": 27.8,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-06-google",
+      "name": "Google One",
+      "category": "Recurring",
+      "date": "2026-05-06",
+      "amount": 1.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-05-everyday",
+      "name": "Lunch & coffee",
+      "category": "Everyday",
+      "date": "2026-05-05",
+      "amount": 18.4,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-04-everyday",
+      "name": "Public transport & essentials",
+      "category": "Everyday",
+      "date": "2026-05-04",
+      "amount": 11.2,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-04-passwords",
+      "name": "Password manager",
+      "category": "Recurring",
+      "date": "2026-05-04",
+      "amount": 2.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-03-everyday",
+      "name": "Rimi groceries",
+      "category": "Everyday",
+      "date": "2026-05-03",
+      "amount": 24.9,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-03-vpn",
+      "name": "VPN",
+      "category": "Recurring",
+      "date": "2026-05-03",
+      "amount": 3.49,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-02-everyday",
+      "name": "Lunch & coffee",
+      "category": "Everyday",
+      "date": "2026-05-02",
+      "amount": 16.5,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-02-gaming",
+      "name": "Gaming subscription",
+      "category": "Recurring",
+      "date": "2026-05-02",
+      "amount": 8.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-01-everyday",
+      "name": "Public transport & essentials",
+      "category": "Everyday",
+      "date": "2026-05-01",
+      "amount": 27.8,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-05-01-rent",
+      "name": "Rent",
+      "category": "Recurring",
+      "date": "2026-05-01",
+      "amount": 850,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-30-everyday",
+      "name": "Rimi groceries",
+      "category": "Everyday",
+      "date": "2026-04-30",
+      "amount": 18.4,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-30-apple",
+      "name": "Apple TV+",
+      "category": "Recurring",
+      "date": "2026-04-30",
+      "amount": 6.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-29-everyday",
+      "name": "Lunch & coffee",
+      "category": "Everyday",
+      "date": "2026-04-29",
+      "amount": 11.2,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-28-everyday",
+      "name": "Public transport & essentials",
+      "category": "Everyday",
+      "date": "2026-04-28",
+      "amount": 24.9,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-28-kindle",
+      "name": "Kindle Unlimited",
+      "category": "Recurring",
+      "date": "2026-04-28",
+      "amount": 9.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-27-everyday",
+      "name": "Rimi groceries",
+      "category": "Everyday",
+      "date": "2026-04-27",
+      "amount": 16.5,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-27-audible",
+      "name": "Audible",
+      "category": "Recurring",
+      "date": "2026-04-27",
+      "amount": 7.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-26-everyday",
+      "name": "Lunch & coffee",
+      "category": "Everyday",
+      "date": "2026-04-26",
+      "amount": 27.8,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-26-strava",
+      "name": "Strava",
+      "category": "Recurring",
+      "date": "2026-04-26",
+      "amount": 5,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-25-everyday",
+      "name": "Public transport & essentials",
+      "category": "Everyday",
+      "date": "2026-04-25",
+      "amount": 18.4,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-25-salary",
+      "name": "Salary",
+      "category": "Salary",
+      "date": "2026-04-25",
+      "amount": 2600,
+      "isIncome": true,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-24-everyday",
+      "name": "Rimi groceries",
+      "category": "Everyday",
+      "date": "2026-04-24",
+      "amount": 11.2,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-24-headspace",
+      "name": "Headspace",
+      "category": "Recurring",
+      "date": "2026-04-24",
+      "amount": 5.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-23-everyday",
+      "name": "Lunch & coffee",
+      "category": "Everyday",
+      "date": "2026-04-23",
+      "amount": 24.9,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-23-todoist",
+      "name": "Todoist",
+      "category": "Recurring",
+      "date": "2026-04-23",
+      "amount": 4,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-22-everyday",
+      "name": "Public transport & essentials",
+      "category": "Everyday",
+      "date": "2026-04-22",
+      "amount": 16.5,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-22-notion",
+      "name": "Notion",
+      "category": "Recurring",
+      "date": "2026-04-22",
+      "amount": 8,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-21-everyday",
+      "name": "Rimi groceries",
+      "category": "Everyday",
+      "date": "2026-04-21",
+      "amount": 27.8,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-21-dropbox",
+      "name": "Dropbox",
+      "category": "Recurring",
+      "date": "2026-04-21",
+      "amount": 9.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-20-everyday",
+      "name": "Lunch & coffee",
+      "category": "Everyday",
+      "date": "2026-04-20",
+      "amount": 18.4,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-20-disney",
+      "name": "Disney+",
+      "category": "Recurring",
+      "date": "2026-04-20",
+      "amount": 8.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-19-everyday",
+      "name": "Public transport & essentials",
+      "category": "Everyday",
+      "date": "2026-04-19",
+      "amount": 11.2,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-19-language",
+      "name": "Language learning",
+      "category": "Recurring",
+      "date": "2026-04-19",
+      "amount": 5.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-18-everyday",
+      "name": "Rimi groceries",
+      "category": "Everyday",
+      "date": "2026-04-18",
+      "amount": 24.9,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-18-prime",
+      "name": "Prime Video",
+      "category": "Recurring",
+      "date": "2026-04-18",
+      "amount": 5.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-17-everyday",
+      "name": "Lunch & coffee",
+      "category": "Everyday",
+      "date": "2026-04-17",
+      "amount": 16.5,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-17-newspaper",
+      "name": "Digital newspaper",
+      "category": "Recurring",
+      "date": "2026-04-17",
+      "amount": 4.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-16-everyday",
+      "name": "Public transport & essentials",
+      "category": "Everyday",
+      "date": "2026-04-16",
+      "amount": 27.8,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-16-youtube",
+      "name": "YouTube Premium",
+      "category": "Recurring",
+      "date": "2026-04-16",
+      "amount": 12.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-15-everyday",
+      "name": "Rimi groceries",
+      "category": "Everyday",
+      "date": "2026-04-15",
+      "amount": 18.4,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-15-internet",
+      "name": "Internet",
+      "category": "Recurring",
+      "date": "2026-04-15",
+      "amount": 29,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-14-everyday",
+      "name": "Lunch & coffee",
+      "category": "Everyday",
+      "date": "2026-04-14",
+      "amount": 11.2,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-14-patreon",
+      "name": "Patreon",
+      "category": "Recurring",
+      "date": "2026-04-14",
+      "amount": 3,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-13-one-off",
+      "name": "Annual home insurance",
+      "amount": 155,
+      "category": "Insurance",
+      "date": "2026-04-13",
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-13-everyday",
+      "name": "Public transport & essentials",
+      "category": "Everyday",
+      "date": "2026-04-13",
+      "amount": 24.9,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-13-spotify",
+      "name": "Spotify",
+      "category": "Recurring",
+      "date": "2026-04-13",
+      "amount": 10.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-12-everyday",
+      "name": "Rimi groceries",
+      "category": "Everyday",
+      "date": "2026-04-12",
+      "amount": 16.5,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-12-electricity",
+      "name": "Electricity",
+      "category": "Recurring",
+      "date": "2026-04-12",
+      "amount": 78,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-11-everyday",
+      "name": "Lunch & coffee",
+      "category": "Everyday",
+      "date": "2026-04-11",
+      "amount": 27.8,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-11-icloud",
+      "name": "iCloud storage",
+      "category": "Recurring",
+      "date": "2026-04-11",
+      "amount": 2.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-10-everyday",
+      "name": "Public transport & essentials",
+      "category": "Everyday",
+      "date": "2026-04-10",
+      "amount": 18.4,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-10-phone",
+      "name": "Phone",
+      "category": "Recurring",
+      "date": "2026-04-10",
+      "amount": 19,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-09-everyday",
+      "name": "Rimi groceries",
+      "category": "Everyday",
+      "date": "2026-04-09",
+      "amount": 11.2,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-09-gym",
+      "name": "Gym",
+      "category": "Recurring",
+      "date": "2026-04-09",
+      "amount": 29,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-08-everyday",
+      "name": "Lunch & coffee",
+      "category": "Everyday",
+      "date": "2026-04-08",
+      "amount": 24.9,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-08-adobe",
+      "name": "Adobe Photography",
+      "category": "Recurring",
+      "date": "2026-04-08",
+      "amount": 11.99,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-07-everyday",
+      "name": "Public transport & essentials",
+      "category": "Everyday",
+      "date": "2026-04-07",
+      "amount": 16.5,
+      "isIncome": false,
+      "currency": "EUR"
+    },
+    {
+      "id": "2026-04-07-netflix",
+      "name": "Netflix",
+      "category": "Recurring",
+      "date": "2026-04-07",
+      "amount": 13.99,
+      "isIncome": false,
+      "currency": "EUR"
+    }
+  ]
+}
