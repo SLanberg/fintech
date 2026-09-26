@@ -14,7 +14,7 @@ console.log(`- Internal Immutable UUID: ${tyler.id}`);
 console.log(`- Display Name: ${tyler.display_name}`);
 console.log(`- Public Tag: @${tyler.tag}`);
 console.log(`- Email: ${tyler.email}`);
-console.log(`- Birth Year: ${tyler.birth_year}`);
+console.log(`- Birth Date: ${tyler.birth_date}`);
 console.log(`- Account Status: ${tyler.status}`);
 console.log(`- Balance (Cents): ${tyler.balance_cents} (€${(tyler.balance_cents / 100).toFixed(2)})`);
 

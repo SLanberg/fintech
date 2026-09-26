@@ -49,7 +49,8 @@ app.get("/api/account", (req: Request, res: Response) => {
         name: publicProfile.display_name,
         tag: publicProfile.tag,
         email: publicProfile.email,
-        birthYear: publicProfile.birth_year,
+        birthDate: publicProfile.birth_date,
+        birth_date: publicProfile.birth_date,
         status: publicProfile.status,
         accountType: "Personal Account",
         avatarUrl: "/Tyler.jpg",
@@ -75,7 +76,7 @@ app.get("/api/account", (req: Request, res: Response) => {
  * Resolves public tag to public user profile without exposing internal UUID.
  */
 app.get("/api/users/tag/:tag", (req: Request, res: Response) => {
-  const { tag } = req.params;
+  const tag = req.params.tag as string;
   const user = UserRepository.findByTag(tag);
 
   if (!user) {
@@ -90,7 +91,7 @@ app.get("/api/users/tag/:tag", (req: Request, res: Response) => {
 /**
  * GET /api/user/entity
  * Entity inspection endpoint demonstrating complete Entity User representation
- * including immutable internal UUID, public tag, display name, email, birth year, account status, and timestamps.
+ * including immutable internal UUID, public tag, display name, email, birth date, account status, and timestamps.
  */
 app.get("/api/user/entity", (req: Request, res: Response) => {
   try {
@@ -103,7 +104,7 @@ app.get("/api/user/entity", (req: Request, res: Response) => {
         tag: tyler.tag, // Unique public tag
         display_name: tyler.display_name, // Presentation display name
         email: tyler.email, // Email
-        birth_year: tyler.birth_year, // Year of birth (1964)
+        birth_date: tyler.birth_date, // Date of birth (1964-06-18)
         status: tyler.status, // Account status
         balance_cents: tyler.balance_cents, // Monetary balance in exact integer minor units
         created_at: tyler.created_at,

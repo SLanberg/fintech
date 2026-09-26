@@ -14,7 +14,7 @@ export interface UserEntity {
   tag: string; // Unique public tag for lookup and initiating transfers
   display_name: string; // Presentation display name
   email: string; // User email
-  birth_year: number; // Year of birth
+  birth_date: string; // Date of birth (YYYY-MM-DD)
   status: "ACTIVE" | "SUSPENDED" | "CLOSED";
   balance_cents: number; // Monetary values stored strictly as integer minor units
   created_at: string;
@@ -25,7 +25,7 @@ export interface PublicUserProfile {
   tag: string;
   display_name: string;
   email: string;
-  birth_year: number;
+  birth_date: string;
   status: string;
   created_at: string;
 }
@@ -58,7 +58,7 @@ export function initDatabase() {
       tag TEXT UNIQUE NOT NULL,
       display_name TEXT NOT NULL,
       email TEXT UNIQUE NOT NULL,
-      birth_year INTEGER NOT NULL,
+      birth_date TEXT NOT NULL,
       status TEXT NOT NULL DEFAULT 'ACTIVE',
       balance_cents INTEGER NOT NULL DEFAULT 0,
       created_at TEXT NOT NULL,
@@ -112,19 +112,19 @@ function seedInitialData() {
     const alexId = crypto.randomUUID();
 
     const insertUser = db.prepare(`
-      INSERT INTO users (id, tag, display_name, email, birth_year, status, balance_cents, created_at, updated_at)
+      INSERT INTO users (id, tag, display_name, email, birth_date, status, balance_cents, created_at, updated_at)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
-    // Primary User: Tyler Durden, born in 1964
+    // Primary User: Tyler Durden, born on June 18, 1964
     insertUser.run(
       tylerId,
       "tyler",
       "Tyler Durden",
       "tyler.durden@paperstreet.com",
-      1964,
+      "1964-06-18",
       "ACTIVE",
-      1245080, // €12,450.80
+      0, // €0.00
       now,
       now
     );
@@ -135,7 +135,7 @@ function seedInitialData() {
       "alexander",
       "Alexander B.",
       "alexander.b@bank.com",
-      1988,
+      "1988-03-25",
       "ACTIVE",
       500000, // €5,000.00
       now,
@@ -160,7 +160,7 @@ function seedInitialData() {
       new Date(Date.now() - 86400000).toISOString()
     );
 
-    console.log("✅ Primary User 'Tyler Durden' (Birth Year: 1964) seeded successfully.");
+    console.log("✅ Primary User 'Tyler Durden' (Birth Date: 1964-06-18) seeded successfully.");
   }
 }
 

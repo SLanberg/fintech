@@ -8,6 +8,9 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
 
 interface UserInfo {
   name: string;
+  tag?: string;
+  email?: string;
+  birthDate?: string;
   accountType: string;
   avatarUrl: string;
 }

@@ -39,7 +39,7 @@ export class UserRepository {
     tag: string;
     display_name: string;
     email: string;
-    birth_year: number;
+    birth_date: string;
     initial_balance_cents?: number;
   }): UserEntity {
     const uuid = crypto.randomUUID(); // Cryptographically secure UUID
@@ -48,11 +48,11 @@ export class UserRepository {
     const balanceCents = Math.floor(data.initial_balance_cents || 0);
 
     const stmt = db.prepare(`
-      INSERT INTO users (id, tag, display_name, email, birth_year, status, balance_cents, created_at, updated_at)
+      INSERT INTO users (id, tag, display_name, email, birth_date, status, balance_cents, created_at, updated_at)
       VALUES (?, ?, ?, ?, ?, 'ACTIVE', ?, ?, ?)
     `);
 
-    stmt.run(uuid, cleanTag, data.display_name, data.email, data.birth_year, balanceCents, now, now);
+    stmt.run(uuid, cleanTag, data.display_name, data.email, data.birth_date, balanceCents, now, now);
 
     return this.findById(uuid)!;
   }
@@ -65,7 +65,7 @@ export class UserRepository {
       tag: `@${user.tag}`,
       display_name: user.display_name,
       email: user.email,
-      birth_year: user.birth_year,
+      birth_date: user.birth_date,
       status: user.status,
       created_at: user.created_at,
     };
