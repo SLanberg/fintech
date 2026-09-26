@@ -103,7 +103,7 @@ function seedInitialData() {
   const userCount = (db.prepare("SELECT COUNT(*) as count FROM users").get() as { count: number }).count;
 
   if (userCount === 0) {
-    console.log("🌱 Seeding database with primary user Tyler Durden...");
+    console.log("Seeding database with primary user Tyler Durden...");
 
     const now = new Date().toISOString();
     
@@ -142,25 +142,9 @@ function seedInitialData() {
       now
     );
 
-    // Initial audit ledger entries
-    const insertLedger = db.prepare(`
-      INSERT INTO ledger_entries (id, idempotency_key, sender_user_id, recipient_user_id, amount_cents, currency, description, status, created_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `);
+    /* No fake transactions seeded; ledger starts clean */
 
-    insertLedger.run(
-      crypto.randomUUID(),
-      null,
-      alexId,
-      tylerId,
-      120000, // €1,200.00
-      "EUR",
-      "Transfer from Alexander B.",
-      "COMPLETED",
-      new Date(Date.now() - 86400000).toISOString()
-    );
-
-    console.log("✅ Primary User 'Tyler Durden' (Birth Date: 1964-06-18) seeded successfully.");
+    console.log("Primary User 'Tyler Durden' (Birth Date: 1964-06-18) seeded successfully.");
   }
 }
 

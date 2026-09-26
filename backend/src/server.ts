@@ -226,5 +226,5 @@ app.post("/api/transactions", (req: Request, res: Response) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 SQLite-backed Backend server is running on http://localhost:${PORT}`);
+  console.log(`SQLite-backed Backend server is running on http://localhost:${PORT}`);
 });

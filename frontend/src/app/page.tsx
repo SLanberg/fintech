@@ -6,6 +6,13 @@ import styles from "./page.module.css";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
 
+const REVOLUT_CONTACTS = [
+  { initials: "AB", name: "Alexander B.", tag: "alexander", digits: "€50.00", gradient: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)" },
+  { initials: "MS", name: "Marla Singer", tag: "marla", digits: "€120.00", gradient: "linear-gradient(135deg, #ec4899 0%, #db2777 100%)" },
+  { initials: "EN", name: "Edward Norton", tag: "edward", digits: "€35.00", gradient: "linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)" },
+  { initials: "JD", name: "Jack Durden", tag: "jack", digits: "€15.00", gradient: "linear-gradient(135deg, #10b981 0%, #059669 100%)" },
+];
+
 interface UserInfo {
   name: string;
   tag?: string;
@@ -22,7 +29,7 @@ interface Transaction {
   date: string;
   amount: string;
   isIncome: boolean;
-  icon: string;
+  icon?: string;
 }
 
 interface AccountState {
@@ -42,7 +49,13 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Quick action modal / state
+  // Tab navigation state
+  const [activeTab, setActiveTab] = useState<"home" | "invest" | "payments">("home");
+
+  // Direct transfer state for Payments tab
+  const [recipientTag, setRecipientTag] = useState("alexander");
+  const [transferAmount, setTransferAmount] = useState("");
+  const [transferDesc, setTransferDesc] = useState("");
   const [actionLoading, setActionLoading] = useState(false);
 
   const fetchData = async () => {
@@ -93,7 +106,7 @@ export default function Home() {
     try {
       setActionLoading(true);
       const isIncome = type === "deposit";
-      const name = isIncome ? "Top Up Deposit" : "Bank Transfer";
+      const name = isIncome ? "Top Up Deposit" : "Bank Transfer to @alexander";
       const category = isIncome ? "Deposit" : "Transfer";
 
       const res = await fetch(`${API_BASE}/transactions`, {
@@ -104,7 +117,7 @@ export default function Home() {
           category,
           amount,
           isIncome,
-          icon: isIncome ? "↓" : "↑",
+          recipient_tag: "alexander",
         }),
       });
 
@@ -115,6 +128,47 @@ export default function Home() {
       await fetchData();
     } catch (err: any) {
       alert(err.message || "Failed to complete transaction.");
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const handleDirectTransfer = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const amount = parseFloat(transferAmount);
+    if (isNaN(amount) || amount <= 0) {
+      alert("Please enter a valid amount.");
+      return;
+    }
+
+    const cleanTag = recipientTag.replace("@", "").trim();
+    if (!cleanTag) {
+      alert("Please enter a recipient tag.");
+      return;
+    }
+
+    try {
+      setActionLoading(true);
+      const res = await fetch(`${API_BASE}/transfers`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          recipient_tag: cleanTag,
+          amount,
+          description: transferDesc.trim() || undefined,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to execute transfer.");
+      }
+
+      setTransferAmount("");
+      setTransferDesc("");
+      await fetchData();
+    } catch (err: any) {
+      alert(err.message || "Failed to complete transfer.");
     } finally {
       setActionLoading(false);
     }
@@ -134,9 +188,16 @@ export default function Home() {
   if (error && !account) {
     return (
       <div className={styles.container}>
-        <div style={{ padding: "40px", textAlign: "center", color: "#e53e3e" }}>
-          <p>⚠️ {error}</p>
-          <p style={{ fontSize: "14px", color: "#666", marginTop: "8px" }}>
+        <div style={{ padding: "40px", textAlign: "center", color: "#ef4444" }}>
+          <div className={styles.errorMessage}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            <span>{error}</span>
+          </div>
+          <p style={{ fontSize: "14px", color: "#666", marginTop: "12px" }}>
             Make sure Express backend server is running on http://localhost:5001
           </p>
           <button
@@ -189,105 +250,382 @@ export default function Home() {
       </header>
 
       <main className={styles.main}>
-        {/* Balance Card */}
-        <section className={styles.balanceCard}>
-          <div className={styles.balanceHeader}>
-            <span className={styles.balanceLabel}>Total Balance</span>
-            <button
-              onClick={() => setShowBalance(!showBalance)}
-              className={styles.hideToggle}
-              type="button"
-            >
-              {showBalance ? "Hide" : "Show"}
-            </button>
-          </div>
-
-          <div className={styles.balanceAmountRow}>
-            <span className={styles.balanceAmount}>
-              {showBalance
-                ? balance.toLocaleString("de-DE", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })
-                : "••••••••"}
-            </span>
-            <span className={styles.currency}>{currency}</span>
-          </div>
-
-          <div className={styles.actionGrid}>
-            <button
-              className={`${styles.actionBtn} ${styles.actionBtnPrimary}`}
-              onClick={() => handleQuickAction("deposit")}
-              disabled={actionLoading}
-              type="button"
-            >
-              <span>+</span> Deposit
-            </button>
-            <button
-              className={styles.actionBtn}
-              onClick={() => handleQuickAction("transfer")}
-              disabled={actionLoading}
-              type="button"
-            >
-              <span>↑</span> Transfer
-            </button>
-            <button
-              className={styles.actionBtn}
-              onClick={() => alert("Exchange feature coming soon!")}
-              type="button"
-            >
-              <span>⇄</span> Exchange
-            </button>
-          </div>
-        </section>
-
-        {/* Quick Stats */}
-        <div className={styles.statsRow}>
-          <div className={styles.statCard}>
-            <span className={styles.statTitle}>Monthly Income</span>
-            <span className={`${styles.statValue} ${styles.positive}`}>
-              +€{monthlyIncome.toLocaleString("de-DE", { minimumFractionDigits: 2 })}
-            </span>
-          </div>
-          <div className={styles.statCard}>
-            <span className={styles.statTitle}>Monthly Expenses</span>
-            <span className={styles.statValue}>
-              -€{monthlyExpenses.toLocaleString("de-DE", { minimumFractionDigits: 2 })}
-            </span>
-          </div>
-        </div>
-
-        {/* Recent Transactions */}
-        <section className={styles.section}>
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Recent Transactions</h2>
-            <span className={styles.viewAll}>View All</span>
-          </div>
-
-          <div className={styles.transactionList}>
-            {transactions.map((t) => (
-              <div key={t.id} className={styles.transactionItem}>
-                <div className={styles.transactionLeft}>
-                  <div className={styles.iconCircle}>{t.icon}</div>
-                  <div className={styles.transactionDetails}>
-                    <span className={styles.transactionName}>{t.name}</span>
-                    <span className={styles.transactionDate}>
-                      {t.date} • {t.category}
-                    </span>
-                  </div>
-                </div>
-                <span
-                  className={`${styles.transactionAmount} ${
-                    t.isIncome ? styles.incomeAmount : ""
-                  }`}
+        {activeTab === "home" && (
+          <>
+            {/* Balance Card */}
+            <section className={styles.balanceCard}>
+              <div className={styles.balanceHeader}>
+                <span className={styles.balanceLabel}>Total Balance</span>
+                <button
+                  onClick={() => setShowBalance(!showBalance)}
+                  className={styles.hideToggle}
+                  type="button"
                 >
-                  {t.amount}
+                  {showBalance ? "Hide" : "Show"}
+                </button>
+              </div>
+
+              <div className={styles.balanceAmountRow}>
+                <span className={styles.balanceAmount}>
+                  {showBalance
+                    ? balance.toLocaleString("de-DE", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })
+                    : "••••••••"}
+                </span>
+                <span className={styles.currency}>{currency}</span>
+              </div>
+
+              <div className={styles.actionGrid}>
+                <button
+                  className={`${styles.actionBtn} ${styles.actionBtnPrimary}`}
+                  onClick={() => handleQuickAction("deposit")}
+                  disabled={actionLoading}
+                  type="button"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                  Deposit
+                </button>
+                <button
+                  className={styles.actionBtn}
+                  onClick={() => handleQuickAction("transfer")}
+                  disabled={actionLoading}
+                  type="button"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <line x1="7" y1="17" x2="17" y2="7" />
+                    <polyline points="7 7 17 7 17 17" />
+                  </svg>
+                  Transfer
+                </button>
+                <button
+                  className={styles.actionBtn}
+                  onClick={() => alert("Exchange feature coming soon!")}
+                  type="button"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="m16 3 4 4-4 4" />
+                    <path d="M20 7H4" />
+                    <path d="m8 21-4-4 4-4" />
+                    <path d="M4 17h16" />
+                  </svg>
+                  Exchange
+                </button>
+                <button
+                  className={styles.actionBtn}
+                  onClick={() => alert("Account details coming soon!")}
+                  type="button"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect width="20" height="14" x="2" y="5" rx="2" />
+                    <line x1="2" x2="22" y1="10" y2="10" />
+                  </svg>
+                  Details
+                </button>
+              </div>
+            </section>
+
+            {/* Quick Stats */}
+            <div className={styles.statsRow}>
+              <div className={styles.statCard}>
+                <span className={styles.statTitle}>Monthly Income</span>
+                <span className={`${styles.statValue} ${styles.positive}`}>
+                  +€{monthlyIncome.toLocaleString("de-DE", { minimumFractionDigits: 2 })}
                 </span>
               </div>
-            ))}
+              <div className={styles.statCard}>
+                <span className={styles.statTitle}>Monthly Expenses</span>
+                <span className={styles.statValue}>
+                  -€{monthlyExpenses.toLocaleString("de-DE", { minimumFractionDigits: 2 })}
+                </span>
+              </div>
+            </div>
+
+            {/* Recent Transactions */}
+            <section className={styles.section}>
+              <div className={styles.sectionHeader}>
+                <h2 className={styles.sectionTitle}>Recent Transactions</h2>
+                <span className={styles.viewAll} onClick={() => setActiveTab("payments")}>
+                  View All
+                </span>
+              </div>
+
+              <div className={styles.transactionList}>
+                {transactions.length === 0 ? (
+                  <div className={styles.emptyTransactions}>No recent transactions</div>
+                ) : (
+                  transactions.slice(0, 5).map((t) => (
+                    <div key={t.id} className={styles.transactionItem}>
+                      <div className={styles.transactionLeft}>
+                        <div className={styles.iconCircle}>
+                          {t.isIncome ? (
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.5">
+                              <line x1="17" y1="7" x2="7" y2="17" />
+                              <polyline points="17 17 7 17 7 7" />
+                            </svg>
+                          ) : (
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#09090b" strokeWidth="2.5">
+                              <line x1="7" y1="17" x2="17" y2="7" />
+                              <polyline points="7 7 17 7 17 17" />
+                            </svg>
+                          )}
+                        </div>
+                        <div className={styles.transactionDetails}>
+                          <span className={styles.transactionName}>{t.name}</span>
+                          <span className={styles.transactionDate}>
+                            {t.date} • {t.category}
+                          </span>
+                        </div>
+                      </div>
+                      <span
+                        className={`${styles.transactionAmount} ${
+                          t.isIncome ? styles.incomeAmount : ""
+                        }`}
+                      >
+                        {t.amount}
+                      </span>
+                    </div>
+                  ))
+                )}
+              </div>
+            </section>
+          </>
+        )}
+
+        {activeTab === "invest" && (
+          <section className={styles.section}>
+            <div className={styles.balanceCard}>
+              <div className={styles.balanceHeader}>
+                <span className={styles.balanceLabel}>Investment Portfolio</span>
+                <span className={styles.positive} style={{ fontSize: "14px", fontWeight: 600 }}>
+                  +14.2% total return
+                </span>
+              </div>
+              <div className={styles.balanceAmountRow}>
+                <span className={styles.balanceAmount}>€12,450.00</span>
+                <span className={styles.currency}>EUR</span>
+              </div>
+            </div>
+
+            <div className={styles.sectionHeader} style={{ marginTop: "16px" }}>
+              <h2 className={styles.sectionTitle}>Featured Assets</h2>
+            </div>
+            <div className={styles.transactionList}>
+              <div className={styles.transactionItem}>
+                <div className={styles.transactionLeft}>
+                  <div className={styles.iconCircle}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                      <polyline points="16 7 22 7 22 13" />
+                    </svg>
+                  </div>
+                  <div className={styles.transactionDetails}>
+                    <span className={styles.transactionName}>S&P 500 Index Fund</span>
+                    <span className={styles.transactionDate}>US Stocks • ETF</span>
+                  </div>
+                </div>
+                <span className={`${styles.transactionAmount} ${styles.incomeAmount}`}>+8.4%</span>
+              </div>
+              <div className={styles.transactionItem}>
+                <div className={styles.transactionLeft}>
+                  <div className={styles.iconCircle}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                    </svg>
+                  </div>
+                  <div className={styles.transactionDetails}>
+                    <span className={styles.transactionName}>Tech Leaders Basket</span>
+                    <span className={styles.transactionDate}>Technology • Stocks</span>
+                  </div>
+                </div>
+                <span className={`${styles.transactionAmount} ${styles.incomeAmount}`}>+18.9%</span>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {activeTab === "payments" && (
+          <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+            {/* TOP PANEL: Quick Actions & Instant Money Transfer */}
+            <section className={styles.section}>
+              <div className={styles.sectionHeader}>
+                <h2 className={styles.sectionTitle}>Quick Payments & Actions</h2>
+              </div>
+              
+              <div className={styles.actionGrid}>
+                <button
+                  className={`${styles.actionBtn} ${styles.actionBtnPrimary}`}
+                  onClick={() => setRecipientTag("alexander")}
+                  type="button"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <line x1="7" y1="17" x2="17" y2="7" />
+                    <polyline points="7 7 17 7 17 17" />
+                  </svg>
+                  Send Money
+                </button>
+                <button
+                  className={styles.actionBtn}
+                  onClick={() => alert("Request payment feature coming soon!")}
+                  type="button"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <line x1="17" y1="7" x2="7" y2="17" />
+                    <polyline points="17 17 7 17 7 7" />
+                  </svg>
+                  Request
+                </button>
+                <button
+                  className={styles.actionBtn}
+                  onClick={() => alert("Pay bills coming soon!")}
+                  type="button"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                  </svg>
+                  Pay Bills
+                </button>
+                <button
+                  className={styles.actionBtn}
+                  onClick={() => alert("QR payment coming soon!")}
+                  type="button"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="3" width="7" height="7" />
+                    <rect x="14" y="3" width="7" height="7" />
+                    <rect x="14" y="14" width="7" height="7" />
+                    <rect x="3" y="14" width="7" height="7" />
+                  </svg>
+                  Scan QR
+                </button>
+              </div>
+
+              {/* Instant Transfer Box - Revolut Chat Style */}
+              <div className={styles.quickTransferCard}>
+                <div className={styles.quickTransferHeader}>
+                  <div>
+                    <span className={styles.quickTransferTitle}>Quick Transfer & Chat</span>
+                    <div className={styles.quickTransferSubtitle}>Send money instantly like a chat message</div>
+                  </div>
+                </div>
+
+                {/* Revolut Contacts Chat List: 2-letter Avatar on left, Name/Tag in middle, Digits on right */}
+                <div className={styles.contactsChatList}>
+                  {REVOLUT_CONTACTS.map((c) => {
+                    const isSelected = recipientTag.toLowerCase() === c.tag.toLowerCase();
+                    return (
+                      <button
+                        key={c.tag}
+                        type="button"
+                        className={`${styles.contactChatItem} ${isSelected ? styles.contactChatItemActive : ""}`}
+                        onClick={() => setRecipientTag(c.tag)}
+                      >
+                        <div className={styles.contactLeft}>
+                          <div className={styles.contactAvatar} style={{ background: c.gradient }}>
+                            {c.initials}
+                          </div>
+                          <div className={styles.contactDetails}>
+                            <span className={styles.contactName}>{c.name}</span>
+                            <span className={styles.contactTag}>@{c.tag}</span>
+                          </div>
+                        </div>
+                        <div className={styles.contactDigits}>
+                          <span>{c.digits}</span>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                            <line x1="7" y1="17" x2="17" y2="7" />
+                            <polyline points="7 7 17 7 17 17" />
+                          </svg>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+
+
+              </div>
+            </section>
+
+
           </div>
-        </section>
+        )}
       </main>
+
+      {/* Floating Bottom Menu */}
+      <nav className={styles.floatingNav}>
+        <button
+          className={`${styles.navItem} ${activeTab === "home" ? styles.navItemActive : ""}`}
+          onClick={() => setActiveTab("home")}
+          type="button"
+        >
+          <svg
+            className={styles.navIcon}
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg>
+          <span>Home</span>
+        </button>
+
+        <button
+          className={`${styles.navItem} ${activeTab === "invest" ? styles.navItemActive : ""}`}
+          onClick={() => setActiveTab("invest")}
+          type="button"
+        >
+          <svg
+            className={styles.navIcon}
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+            <polyline points="16 7 22 7 22 13" />
+          </svg>
+          <span>Invest</span>
+        </button>
+
+        <button
+          className={`${styles.navItem} ${activeTab === "payments" ? styles.navItemActive : ""}`}
+          onClick={() => setActiveTab("payments")}
+          type="button"
+        >
+          <svg
+            className={styles.navIcon}
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <rect width="20" height="14" x="2" y="5" rx="2" />
+            <line x1="2" x2="22" y1="10" y2="10" />
+          </svg>
+          <span>Payments</span>
+        </button>
+      </nav>
     </div>
   );
 }
+
