@@ -43,6 +43,7 @@ export interface LedgerEntryEntity {
 }
 
 export interface IdempotencyRecordEntity {
+  user_id: string;
   key: string;
   request_hash: string;
   response_code: number;
@@ -51,6 +52,18 @@ export interface IdempotencyRecordEntity {
 }
 
 export function initDatabase() {
+  // Migrate idempotency_records if existing table lacks user_id column
+  const tableInfo = db.prepare("PRAGMA table_info(idempotency_records)").all() as Array<{ name: string }>;
+  if (tableInfo.length > 0 && !tableInfo.some((col) => col.name === "user_id")) {
+    db.exec("DROP TABLE idempotency_records;");
+  }
+
+  // Migrate ledger_entries if it contains legacy UNIQUE constraint on idempotency_key
+  const ledgerSql = (db.prepare("SELECT sql FROM sqlite_master WHERE type='table' AND name='ledger_entries'").get() as { sql?: string } | undefined)?.sql;
+  if (ledgerSql && ledgerSql.includes("idempotency_key TEXT UNIQUE")) {
+    db.exec("DROP TABLE ledger_entries;");
+  }
+
   db.exec(`
     -- Users table with PRIMARY KEY constraint on internal UUID
     CREATE TABLE IF NOT EXISTS users (
@@ -71,7 +84,7 @@ export function initDatabase() {
     -- Immutable, auditable ledger records
     CREATE TABLE IF NOT EXISTS ledger_entries (
       id TEXT PRIMARY KEY NOT NULL,
-      idempotency_key TEXT UNIQUE,
+      idempotency_key TEXT,
       sender_user_id TEXT NOT NULL,
       recipient_user_id TEXT NOT NULL,
       amount_cents INTEGER NOT NULL,
@@ -86,17 +99,60 @@ export function initDatabase() {
     CREATE INDEX IF NOT EXISTS idx_ledger_sender ON ledger_entries(sender_user_id);
     CREATE INDEX IF NOT EXISTS idx_ledger_recipient ON ledger_entries(recipient_user_id);
 
-    -- Idempotency tracking table
+    -- Idempotency tracking table (scoped to user_id)
     CREATE TABLE IF NOT EXISTS idempotency_records (
-      key TEXT PRIMARY KEY NOT NULL,
+      user_id TEXT NOT NULL,
+      key TEXT NOT NULL,
       request_hash TEXT NOT NULL,
       response_code INTEGER NOT NULL,
       response_body TEXT NOT NULL,
-      created_at TEXT NOT NULL
+      created_at TEXT NOT NULL,
+      PRIMARY KEY (user_id, key)
     );
+
+    -- Unique index on idempotency_records(user_id, key) to guarantee DB level uniqueness under high concurrency
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_idempotency_user_key ON idempotency_records(user_id, key);
+
+    -- Index for fast range queries and TTL cleanup policies
+    CREATE INDEX IF NOT EXISTS idx_idempotency_created_at ON idempotency_records(created_at);
   `);
 
+  // Purge idempotency records older than 2 years on startup & scheduled maintenance
+  purgeExpiredIdempotencyRecords(2);
+  scheduleIdempotencyCleanup(2);
+
   seedInitialData();
+}
+
+/**
+ * Purges idempotency records older than the specified retention period (default: 2 years).
+ * Resolves Infinite Data Retention issue (TTL/Expiration policy).
+ */
+export function purgeExpiredIdempotencyRecords(retentionYears: number = 2): number {
+  const cutoffDate = new Date();
+  cutoffDate.setFullYear(cutoffDate.getFullYear() - retentionYears);
+  const cutoffIso = cutoffDate.toISOString();
+
+  const result = db.prepare("DELETE FROM idempotency_records WHERE created_at < ?").run(cutoffIso);
+  if (result.changes > 0) {
+    console.log(`[Database Maintenance] Purged ${result.changes} expired idempotency record(s) older than ${retentionYears} year(s).`);
+  }
+  return result.changes;
+}
+
+let cleanupTimer: NodeJS.Timeout | null = null;
+
+function scheduleIdempotencyCleanup(retentionYears: number = 2) {
+  if (cleanupTimer) return;
+  // Run cleanup once every 24 hours
+  cleanupTimer = setInterval(() => {
+    try {
+      purgeExpiredIdempotencyRecords(retentionYears);
+    } catch (err) {
+      console.error("[Database Maintenance] Error during periodic idempotency cleanup:", err);
+    }
+  }, 24 * 60 * 60 * 1000);
+  cleanupTimer.unref(); // Do not block process exit
 }
 
 function seedInitialData() {

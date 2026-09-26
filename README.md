@@ -86,7 +86,18 @@ fintech/
 │   ├── src/
 │   │   └── app/       # App router pages & components
 │   └── package.json
-├── package.json       # Workspace root configuration
-└── README.md
 ```
+
+---
+
+## 🏛 Architecture & Idempotency Policies
+
+### 1. Data Retention & TTL Policy
+- **Idempotency Records**: Records in `idempotency_records` are configured with a **2-year retention policy (TTL)**.
+- **Maintenance Routines**: Expired records (`created_at < 2 years ago`) are automatically purged on database initialization and via background periodic cleanup (every 24h). An index on `idempotency_records(created_at)` ensures efficient range queries and zero impact on transaction latency.
+
+### 2. Concurrency & Horizontal Scaling
+- **Single-Node Execution**: Atomic transfers currently enforce double-spending prevention using SQLite `BEGIN IMMEDIATE` file locks.
+- **Horizontal Scaling Recommendation**: When deploying across multiple container instances or serverless nodes, replace process/file locks with a distributed lock manager (e.g., **Redis with Redlock algorithm** or **PostgreSQL `SELECT ... FOR UPDATE`** row-level locking).
+
 
