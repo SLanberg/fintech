@@ -207,7 +207,432 @@
     {
       "id": "holiday",
       "name": "Summer holiday",
+      "targetAmount": 1200,
       "monthlyReservation": 120
+    }
+  ],
+  "merchants": [
+    {
+      "id": "clothes-online",
+      "name": "Norra Wear Online",
+      "mcc": "5651",
+      "category": "clothing",
+      "cardNotPresent": true
+    },
+    {
+      "id": "electronics-online",
+      "name": "Voltara Electronics",
+      "mcc": "5732",
+      "category": "electronics",
+      "cardNotPresent": true
+    },
+    {
+      "id": "mobile-game",
+      "name": "Pocket Quest Gems",
+      "mcc": "5816",
+      "category": "digital_goods",
+      "cardNotPresent": true
+    },
+    {
+      "id": "casino-online",
+      "name": "Demo Online Casino",
+      "mcc": "7801",
+      "category": "gambling",
+      "cardNotPresent": true
+    },
+    {
+      "id": "groceries-online",
+      "name": "Rimi Online Groceries",
+      "mcc": "5411",
+      "category": "groceries",
+      "cardNotPresent": true
+    },
+    {
+      "id": "restaurant",
+      "name": "Pastaria Restaurant",
+      "mcc": "5812",
+      "category": "restaurants",
+      "cardNotPresent": true
+    },
+    {
+      "id": "cinema",
+      "name": "CineAstra Tickets",
+      "mcc": "7832",
+      "category": "entertainment",
+      "cardNotPresent": true
+    },
+    {
+      "id": "utility",
+      "name": "City Energy",
+      "mcc": "4900",
+      "category": "utilities",
+      "cardNotPresent": true
+    },
+    {
+      "id": "transport",
+      "name": "City Transit",
+      "mcc": "4111",
+      "category": "transport",
+      "cardNotPresent": true
+    },
+    {
+      "id": "pharmacy",
+      "name": "Salvia Pharmacy",
+      "mcc": "5912",
+      "category": "pharmacy",
+      "cardNotPresent": true
+    },
+    {
+      "id": "housing",
+      "name": "Paper Street Rentals",
+      "mcc": "6513",
+      "category": "housing",
+      "cardNotPresent": true
+    },
+    {
+      "id": "insurance",
+      "name": "Home Insurance",
+      "mcc": "6300",
+      "category": "insurance",
+      "cardNotPresent": true
+    },
+    {
+      "id": "dentist",
+      "name": "City Dental",
+      "mcc": "8021",
+      "category": "health",
+      "cardNotPresent": true
+    },
+    {
+      "id": "travel",
+      "name": "Stayvia Travel",
+      "mcc": "4722",
+      "category": "travel",
+      "cardNotPresent": true
+    },
+    {
+      "id": "home",
+      "name": "Nestwise Home",
+      "mcc": "5200",
+      "category": "home",
+      "cardNotPresent": true
+    },
+    {
+      "id": "services",
+      "name": "Web Services",
+      "mcc": "7372",
+      "category": "services",
+      "cardNotPresent": true
+    },
+    {
+      "id": "books",
+      "name": "Leafline Books",
+      "mcc": "5942",
+      "category": "other",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-netflix",
+      "name": "Netflix",
+      "mcc": "4899",
+      "category": "entertainment",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-public-transport-essentials",
+      "name": "Public transport & essentials",
+      "mcc": "4111",
+      "category": "transport",
+      "cardNotPresent": false
+    },
+    {
+      "id": "history-adobe-photography",
+      "name": "Adobe Photography",
+      "mcc": "5734",
+      "category": "digital_goods",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-lunch-coffee",
+      "name": "Lunch & coffee",
+      "mcc": "5812",
+      "category": "restaurants",
+      "cardNotPresent": false
+    },
+    {
+      "id": "history-gym",
+      "name": "Gym",
+      "mcc": "7997",
+      "category": "entertainment",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-rimi-groceries",
+      "name": "Rimi groceries",
+      "mcc": "5411",
+      "category": "groceries",
+      "cardNotPresent": false
+    },
+    {
+      "id": "history-phone",
+      "name": "Phone",
+      "mcc": "4814",
+      "category": "utilities",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-icloud-storage",
+      "name": "iCloud storage",
+      "mcc": "5817",
+      "category": "digital_goods",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-electricity",
+      "name": "Electricity",
+      "mcc": "4900",
+      "category": "utilities",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-spotify",
+      "name": "Spotify",
+      "mcc": "4899",
+      "category": "entertainment",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-annual-home-insurance",
+      "name": "Annual home insurance",
+      "mcc": "6300",
+      "category": "insurance",
+      "cardNotPresent": false
+    },
+    {
+      "id": "history-patreon",
+      "name": "Patreon",
+      "mcc": "5817",
+      "category": "digital_goods",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-internet",
+      "name": "Internet",
+      "mcc": "4816",
+      "category": "utilities",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-youtube-premium",
+      "name": "YouTube Premium",
+      "mcc": "4899",
+      "category": "entertainment",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-digital-newspaper",
+      "name": "Digital newspaper",
+      "mcc": "5815",
+      "category": "digital_goods",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-prime-video",
+      "name": "Prime Video",
+      "mcc": "4899",
+      "category": "entertainment",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-language-learning",
+      "name": "Language learning",
+      "mcc": "5817",
+      "category": "digital_goods",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-disney-",
+      "name": "Disney+",
+      "mcc": "4899",
+      "category": "entertainment",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-dropbox",
+      "name": "Dropbox",
+      "mcc": "5734",
+      "category": "digital_goods",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-notion",
+      "name": "Notion",
+      "mcc": "5734",
+      "category": "digital_goods",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-todoist",
+      "name": "Todoist",
+      "mcc": "5734",
+      "category": "digital_goods",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-headspace",
+      "name": "Headspace",
+      "mcc": "5817",
+      "category": "digital_goods",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-strava",
+      "name": "Strava",
+      "mcc": "5817",
+      "category": "digital_goods",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-audible",
+      "name": "Audible",
+      "mcc": "5815",
+      "category": "digital_goods",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-kindle-unlimited",
+      "name": "Kindle Unlimited",
+      "mcc": "5815",
+      "category": "digital_goods",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-apple-tv-",
+      "name": "Apple TV+",
+      "mcc": "4899",
+      "category": "entertainment",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-rent",
+      "name": "Rent",
+      "mcc": "6513",
+      "category": "housing",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-gaming-subscription",
+      "name": "Gaming subscription",
+      "mcc": "5816",
+      "category": "digital_goods",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-vpn",
+      "name": "VPN",
+      "mcc": "5817",
+      "category": "digital_goods",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-password-manager",
+      "name": "Password manager",
+      "mcc": "5817",
+      "category": "digital_goods",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-google-one",
+      "name": "Google One",
+      "mcc": "5817",
+      "category": "digital_goods",
+      "cardNotPresent": true
+    },
+    {
+      "id": "history-dentist-appointment",
+      "name": "Dentist appointment",
+      "mcc": "8021",
+      "category": "health",
+      "cardNotPresent": false
+    },
+    {
+      "id": "history-summer-holiday-booking-deposit",
+      "name": "Summer holiday booking deposit",
+      "mcc": "4722",
+      "category": "travel",
+      "cardNotPresent": false
+    },
+    {
+      "id": "history-bicycle-repair",
+      "name": "Bicycle repair",
+      "mcc": "7699",
+      "category": "transport",
+      "cardNotPresent": false
+    },
+    {
+      "id": "history-replacement-fridge",
+      "name": "Replacement fridge",
+      "mcc": "5722",
+      "category": "electronics",
+      "cardNotPresent": false
+    },
+    {
+      "id": "history-train-tickets",
+      "name": "Train tickets",
+      "mcc": "4112",
+      "category": "transport",
+      "cardNotPresent": false
+    },
+    {
+      "id": "history-clothing-shoes",
+      "name": "Clothing & shoes",
+      "mcc": "5651",
+      "category": "clothing",
+      "cardNotPresent": false
+    }
+  ],
+  "purchaseScenarios": [
+    {
+      "id": "late-clothing",
+      "name": "Late-night clothing",
+      "merchantId": "clothes-online",
+      "amount": 67.5,
+      "localHour": 23.5
+    },
+    {
+      "id": "day-groceries",
+      "name": "Daytime groceries",
+      "merchantId": "groceries-online",
+      "amount": 35,
+      "localHour": 14
+    },
+    {
+      "id": "electronics",
+      "name": "Electronics",
+      "merchantId": "electronics-online",
+      "amount": 180,
+      "localHour": 14
+    },
+    {
+      "id": "game",
+      "name": "Mobile game purchase",
+      "merchantId": "mobile-game",
+      "amount": 49.99,
+      "localHour": 14
+    },
+    {
+      "id": "casino",
+      "name": "Online casino",
+      "merchantId": "casino-online",
+      "amount": 10,
+      "localHour": 14
+    },
+    {
+      "id": "restaurant",
+      "name": "Restaurant delivery",
+      "merchantId": "restaurant",
+      "amount": 28,
+      "localHour": 19
     }
   ],
   "transactions": [
@@ -218,7 +643,11 @@
       "date": "2026-06-04",
       "amount": 18.4,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5812",
+      "cardNotPresent": false,
+      "timestamp": "2026-06-04T12:00:00+03:00",
+      "merchantId": "history-lunch-coffee"
     },
     {
       "id": "2026-06-04-passwords",
@@ -227,7 +656,11 @@
       "date": "2026-06-04",
       "amount": 2.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5817",
+      "cardNotPresent": true,
+      "timestamp": "2026-06-04T12:00:00+03:00",
+      "merchantId": "history-password-manager"
     },
     {
       "id": "2026-06-03-everyday",
@@ -236,7 +669,11 @@
       "date": "2026-06-03",
       "amount": 11.2,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4111",
+      "cardNotPresent": false,
+      "timestamp": "2026-06-03T12:00:00+03:00",
+      "merchantId": "history-public-transport-essentials"
     },
     {
       "id": "2026-06-03-vpn",
@@ -245,7 +682,11 @@
       "date": "2026-06-03",
       "amount": 3.49,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5817",
+      "cardNotPresent": true,
+      "timestamp": "2026-06-03T12:00:00+03:00",
+      "merchantId": "history-vpn"
     },
     {
       "id": "2026-06-02-one-off",
@@ -254,7 +695,11 @@
       "category": "Shopping",
       "date": "2026-06-02",
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5651",
+      "cardNotPresent": false,
+      "timestamp": "2026-06-02T12:00:00+03:00",
+      "merchantId": "history-clothing-shoes"
     },
     {
       "id": "2026-06-02-everyday",
@@ -263,7 +708,11 @@
       "date": "2026-06-02",
       "amount": 24.9,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5411",
+      "cardNotPresent": false,
+      "timestamp": "2026-06-02T12:00:00+03:00",
+      "merchantId": "history-rimi-groceries"
     },
     {
       "id": "2026-06-02-gaming",
@@ -272,7 +721,11 @@
       "date": "2026-06-02",
       "amount": 8.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5816",
+      "cardNotPresent": true,
+      "timestamp": "2026-06-02T12:00:00+03:00",
+      "merchantId": "history-gaming-subscription"
     },
     {
       "id": "2026-06-01-everyday",
@@ -281,7 +734,11 @@
       "date": "2026-06-01",
       "amount": 16.5,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5812",
+      "cardNotPresent": false,
+      "timestamp": "2026-06-01T12:00:00+03:00",
+      "merchantId": "history-lunch-coffee"
     },
     {
       "id": "2026-06-01-rent",
@@ -290,7 +747,11 @@
       "date": "2026-06-01",
       "amount": 850,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "6513",
+      "cardNotPresent": true,
+      "timestamp": "2026-06-01T12:00:00+03:00",
+      "merchantId": "history-rent"
     },
     {
       "id": "2026-05-31-everyday",
@@ -299,7 +760,11 @@
       "date": "2026-05-31",
       "amount": 27.8,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4111",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-31T12:00:00+03:00",
+      "merchantId": "history-public-transport-essentials"
     },
     {
       "id": "2026-05-31-apple",
@@ -308,7 +773,11 @@
       "date": "2026-05-31",
       "amount": 6.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4899",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-31T12:00:00+03:00",
+      "merchantId": "history-apple-tv-"
     },
     {
       "id": "2026-05-30-everyday",
@@ -317,7 +786,11 @@
       "date": "2026-05-30",
       "amount": 18.4,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5411",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-30T12:00:00+03:00",
+      "merchantId": "history-rimi-groceries"
     },
     {
       "id": "2026-05-29-one-off",
@@ -326,7 +799,11 @@
       "category": "Travel",
       "date": "2026-05-29",
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4112",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-29T12:00:00+03:00",
+      "merchantId": "history-train-tickets"
     },
     {
       "id": "2026-05-29-everyday",
@@ -335,7 +812,11 @@
       "date": "2026-05-29",
       "amount": 11.2,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5812",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-29T12:00:00+03:00",
+      "merchantId": "history-lunch-coffee"
     },
     {
       "id": "2026-05-28-everyday",
@@ -344,7 +825,11 @@
       "date": "2026-05-28",
       "amount": 24.9,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4111",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-28T12:00:00+03:00",
+      "merchantId": "history-public-transport-essentials"
     },
     {
       "id": "2026-05-28-kindle",
@@ -353,7 +838,11 @@
       "date": "2026-05-28",
       "amount": 9.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5815",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-28T12:00:00+03:00",
+      "merchantId": "history-kindle-unlimited"
     },
     {
       "id": "2026-05-27-everyday",
@@ -362,7 +851,11 @@
       "date": "2026-05-27",
       "amount": 16.5,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5411",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-27T12:00:00+03:00",
+      "merchantId": "history-rimi-groceries"
     },
     {
       "id": "2026-05-27-audible",
@@ -371,7 +864,11 @@
       "date": "2026-05-27",
       "amount": 7.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5815",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-27T12:00:00+03:00",
+      "merchantId": "history-audible"
     },
     {
       "id": "2026-05-26-one-off",
@@ -380,7 +877,11 @@
       "category": "Home",
       "date": "2026-05-26",
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5722",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-26T12:00:00+03:00",
+      "merchantId": "history-replacement-fridge"
     },
     {
       "id": "2026-05-26-everyday",
@@ -389,7 +890,11 @@
       "date": "2026-05-26",
       "amount": 27.8,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5812",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-26T12:00:00+03:00",
+      "merchantId": "history-lunch-coffee"
     },
     {
       "id": "2026-05-26-strava",
@@ -398,7 +903,11 @@
       "date": "2026-05-26",
       "amount": 5,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5817",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-26T12:00:00+03:00",
+      "merchantId": "history-strava"
     },
     {
       "id": "2026-05-25-everyday",
@@ -407,7 +916,11 @@
       "date": "2026-05-25",
       "amount": 18.4,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4111",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-25T12:00:00+03:00",
+      "merchantId": "history-public-transport-essentials"
     },
     {
       "id": "2026-05-25-salary",
@@ -416,7 +929,11 @@
       "date": "2026-05-25",
       "amount": 2600,
       "isIncome": true,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": null,
+      "cardNotPresent": false,
+      "timestamp": "2026-05-25T12:00:00+03:00",
+      "merchantId": null
     },
     {
       "id": "2026-05-24-everyday",
@@ -425,7 +942,11 @@
       "date": "2026-05-24",
       "amount": 11.2,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5411",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-24T12:00:00+03:00",
+      "merchantId": "history-rimi-groceries"
     },
     {
       "id": "2026-05-24-headspace",
@@ -434,7 +955,11 @@
       "date": "2026-05-24",
       "amount": 5.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5817",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-24T12:00:00+03:00",
+      "merchantId": "history-headspace"
     },
     {
       "id": "2026-05-23-everyday",
@@ -443,7 +968,11 @@
       "date": "2026-05-23",
       "amount": 24.9,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5812",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-23T12:00:00+03:00",
+      "merchantId": "history-lunch-coffee"
     },
     {
       "id": "2026-05-23-todoist",
@@ -452,7 +981,11 @@
       "date": "2026-05-23",
       "amount": 4,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5734",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-23T12:00:00+03:00",
+      "merchantId": "history-todoist"
     },
     {
       "id": "2026-05-22-everyday",
@@ -461,7 +994,11 @@
       "date": "2026-05-22",
       "amount": 16.5,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4111",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-22T12:00:00+03:00",
+      "merchantId": "history-public-transport-essentials"
     },
     {
       "id": "2026-05-22-notion",
@@ -470,7 +1007,11 @@
       "date": "2026-05-22",
       "amount": 8,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5734",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-22T12:00:00+03:00",
+      "merchantId": "history-notion"
     },
     {
       "id": "2026-05-21-everyday",
@@ -479,7 +1020,11 @@
       "date": "2026-05-21",
       "amount": 27.8,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5411",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-21T12:00:00+03:00",
+      "merchantId": "history-rimi-groceries"
     },
     {
       "id": "2026-05-21-dropbox",
@@ -488,7 +1033,11 @@
       "date": "2026-05-21",
       "amount": 9.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5734",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-21T12:00:00+03:00",
+      "merchantId": "history-dropbox"
     },
     {
       "id": "2026-05-20-one-off",
@@ -497,7 +1046,11 @@
       "category": "Transport",
       "date": "2026-05-20",
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "7699",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-20T12:00:00+03:00",
+      "merchantId": "history-bicycle-repair"
     },
     {
       "id": "2026-05-20-everyday",
@@ -506,7 +1059,11 @@
       "date": "2026-05-20",
       "amount": 18.4,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5812",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-20T12:00:00+03:00",
+      "merchantId": "history-lunch-coffee"
     },
     {
       "id": "2026-05-20-disney",
@@ -515,7 +1072,11 @@
       "date": "2026-05-20",
       "amount": 8.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4899",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-20T12:00:00+03:00",
+      "merchantId": "history-disney-"
     },
     {
       "id": "2026-05-19-everyday",
@@ -524,7 +1085,11 @@
       "date": "2026-05-19",
       "amount": 11.2,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4111",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-19T12:00:00+03:00",
+      "merchantId": "history-public-transport-essentials"
     },
     {
       "id": "2026-05-19-language",
@@ -533,7 +1098,11 @@
       "date": "2026-05-19",
       "amount": 5.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5817",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-19T12:00:00+03:00",
+      "merchantId": "history-language-learning"
     },
     {
       "id": "2026-05-18-everyday",
@@ -542,7 +1111,11 @@
       "date": "2026-05-18",
       "amount": 24.9,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5411",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-18T12:00:00+03:00",
+      "merchantId": "history-rimi-groceries"
     },
     {
       "id": "2026-05-18-prime",
@@ -551,7 +1124,11 @@
       "date": "2026-05-18",
       "amount": 5.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4899",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-18T12:00:00+03:00",
+      "merchantId": "history-prime-video"
     },
     {
       "id": "2026-05-17-everyday",
@@ -560,7 +1137,11 @@
       "date": "2026-05-17",
       "amount": 16.5,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5812",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-17T12:00:00+03:00",
+      "merchantId": "history-lunch-coffee"
     },
     {
       "id": "2026-05-17-newspaper",
@@ -569,7 +1150,11 @@
       "date": "2026-05-17",
       "amount": 4.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5815",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-17T12:00:00+03:00",
+      "merchantId": "history-digital-newspaper"
     },
     {
       "id": "2026-05-16-one-off",
@@ -578,7 +1163,11 @@
       "category": "Travel",
       "date": "2026-05-16",
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4722",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-16T12:00:00+03:00",
+      "merchantId": "history-summer-holiday-booking-deposit"
     },
     {
       "id": "2026-05-16-everyday",
@@ -587,7 +1176,11 @@
       "date": "2026-05-16",
       "amount": 27.8,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4111",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-16T12:00:00+03:00",
+      "merchantId": "history-public-transport-essentials"
     },
     {
       "id": "2026-05-16-youtube",
@@ -596,7 +1189,11 @@
       "date": "2026-05-16",
       "amount": 12.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4899",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-16T12:00:00+03:00",
+      "merchantId": "history-youtube-premium"
     },
     {
       "id": "2026-05-15-everyday",
@@ -605,7 +1202,11 @@
       "date": "2026-05-15",
       "amount": 18.4,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5411",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-15T12:00:00+03:00",
+      "merchantId": "history-rimi-groceries"
     },
     {
       "id": "2026-05-15-internet",
@@ -614,7 +1215,11 @@
       "date": "2026-05-15",
       "amount": 29,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4816",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-15T12:00:00+03:00",
+      "merchantId": "history-internet"
     },
     {
       "id": "2026-05-14-everyday",
@@ -623,7 +1228,11 @@
       "date": "2026-05-14",
       "amount": 11.2,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5812",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-14T12:00:00+03:00",
+      "merchantId": "history-lunch-coffee"
     },
     {
       "id": "2026-05-14-patreon",
@@ -632,7 +1241,11 @@
       "date": "2026-05-14",
       "amount": 3,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5817",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-14T12:00:00+03:00",
+      "merchantId": "history-patreon"
     },
     {
       "id": "2026-05-13-everyday",
@@ -641,7 +1254,11 @@
       "date": "2026-05-13",
       "amount": 24.9,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4111",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-13T12:00:00+03:00",
+      "merchantId": "history-public-transport-essentials"
     },
     {
       "id": "2026-05-13-spotify",
@@ -650,7 +1267,11 @@
       "date": "2026-05-13",
       "amount": 10.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4899",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-13T12:00:00+03:00",
+      "merchantId": "history-spotify"
     },
     {
       "id": "2026-05-12-everyday",
@@ -659,7 +1280,11 @@
       "date": "2026-05-12",
       "amount": 16.5,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5411",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-12T12:00:00+03:00",
+      "merchantId": "history-rimi-groceries"
     },
     {
       "id": "2026-05-12-electricity",
@@ -668,7 +1293,11 @@
       "date": "2026-05-12",
       "amount": 78,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4900",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-12T12:00:00+03:00",
+      "merchantId": "history-electricity"
     },
     {
       "id": "2026-05-11-everyday",
@@ -677,7 +1306,11 @@
       "date": "2026-05-11",
       "amount": 27.8,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5812",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-11T12:00:00+03:00",
+      "merchantId": "history-lunch-coffee"
     },
     {
       "id": "2026-05-11-icloud",
@@ -686,7 +1319,11 @@
       "date": "2026-05-11",
       "amount": 2.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5817",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-11T12:00:00+03:00",
+      "merchantId": "history-icloud-storage"
     },
     {
       "id": "2026-05-10-everyday",
@@ -695,7 +1332,11 @@
       "date": "2026-05-10",
       "amount": 18.4,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4111",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-10T12:00:00+03:00",
+      "merchantId": "history-public-transport-essentials"
     },
     {
       "id": "2026-05-10-phone",
@@ -704,7 +1345,11 @@
       "date": "2026-05-10",
       "amount": 19,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4814",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-10T12:00:00+03:00",
+      "merchantId": "history-phone"
     },
     {
       "id": "2026-05-09-everyday",
@@ -713,7 +1358,11 @@
       "date": "2026-05-09",
       "amount": 11.2,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5411",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-09T12:00:00+03:00",
+      "merchantId": "history-rimi-groceries"
     },
     {
       "id": "2026-05-09-gym",
@@ -722,7 +1371,11 @@
       "date": "2026-05-09",
       "amount": 29,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "7997",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-09T12:00:00+03:00",
+      "merchantId": "history-gym"
     },
     {
       "id": "2026-05-08-everyday",
@@ -731,7 +1384,11 @@
       "date": "2026-05-08",
       "amount": 24.9,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5812",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-08T12:00:00+03:00",
+      "merchantId": "history-lunch-coffee"
     },
     {
       "id": "2026-05-08-adobe",
@@ -740,7 +1397,11 @@
       "date": "2026-05-08",
       "amount": 11.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5734",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-08T12:00:00+03:00",
+      "merchantId": "history-adobe-photography"
     },
     {
       "id": "2026-05-07-one-off",
@@ -749,7 +1410,11 @@
       "category": "Health",
       "date": "2026-05-07",
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "8021",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-07T12:00:00+03:00",
+      "merchantId": "history-dentist-appointment"
     },
     {
       "id": "2026-05-07-everyday",
@@ -758,7 +1423,11 @@
       "date": "2026-05-07",
       "amount": 16.5,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4111",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-07T12:00:00+03:00",
+      "merchantId": "history-public-transport-essentials"
     },
     {
       "id": "2026-05-07-netflix",
@@ -767,7 +1436,11 @@
       "date": "2026-05-07",
       "amount": 13.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4899",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-07T12:00:00+03:00",
+      "merchantId": "history-netflix"
     },
     {
       "id": "2026-05-06-everyday",
@@ -776,7 +1449,11 @@
       "date": "2026-05-06",
       "amount": 27.8,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5411",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-06T12:00:00+03:00",
+      "merchantId": "history-rimi-groceries"
     },
     {
       "id": "2026-05-06-google",
@@ -785,7 +1462,11 @@
       "date": "2026-05-06",
       "amount": 1.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5817",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-06T12:00:00+03:00",
+      "merchantId": "history-google-one"
     },
     {
       "id": "2026-05-05-everyday",
@@ -794,7 +1475,11 @@
       "date": "2026-05-05",
       "amount": 18.4,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5812",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-05T12:00:00+03:00",
+      "merchantId": "history-lunch-coffee"
     },
     {
       "id": "2026-05-04-everyday",
@@ -803,7 +1488,11 @@
       "date": "2026-05-04",
       "amount": 11.2,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4111",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-04T12:00:00+03:00",
+      "merchantId": "history-public-transport-essentials"
     },
     {
       "id": "2026-05-04-passwords",
@@ -812,7 +1501,11 @@
       "date": "2026-05-04",
       "amount": 2.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5817",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-04T12:00:00+03:00",
+      "merchantId": "history-password-manager"
     },
     {
       "id": "2026-05-03-everyday",
@@ -821,7 +1514,11 @@
       "date": "2026-05-03",
       "amount": 24.9,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5411",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-03T12:00:00+03:00",
+      "merchantId": "history-rimi-groceries"
     },
     {
       "id": "2026-05-03-vpn",
@@ -830,7 +1527,11 @@
       "date": "2026-05-03",
       "amount": 3.49,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5817",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-03T12:00:00+03:00",
+      "merchantId": "history-vpn"
     },
     {
       "id": "2026-05-02-everyday",
@@ -839,7 +1540,11 @@
       "date": "2026-05-02",
       "amount": 16.5,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5812",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-02T12:00:00+03:00",
+      "merchantId": "history-lunch-coffee"
     },
     {
       "id": "2026-05-02-gaming",
@@ -848,7 +1553,11 @@
       "date": "2026-05-02",
       "amount": 8.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5816",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-02T12:00:00+03:00",
+      "merchantId": "history-gaming-subscription"
     },
     {
       "id": "2026-05-01-everyday",
@@ -857,7 +1566,11 @@
       "date": "2026-05-01",
       "amount": 27.8,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4111",
+      "cardNotPresent": false,
+      "timestamp": "2026-05-01T12:00:00+03:00",
+      "merchantId": "history-public-transport-essentials"
     },
     {
       "id": "2026-05-01-rent",
@@ -866,7 +1579,11 @@
       "date": "2026-05-01",
       "amount": 850,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "6513",
+      "cardNotPresent": true,
+      "timestamp": "2026-05-01T12:00:00+03:00",
+      "merchantId": "history-rent"
     },
     {
       "id": "2026-04-30-everyday",
@@ -875,7 +1592,11 @@
       "date": "2026-04-30",
       "amount": 18.4,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5411",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-30T12:00:00+03:00",
+      "merchantId": "history-rimi-groceries"
     },
     {
       "id": "2026-04-30-apple",
@@ -884,7 +1605,11 @@
       "date": "2026-04-30",
       "amount": 6.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4899",
+      "cardNotPresent": true,
+      "timestamp": "2026-04-30T12:00:00+03:00",
+      "merchantId": "history-apple-tv-"
     },
     {
       "id": "2026-04-29-everyday",
@@ -893,7 +1618,11 @@
       "date": "2026-04-29",
       "amount": 11.2,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5812",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-29T12:00:00+03:00",
+      "merchantId": "history-lunch-coffee"
     },
     {
       "id": "2026-04-28-everyday",
@@ -902,7 +1631,11 @@
       "date": "2026-04-28",
       "amount": 24.9,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4111",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-28T12:00:00+03:00",
+      "merchantId": "history-public-transport-essentials"
     },
     {
       "id": "2026-04-28-kindle",
@@ -911,7 +1644,11 @@
       "date": "2026-04-28",
       "amount": 9.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5815",
+      "cardNotPresent": true,
+      "timestamp": "2026-04-28T12:00:00+03:00",
+      "merchantId": "history-kindle-unlimited"
     },
     {
       "id": "2026-04-27-everyday",
@@ -920,7 +1657,11 @@
       "date": "2026-04-27",
       "amount": 16.5,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5411",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-27T12:00:00+03:00",
+      "merchantId": "history-rimi-groceries"
     },
     {
       "id": "2026-04-27-audible",
@@ -929,7 +1670,11 @@
       "date": "2026-04-27",
       "amount": 7.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5815",
+      "cardNotPresent": true,
+      "timestamp": "2026-04-27T12:00:00+03:00",
+      "merchantId": "history-audible"
     },
     {
       "id": "2026-04-26-everyday",
@@ -938,7 +1683,11 @@
       "date": "2026-04-26",
       "amount": 27.8,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5812",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-26T12:00:00+03:00",
+      "merchantId": "history-lunch-coffee"
     },
     {
       "id": "2026-04-26-strava",
@@ -947,7 +1696,11 @@
       "date": "2026-04-26",
       "amount": 5,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5817",
+      "cardNotPresent": true,
+      "timestamp": "2026-04-26T12:00:00+03:00",
+      "merchantId": "history-strava"
     },
     {
       "id": "2026-04-25-everyday",
@@ -956,7 +1709,11 @@
       "date": "2026-04-25",
       "amount": 18.4,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4111",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-25T12:00:00+03:00",
+      "merchantId": "history-public-transport-essentials"
     },
     {
       "id": "2026-04-25-salary",
@@ -965,7 +1722,11 @@
       "date": "2026-04-25",
       "amount": 2600,
       "isIncome": true,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": null,
+      "cardNotPresent": false,
+      "timestamp": "2026-04-25T12:00:00+03:00",
+      "merchantId": null
     },
     {
       "id": "2026-04-24-everyday",
@@ -974,7 +1735,11 @@
       "date": "2026-04-24",
       "amount": 11.2,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5411",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-24T12:00:00+03:00",
+      "merchantId": "history-rimi-groceries"
     },
     {
       "id": "2026-04-24-headspace",
@@ -983,7 +1748,11 @@
       "date": "2026-04-24",
       "amount": 5.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5817",
+      "cardNotPresent": true,
+      "timestamp": "2026-04-24T12:00:00+03:00",
+      "merchantId": "history-headspace"
     },
     {
       "id": "2026-04-23-everyday",
@@ -992,7 +1761,11 @@
       "date": "2026-04-23",
       "amount": 24.9,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5812",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-23T12:00:00+03:00",
+      "merchantId": "history-lunch-coffee"
     },
     {
       "id": "2026-04-23-todoist",
@@ -1001,7 +1774,11 @@
       "date": "2026-04-23",
       "amount": 4,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5734",
+      "cardNotPresent": true,
+      "timestamp": "2026-04-23T12:00:00+03:00",
+      "merchantId": "history-todoist"
     },
     {
       "id": "2026-04-22-everyday",
@@ -1010,7 +1787,11 @@
       "date": "2026-04-22",
       "amount": 16.5,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4111",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-22T12:00:00+03:00",
+      "merchantId": "history-public-transport-essentials"
     },
     {
       "id": "2026-04-22-notion",
@@ -1019,7 +1800,11 @@
       "date": "2026-04-22",
       "amount": 8,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5734",
+      "cardNotPresent": true,
+      "timestamp": "2026-04-22T12:00:00+03:00",
+      "merchantId": "history-notion"
     },
     {
       "id": "2026-04-21-everyday",
@@ -1028,7 +1813,11 @@
       "date": "2026-04-21",
       "amount": 27.8,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5411",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-21T12:00:00+03:00",
+      "merchantId": "history-rimi-groceries"
     },
     {
       "id": "2026-04-21-dropbox",
@@ -1037,7 +1826,11 @@
       "date": "2026-04-21",
       "amount": 9.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5734",
+      "cardNotPresent": true,
+      "timestamp": "2026-04-21T12:00:00+03:00",
+      "merchantId": "history-dropbox"
     },
     {
       "id": "2026-04-20-everyday",
@@ -1046,7 +1839,11 @@
       "date": "2026-04-20",
       "amount": 18.4,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5812",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-20T12:00:00+03:00",
+      "merchantId": "history-lunch-coffee"
     },
     {
       "id": "2026-04-20-disney",
@@ -1055,7 +1852,11 @@
       "date": "2026-04-20",
       "amount": 8.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4899",
+      "cardNotPresent": true,
+      "timestamp": "2026-04-20T12:00:00+03:00",
+      "merchantId": "history-disney-"
     },
     {
       "id": "2026-04-19-everyday",
@@ -1064,7 +1865,11 @@
       "date": "2026-04-19",
       "amount": 11.2,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4111",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-19T12:00:00+03:00",
+      "merchantId": "history-public-transport-essentials"
     },
     {
       "id": "2026-04-19-language",
@@ -1073,7 +1878,11 @@
       "date": "2026-04-19",
       "amount": 5.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5817",
+      "cardNotPresent": true,
+      "timestamp": "2026-04-19T12:00:00+03:00",
+      "merchantId": "history-language-learning"
     },
     {
       "id": "2026-04-18-everyday",
@@ -1082,7 +1891,11 @@
       "date": "2026-04-18",
       "amount": 24.9,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5411",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-18T12:00:00+03:00",
+      "merchantId": "history-rimi-groceries"
     },
     {
       "id": "2026-04-18-prime",
@@ -1091,7 +1904,11 @@
       "date": "2026-04-18",
       "amount": 5.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4899",
+      "cardNotPresent": true,
+      "timestamp": "2026-04-18T12:00:00+03:00",
+      "merchantId": "history-prime-video"
     },
     {
       "id": "2026-04-17-everyday",
@@ -1100,7 +1917,11 @@
       "date": "2026-04-17",
       "amount": 16.5,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5812",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-17T12:00:00+03:00",
+      "merchantId": "history-lunch-coffee"
     },
     {
       "id": "2026-04-17-newspaper",
@@ -1109,7 +1930,11 @@
       "date": "2026-04-17",
       "amount": 4.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5815",
+      "cardNotPresent": true,
+      "timestamp": "2026-04-17T12:00:00+03:00",
+      "merchantId": "history-digital-newspaper"
     },
     {
       "id": "2026-04-16-everyday",
@@ -1118,7 +1943,11 @@
       "date": "2026-04-16",
       "amount": 27.8,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4111",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-16T12:00:00+03:00",
+      "merchantId": "history-public-transport-essentials"
     },
     {
       "id": "2026-04-16-youtube",
@@ -1127,7 +1956,11 @@
       "date": "2026-04-16",
       "amount": 12.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4899",
+      "cardNotPresent": true,
+      "timestamp": "2026-04-16T12:00:00+03:00",
+      "merchantId": "history-youtube-premium"
     },
     {
       "id": "2026-04-15-everyday",
@@ -1136,7 +1969,11 @@
       "date": "2026-04-15",
       "amount": 18.4,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5411",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-15T12:00:00+03:00",
+      "merchantId": "history-rimi-groceries"
     },
     {
       "id": "2026-04-15-internet",
@@ -1145,7 +1982,11 @@
       "date": "2026-04-15",
       "amount": 29,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4816",
+      "cardNotPresent": true,
+      "timestamp": "2026-04-15T12:00:00+03:00",
+      "merchantId": "history-internet"
     },
     {
       "id": "2026-04-14-everyday",
@@ -1154,7 +1995,11 @@
       "date": "2026-04-14",
       "amount": 11.2,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5812",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-14T12:00:00+03:00",
+      "merchantId": "history-lunch-coffee"
     },
     {
       "id": "2026-04-14-patreon",
@@ -1163,7 +2008,11 @@
       "date": "2026-04-14",
       "amount": 3,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5817",
+      "cardNotPresent": true,
+      "timestamp": "2026-04-14T12:00:00+03:00",
+      "merchantId": "history-patreon"
     },
     {
       "id": "2026-04-13-one-off",
@@ -1172,7 +2021,11 @@
       "category": "Insurance",
       "date": "2026-04-13",
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "6300",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-13T12:00:00+03:00",
+      "merchantId": "history-annual-home-insurance"
     },
     {
       "id": "2026-04-13-everyday",
@@ -1181,7 +2034,11 @@
       "date": "2026-04-13",
       "amount": 24.9,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4111",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-13T12:00:00+03:00",
+      "merchantId": "history-public-transport-essentials"
     },
     {
       "id": "2026-04-13-spotify",
@@ -1190,7 +2047,11 @@
       "date": "2026-04-13",
       "amount": 10.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4899",
+      "cardNotPresent": true,
+      "timestamp": "2026-04-13T12:00:00+03:00",
+      "merchantId": "history-spotify"
     },
     {
       "id": "2026-04-12-everyday",
@@ -1199,7 +2060,11 @@
       "date": "2026-04-12",
       "amount": 16.5,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5411",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-12T12:00:00+03:00",
+      "merchantId": "history-rimi-groceries"
     },
     {
       "id": "2026-04-12-electricity",
@@ -1208,7 +2073,11 @@
       "date": "2026-04-12",
       "amount": 78,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4900",
+      "cardNotPresent": true,
+      "timestamp": "2026-04-12T12:00:00+03:00",
+      "merchantId": "history-electricity"
     },
     {
       "id": "2026-04-11-everyday",
@@ -1217,7 +2086,11 @@
       "date": "2026-04-11",
       "amount": 27.8,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5812",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-11T12:00:00+03:00",
+      "merchantId": "history-lunch-coffee"
     },
     {
       "id": "2026-04-11-icloud",
@@ -1226,7 +2099,11 @@
       "date": "2026-04-11",
       "amount": 2.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5817",
+      "cardNotPresent": true,
+      "timestamp": "2026-04-11T12:00:00+03:00",
+      "merchantId": "history-icloud-storage"
     },
     {
       "id": "2026-04-10-everyday",
@@ -1235,7 +2112,11 @@
       "date": "2026-04-10",
       "amount": 18.4,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4111",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-10T12:00:00+03:00",
+      "merchantId": "history-public-transport-essentials"
     },
     {
       "id": "2026-04-10-phone",
@@ -1244,7 +2125,11 @@
       "date": "2026-04-10",
       "amount": 19,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4814",
+      "cardNotPresent": true,
+      "timestamp": "2026-04-10T12:00:00+03:00",
+      "merchantId": "history-phone"
     },
     {
       "id": "2026-04-09-everyday",
@@ -1253,7 +2138,11 @@
       "date": "2026-04-09",
       "amount": 11.2,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5411",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-09T12:00:00+03:00",
+      "merchantId": "history-rimi-groceries"
     },
     {
       "id": "2026-04-09-gym",
@@ -1262,7 +2151,11 @@
       "date": "2026-04-09",
       "amount": 29,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "7997",
+      "cardNotPresent": true,
+      "timestamp": "2026-04-09T12:00:00+03:00",
+      "merchantId": "history-gym"
     },
     {
       "id": "2026-04-08-everyday",
@@ -1271,7 +2164,11 @@
       "date": "2026-04-08",
       "amount": 24.9,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5812",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-08T12:00:00+03:00",
+      "merchantId": "history-lunch-coffee"
     },
     {
       "id": "2026-04-08-adobe",
@@ -1280,7 +2177,11 @@
       "date": "2026-04-08",
       "amount": 11.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "5734",
+      "cardNotPresent": true,
+      "timestamp": "2026-04-08T12:00:00+03:00",
+      "merchantId": "history-adobe-photography"
     },
     {
       "id": "2026-04-07-everyday",
@@ -1289,7 +2190,11 @@
       "date": "2026-04-07",
       "amount": 16.5,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4111",
+      "cardNotPresent": false,
+      "timestamp": "2026-04-07T12:00:00+03:00",
+      "merchantId": "history-public-transport-essentials"
     },
     {
       "id": "2026-04-07-netflix",
@@ -1298,7 +2203,11 @@
       "date": "2026-04-07",
       "amount": 13.99,
       "isIncome": false,
-      "currency": "EUR"
+      "currency": "EUR",
+      "mcc": "4899",
+      "cardNotPresent": true,
+      "timestamp": "2026-04-07T12:00:00+03:00",
+      "merchantId": "history-netflix"
     }
   ]
 }

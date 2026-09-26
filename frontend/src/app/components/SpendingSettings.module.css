@@ -1,0 +1,17 @@
+.screen { display: flex; flex-direction: column; gap: 18px; color: #18181b; }
+.heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.heading h1 { font-size: 22px; letter-spacing: -.6px; }
+.panel { border: 1px solid #e4e4e7; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+.panel h2 { margin: 0; font-size: 16px; }
+.panel h3 { font-size: 14px; }
+.screen label { display: flex; flex-direction: column; gap: 7px; font-size: 12px; color: #52525b; }
+.screen input { min-width: 0; border: 1px solid #d4d4d8; border-radius: 9px; padding: 10px; color: #18181b; background: #fff; font: inherit; font-size: 14px; }
+.screen input:focus-visible, .screen button:focus-visible { outline: 2px solid #18181b; outline-offset: 3px; }
+.screen button { border: 1px solid #d4d4d8; border-radius: 9px; padding: 10px 12px; background: #fff; color: #18181b; cursor: pointer; font-size: 12px; }
+.note { font-size: 12px; color: #71717a; line-height: 1.6; margin: 0; }
+.goal { display: flex; flex-direction: column; gap: 12px; padding: 18px 0; border-top: 1px solid #e4e4e7; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.actions { display: flex; gap: 10px; }
+.screen .toggle { flex-direction: row; align-items: center; gap: 10px; }
+.toggle input { accent-color: #18181b; }
+@media (max-width: 420px) { .row { grid-template-columns: 1fr; } .panel { padding: 20px 16px; } }

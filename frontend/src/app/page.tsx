@@ -7,6 +7,11 @@ import Watchlist from "./components/Watchlist";
 import SafeToSpend from "./components/SafeToSpend";
 import { spendingScenario } from "../lib/mock-spending";
 import { calendarDate, dateKey } from "../lib/safe-to-spend";
+import SpendingSettings from "./components/SpendingSettings";
+import PurchaseSimulator from "./components/PurchaseSimulator";
+import { useSpendingState } from "../lib/use-spending-state";
+import { categoryForMcc, CATEGORY_LABELS } from "../lib/purchase-nudge";
+import type { SpendingSettings as SpendingPreferences } from "../lib/spending-settings";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
 
@@ -34,6 +39,7 @@ interface Transaction {
   amount: string;
   isIncome: boolean;
   icon?: string;
+  mcc?: string | null;
 }
 
 interface AccountState {
@@ -59,6 +65,8 @@ const DEMO_ACCOUNT: AccountState = {
 const DEMO_TRANSACTIONS: Transaction[] = spendingScenario.transactions.map(tx => ({ ...tx, amount: `${tx.isIncome ? "+" : "−"} €${tx.amount.toFixed(2)}` }));
 
 export default function Home() {
+  const { state: spendingState, setState: setSpendingState, ready: settingsReady, storageUnavailable } = useSpendingState();
+  const changeSpendingSettings = (settings: SpendingPreferences) => setSpendingState(current => ({ ...current, settings }));
   const [isDemo, setIsDemo] = useState(true);
   const [showBalance, setShowBalance] = useState(true);
   const [account, setAccount] = useState<AccountState | null>(DEMO_ACCOUNT);
@@ -67,7 +75,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
 
   // Tab navigation state
-  const [activeTab, setActiveTab] = useState<"home" | "invest" | "payments">("home");
+  const [activeTab, setActiveTab] = useState<"home" | "invest" | "payments" | "settings">("home");
 
   // Direct transfer state for Payments tab
   const [recipientTag, setRecipientTag] = useState("alexander");
@@ -117,7 +125,7 @@ export default function Home() {
         monthlyExpenses: current.stats.monthlyExpenses + (isIncome ? 0 : amount),
       },
     } : current);
-    setTransactions(current => [{ id: `demo-${Date.now()}`, name, category, date: spendingScenario.asOfDate, amount: `${isIncome ? "+" : "−"} €${amount.toFixed(2)}`, isIncome }, ...current]);
+    setTransactions(current => [{ id: `demo-${Date.now()}`, name, category, mcc: null, date: spendingScenario.asOfDate, amount: `${isIncome ? "+" : "−"} €${amount.toFixed(2)}`, isIncome }, ...current]);
   };
 
   const handleQuickAction = async (type: "deposit" | "transfer") => {
@@ -269,10 +277,15 @@ export default function Home() {
     avatarUrl: "/Tyler.jpg",
   };
 
-  const balance = account?.balance ?? 0;
+  const simulatedSpending = isDemo ? spendingState.purchases.reduce((sum, purchase) => sum + Math.round(purchase.amount * 100), 0) / 100 : 0;
+  const balance = Math.round(((account?.balance ?? 0) - simulatedSpending) * 100) / 100;
+  const displayTransactions: Transaction[] = isDemo ? [
+    ...[...spendingState.purchases].reverse().map(purchase => ({ id: purchase.id, name: purchase.merchantName, category: CATEGORY_LABELS[categoryForMcc(purchase.mcc)], mcc: purchase.mcc, date: purchase.localDate, amount: `− €${purchase.amount.toFixed(2)}`, isIncome: false })),
+    ...transactions,
+  ] : transactions;
   const currency = account?.currency || "EUR";
   const monthlyIncome = account?.stats.monthlyIncome ?? 0;
-  const monthlyExpenses = account?.stats.monthlyExpenses ?? 0;
+  const monthlyExpenses = (account?.stats.monthlyExpenses ?? 0) + simulatedSpending;
 
   return (
     <div className={styles.container}>
@@ -294,6 +307,7 @@ export default function Home() {
       </header>
 
       <main className={styles.main}>
+        {storageUnavailable && <p role="status" className={styles.storageNote}>Device storage is unavailable. Your settings and waiting list will last for this visit only.</p>}
         {activeTab === "home" && (
           <>
             <div className={styles.demoControls}>
@@ -302,7 +316,10 @@ export default function Home() {
                 {isDemo ? "Use live account" : "Use demo account"}
               </button>
             </div>
-            <SafeToSpend balance={balance} today={isDemo ? spendingScenario.asOfDate : dateKey(calendarDate(new Date()))} visible={showBalance} />
+            {settingsReady ? <>
+              <SafeToSpend balance={balance} today={isDemo ? spendingScenario.asOfDate : dateKey(calendarDate(new Date()))} visible={showBalance} settings={spendingState.settings} onSettingsChange={changeSpendingSettings} onOpenSettings={() => setActiveTab('settings')} />
+              {isDemo && <PurchaseSimulator state={spendingState} setState={setSpendingState} balance={balance} today={spendingScenario.asOfDate} visible={showBalance} />}
+            </> : <p className={styles.storageNote}>Loading your spending settings…</p>}
             {/* Balance Card */}
             <section className={styles.balanceCard}>
               <div className={styles.balanceHeader}>
@@ -406,10 +423,10 @@ export default function Home() {
               </div>
 
               <div className={styles.transactionList}>
-                {transactions.length === 0 ? (
+                {displayTransactions.length === 0 ? (
                   <div className={styles.emptyTransactions}>No recent transactions</div>
                 ) : (
-                  transactions.slice(0, 5).map((t) => (
+                  displayTransactions.slice(0, 5).map((t) => (
                     <div key={t.id} className={styles.transactionItem}>
                       <div className={styles.transactionLeft}>
                         <div className={styles.iconCircle}>
@@ -428,7 +445,7 @@ export default function Home() {
                         <div className={styles.transactionDetails}>
                           <span className={styles.transactionName}>{t.name}</span>
                           <span className={styles.transactionDate}>
-                            {t.date} • {t.category}
+                            {t.date} • {t.mcc ? CATEGORY_LABELS[categoryForMcc(t.mcc)] : t.category}
                           </span>
                         </div>
                       </div>
@@ -447,6 +464,7 @@ export default function Home() {
           </>
         )}
 
+        {activeTab === "settings" && settingsReady && <SpendingSettings settings={spendingState.settings} onChange={changeSpendingSettings} onBack={() => setActiveTab('home')} />}
         {activeTab === "invest" && (
           <section className={styles.section}>
             <div className={styles.balanceCard}>
@@ -716,6 +734,9 @@ export default function Home() {
             <line x1="2" x2="22" y1="10" y2="10" />
           </svg>
           <span>Payments</span>
+        </button>
+        <button className={`${styles.navItem} ${activeTab === 'settings' ? styles.navItemActive : ''}`} type="button" onClick={() => setActiveTab('settings')}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3" fill="currentColor"/><circle cx="15" cy="17" r="3" fill="currentColor"/></svg><span>Settings</span>
         </button>
       </nav>
     </div>

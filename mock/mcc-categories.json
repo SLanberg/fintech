@@ -1,0 +1,20 @@
+{
+  "categories": {
+    "clothing": "Clothing", "electronics": "Electronics", "digital_goods": "Digital goods", "gambling": "Gambling",
+    "restaurants": "Restaurants", "entertainment": "Entertainment", "groceries": "Groceries", "utilities": "Utilities",
+    "transport": "Transport", "pharmacy": "Pharmacy", "housing": "Housing", "insurance": "Insurance",
+    "health": "Health", "travel": "Travel", "home": "Home supplies", "services": "Services", "other": "Other"
+  },
+  "mccToCategory": {
+    "5651": "clothing", "5691": "clothing", "5732": "electronics", "5722": "electronics",
+    "5815": "digital_goods", "5816": "digital_goods", "5817": "digital_goods", "5818": "digital_goods", "5734": "digital_goods",
+    "7995": "gambling", "7801": "gambling", "7800": "gambling", "7802": "gambling",
+    "5812": "restaurants", "5813": "restaurants", "5814": "restaurants",
+    "7832": "entertainment", "7997": "entertainment", "7999": "entertainment", "4899": "entertainment",
+    "5411": "groceries", "5462": "groceries", "5499": "groceries",
+    "4900": "utilities", "4814": "utilities", "4816": "utilities",
+    "4111": "transport", "4112": "transport", "4121": "transport", "5541": "transport", "7699": "transport",
+    "5912": "pharmacy", "6513": "housing", "6300": "insurance", "8021": "health",
+    "4722": "travel", "7011": "travel", "5200": "home", "7372": "services", "5942": "other", "5999": "other"
+  }
+}

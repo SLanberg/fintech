@@ -1,5 +1,6 @@
 // Deterministic 60-day EUR fixture. Run: node mock/generate-spending.mjs
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
+const categoryMapping = JSON.parse(readFileSync(new URL('./mcc-categories.json', import.meta.url), 'utf8'));
 
 const asOfDate = '2026-06-05';
 const recurring = [
@@ -59,11 +60,49 @@ for (let offset = 59; offset >= 0; offset--) {
   }
 }
 const balance = 840;
+const merchants = [
+  ['clothes-online', 'Norra Wear Online', '5651'], ['electronics-online', 'Voltara Electronics', '5732'],
+  ['mobile-game', 'Pocket Quest Gems', '5816'], ['casino-online', 'Demo Online Casino', '7801'],
+  ['groceries-online', 'Rimi Online Groceries', '5411'], ['restaurant', 'Pastaria Restaurant', '5812'],
+  ['cinema', 'CineAstra Tickets', '7832'], ['utility', 'City Energy', '4900'],
+  ['transport', 'City Transit', '4111'], ['pharmacy', 'Salvia Pharmacy', '5912'],
+  ['housing', 'Paper Street Rentals', '6513'], ['insurance', 'Home Insurance', '6300'],
+  ['dentist', 'City Dental', '8021'], ['travel', 'Stayvia Travel', '4722'],
+  ['home', 'Nestwise Home', '5200'], ['services', 'Web Services', '7372'], ['books', 'Leafline Books', '5942'],
+].map(([id, name, mcc]) => ({ id, name, mcc, category: categoryMapping.mccToCategory[mcc], cardNotPresent: true }));
+const recurringMcc = {
+  rent: '6513', electricity: '4900', phone: '4814', internet: '4816', gym: '7997',
+  netflix: '4899', disney: '4899', prime: '4899', youtube: '4899', apple: '4899', spotify: '4899',
+  audible: '5815', kindle: '5815', newspaper: '5815', gaming: '5816',
+  adobe: '5734', notion: '5734', todoist: '5734', dropbox: '5734',
+};
+for (const tx of transactions) {
+  const scheduled = recurring.find(item => tx.id.endsWith(`-${item.id}`));
+  // Payroll is a bank transfer: it has the MCC field, but no merchant MCC.
+  tx.mcc = tx.isIncome ? null : scheduled ? (recurringMcc[scheduled.id] ?? '5817') :
+    ({ Insurance: '6300', Home: '5722', Health: '8021', Travel: tx.name === 'Train tickets' ? '4112' : '4722', Transport: '7699', Shopping: '5651' }[tx.category] ??
+      (tx.name.includes('groceries') ? '5411' : tx.name.includes('coffee') ? '5812' : '4111'));
+  tx.cardNotPresent = !!scheduled && !tx.isIncome;
+  tx.timestamp = `${tx.date}T12:00:00+03:00`;
+  tx.merchantId = tx.isIncome ? null : `history-${tx.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+  if (tx.merchantId && !merchants.some(merchant => merchant.id === tx.merchantId)) {
+    merchants.push({ id: tx.merchantId, name: tx.name, mcc: tx.mcc, category: categoryMapping.mccToCategory[tx.mcc], cardNotPresent: tx.cardNotPresent });
+  }
+}
 const net = transactions.reduce((sum, tx) => sum + (tx.isIncome ? tx.amount : -tx.amount), 0);
 writeFileSync(new URL('./safe-to-spend.json', import.meta.url), JSON.stringify({
   asOfDate, historyStartDate: new Date(anchor.getTime() - 59 * 86400000).toISOString().slice(0, 10),
   currency: 'EUR', balance, openingHistoryBalance: Math.round((balance - net) * 100) / 100,
   note: 'Demo: four days after rent, with a moderately tight budget. Today uses the opening balance.',
-  recurring, goals: [{ id: 'holiday', name: 'Summer holiday', monthlyReservation: 120 }],
+  recurring, goals: [{ id: 'holiday', name: 'Summer holiday', targetAmount: 1200, monthlyReservation: 120 }],
+  merchants,
+  purchaseScenarios: [
+    { id: 'late-clothing', name: 'Late-night clothing', merchantId: 'clothes-online', amount: 67.50, localHour: 23.5 },
+    { id: 'day-groceries', name: 'Daytime groceries', merchantId: 'groceries-online', amount: 35, localHour: 14 },
+    { id: 'electronics', name: 'Electronics', merchantId: 'electronics-online', amount: 180, localHour: 14 },
+    { id: 'game', name: 'Mobile game purchase', merchantId: 'mobile-game', amount: 49.99, localHour: 14 },
+    { id: 'casino', name: 'Online casino', merchantId: 'casino-online', amount: 10, localHour: 14 },
+    { id: 'restaurant', name: 'Restaurant delivery', merchantId: 'restaurant', amount: 28, localHour: 19 },
+  ],
   transactions: transactions.reverse(),
 }, null, 2) + '\n');

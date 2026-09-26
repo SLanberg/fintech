@@ -35,4 +35,6 @@
 .purchaseInput input { flex: 1; width: 100%; font-size: 14px; }
 .preview { font-size: 13px; line-height: 1.7; margin-top: 14px; }
 .error { color: #b91c1c; font-size: 12px; }
+.personalLimit { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: #52525b; font-size: 12px; }
+.personalLimit button { background: #fff; color: #18181b; border: 1px solid #d4d4d8; border-radius: 8px; padding: 7px 9px; cursor: pointer; font-size: 11px; }
 @media (max-width: 480px) { .card { padding: 24px 18px; } .badge { font-size: 10px; } }

@@ -1,23 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import { calculateSafeToSpend, forecastBalance, DEFAULT_SAFETY_BUFFER, ALLOWANCE_THRESHOLDS } from "../../lib/safe-to-spend";
+import { calculateSafeToSpend, forecastBalance, ALLOWANCE_THRESHOLDS } from "../../lib/safe-to-spend";
 import { spendingScenario } from "../../lib/mock-spending";
+import type { SpendingSettings } from "../../lib/spending-settings";
 import styles from "./SafeToSpend.module.css";
 
 const eur = (value: number) => new Intl.NumberFormat("en-IE", { style: "currency", currency: "EUR" }).format(value);
 const dateLabel = (date: string) => new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }).format(new Date(`${date}T00:00:00Z`));
 const stateFor = (allowance: number) => allowance < ALLOWANCE_THRESHOLDS.red ? "red" : allowance >= ALLOWANCE_THRESHOLDS.green ? "green" : "amber";
 
-export default function SafeToSpend({ balance, today, visible = true }: { balance: number; today: string; visible?: boolean }) {
-  const [bufferInput, setBufferInput] = useState(String(DEFAULT_SAFETY_BUFFER));
+export default function SafeToSpend({ balance, today, visible = true, settings, onSettingsChange, onOpenSettings }: { balance: number; today: string; visible?: boolean; settings: SpendingSettings; onSettingsChange: (settings: SpendingSettings) => void; onOpenSettings: () => void }) {
+  const [bufferInput, setBufferInput] = useState(String(settings.buffer));
   const [purchase, setPurchase] = useState("");
   const validBuffer = bufferInput.trim() !== "" && Number.isFinite(Number(bufferInput)) && Number(bufferInput) >= 0;
-  const buffer = validBuffer ? Number(bufferInput) : DEFAULT_SAFETY_BUFFER;
-  const result = calculateSafeToSpend(balance, spendingScenario.recurring, spendingScenario.goals, buffer, today);
+  const buffer = settings.buffer;
+  const result = calculateSafeToSpend(balance, spendingScenario.recurring, settings.goals, buffer, today);
   const forecast = forecastBalance(balance, spendingScenario.recurring, result.dailyAllowance, today);
   const validPurchase = purchase.trim() !== "" && Number.isFinite(Number(purchase)) && Number(purchase) >= 0;
-  const preview = validPurchase ? calculateSafeToSpend(balance - Number(purchase), spendingScenario.recurring, spendingScenario.goals, buffer, today) : null;
+  const preview = validPurchase ? calculateSafeToSpend(balance - Number(purchase), spendingScenario.recurring, settings.goals, buffer, today) : null;
   const state = stateFor(result.dailyAllowance);
   const min = Math.min(0, ...forecast.points.map(point => point.balance));
   const max = Math.max(1, ...forecast.points.map(point => point.balance));
@@ -34,6 +35,8 @@ export default function SafeToSpend({ balance, today, visible = true }: { balanc
       </div>
       <div className={styles.amount}>{visible ? eur(result.safeToSpend) : "••••••"}</div>
       <p className={styles.allowance}>{visible ? eur(result.dailyAllowance) : "••••"} per day <span>·</span> {result.daysUntilIncome === 0 ? "Payday is today" : `${result.daysUntilIncome} days until payday`}</p>
+      <div className={styles.personalLimit}><p>Your daily limit: {settings.dailyLimit === null ? 'Not set' : visible ? `${eur(settings.dailyLimit)}/day` : '••••'}</p><button type="button" onClick={onOpenSettings}>Edit spending settings</button></div>
+      {visible && settings.dailyLimit !== null && settings.dailyLimit > result.dailyAllowance && <p className={styles.error} role="status">Your daily limit is not affordable before payday. The calculated allowance is {eur(result.dailyAllowance)}/day.</p>}
       <p className={styles.caption}>After upcoming bills, savings and your safety buffer. Next income: {dateLabel(result.nextIncomeDate)}.</p>
       {result.daysUntilIncome === 0 && <p className={styles.caption}>Payday allowance uses one day. Today’s pending income is included in the forecast.</p>}
       {visible && <>
@@ -46,8 +49,8 @@ export default function SafeToSpend({ balance, today, visible = true }: { balanc
           </dl>
           <p className={styles.caption}>Only bills due before payday are deducted. Savings and buffer stay reserved in your account.</p>
         </details>
-        <label className={styles.buffer}>Safety buffer <span>EUR <input type="number" min="0" step="0.01" value={bufferInput} onChange={event => setBufferInput(event.target.value)} aria-invalid={!validBuffer} /></span></label>
-        {!validBuffer && <p className={styles.error} role="alert">Enter a non-negative buffer. Using the default €100 until corrected.</p>}
+        <label className={styles.buffer}>Safety buffer <span>EUR <input type="number" min="0" step="0.01" value={bufferInput} onChange={event => { const value = event.target.value; setBufferInput(value); if (value.trim() && Number.isFinite(Number(value)) && Number(value) >= 0) onSettingsChange({ ...settings, buffer: Number(value) }); }} aria-invalid={!validBuffer} /></span></label>
+        {!validBuffer && <p className={styles.error} role="alert">Enter a non-negative buffer. Using the last saved buffer until corrected.</p>}
         <div className={styles.forecast}>
           <h2>Next 30 days</h2>
           <p className={styles.caption}>Estimated balance after bills and {eur(Math.max(0, result.dailyAllowance))}/day spending. Savings and buffer remain in the balance.</p>

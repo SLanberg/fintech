@@ -10,6 +10,7 @@ export interface SavingsGoal {
   id: string;
   name: string;
   monthlyReservation: number;
+  targetAmount?: number;
 }
 
 export interface Deduction {
