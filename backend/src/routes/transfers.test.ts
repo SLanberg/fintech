@@ -146,4 +146,73 @@ describe("POST /api/transfers", () => {
     expect(res.status).toBe(201);
     expect(res.body).toHaveProperty("recipient_tag", "@jack");
   });
+
+  it("scopes idempotency keys per sender user (different senders can reuse key)", async () => {
+    const sharedKey = `shared-user-key-${Date.now()}`;
+
+    // First transfer from tyler (default sender)
+    const resTyler = await request(app)
+      .post("/api/transfers")
+      .set("Idempotency-Key", sharedKey)
+      .send({ to_user_id: "marla", amount: 1, currency: "EUR" });
+
+    // Second transfer from marla with SAME key to edward
+    const resMarla = await request(app)
+      .post("/api/transfers")
+      .set("Idempotency-Key", sharedKey)
+      .send({ sender_tag: "marla", to_user_id: "edward", amount: 1, currency: "EUR" });
+
+    expect(resTyler.status).toBe(201);
+    expect(resMarla.status).toBe(201);
+    expect(resTyler.body.transaction_id).not.toBe(resMarla.body.transaction_id);
+  });
+
+  it("purges idempotency records older than 2 years during maintenance cleanup", async () => {
+    const { default: db, purgeExpiredIdempotencyRecords } = await import("../db/database");
+    
+    // Insert an old idempotency record created 3 years ago
+    const threeYearsAgo = new Date();
+    threeYearsAgo.setFullYear(threeYearsAgo.getFullYear() - 3);
+    const oldKey = `expired-key-${Date.now()}`;
+
+    db.prepare(`
+      INSERT INTO idempotency_records (user_id, key, request_hash, response_code, response_body, created_at)
+      VALUES ('test-user-id', ?, 'test-hash', 201, '{"status":"ok"}', ?)
+    `).run(oldKey, threeYearsAgo.toISOString());
+
+    // Verify record exists before purge
+    const beforeCount = db.prepare("SELECT COUNT(*) as count FROM idempotency_records WHERE key = ?").get(oldKey) as { count: number };
+    expect(beforeCount.count).toBe(1);
+
+    // Execute 2-year purge
+    const purged = purgeExpiredIdempotencyRecords(2);
+    expect(purged).toBeGreaterThanOrEqual(1);
+
+    // Verify expired record is deleted
+    const afterCount = db.prepare("SELECT COUNT(*) as count FROM idempotency_records WHERE key = ?").get(oldKey) as { count: number };
+    expect(afterCount.count).toBe(0);
+  });
+
+  it("handles concurrent requests with same Idempotency-Key gracefully without double-spending or 500 errors", async () => {
+    const key = `race-condition-key-${Date.now()}`;
+    const payload = { to_user_id: "marla", amount: 1, currency: "EUR" };
+
+    // Fire 5 concurrent requests with identical key and payload
+    const results = await Promise.all([
+      request(app).post("/api/transfers").set("Idempotency-Key", key).send(payload),
+      request(app).post("/api/transfers").set("Idempotency-Key", key).send(payload),
+      request(app).post("/api/transfers").set("Idempotency-Key", key).send(payload),
+      request(app).post("/api/transfers").set("Idempotency-Key", key).send(payload),
+      request(app).post("/api/transfers").set("Idempotency-Key", key).send(payload),
+    ]);
+
+    // All requests should succeed with 201 Created and return identical transaction_id
+    const transactionIds = new Set<string>();
+    for (const res of results) {
+      expect(res.status).toBe(201);
+      expect(res.body).toHaveProperty("transaction_id");
+      transactionIds.add(res.body.transaction_id);
+    }
+    expect(transactionIds.size).toBe(1);
+  });
 });

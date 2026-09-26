@@ -80,10 +80,15 @@ export class TransferService {
     // Compute request payload hash (using internal immutable IDs and payload parameters)
     const payloadHash = this.computePayloadHash(sender.id, recipient.tag, amount_cents, description);
 
-    // 3. Idempotency Check
+    // 3. Idempotency Check (Scoped to sender user_id with 2-Year Retention TTL enforcement)
+    const retentionYears = 2;
+    const cutoffDate = new Date();
+    cutoffDate.setFullYear(cutoffDate.getFullYear() - retentionYears);
+    const cutoffIso = cutoffDate.toISOString();
+
     const existingRecord = db
-      .prepare("SELECT * FROM idempotency_records WHERE key = ?")
-      .get(idempotency_key) as IdempotencyRecordEntity | undefined;
+      .prepare("SELECT * FROM idempotency_records WHERE user_id = ? AND key = ? AND created_at >= ?")
+      .get(sender.id, idempotency_key, cutoffIso) as IdempotencyRecordEntity | undefined;
 
     if (existingRecord) {
       if (existingRecord.request_hash !== payloadHash) {
@@ -104,7 +109,11 @@ export class TransferService {
     }
 
     // 4. Atomic Financial Transaction Execution
-    // Uses SQLite BEGIN IMMEDIATE to lock DB, prevent double spending and race conditions
+    // SINGLE-NODE vs MULTI-NODE LOCKING ARCHITECTURE:
+    // Single-node: Uses SQLite `BEGIN IMMEDIATE` file transaction locking to prevent double spending and race conditions.
+    // Multi-node / Horizontal scaling recommendation: SQLite file locks operate strictly on a single node/process filesystem.
+    // For multi-backend deployments or serverless clusters, replace/wrap this block with a distributed locking provider
+    // (e.g. Redis with Redlock algorithm or PostgreSQL `SELECT ... FOR UPDATE` row locks).
     const transferTransaction = db.transaction(() => {
       const now = new Date().toISOString();
       const transactionId = crypto.randomUUID();
@@ -164,13 +173,13 @@ export class TransferService {
         status: "COMPLETED",
       };
 
-      // Store idempotency record atomically within same transaction
+      // Store idempotency record atomically within same transaction (scoped to sender user_id)
       const insertIdempotency = db.prepare(`
-        INSERT INTO idempotency_records (key, request_hash, response_code, response_body, created_at)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO idempotency_records (user_id, key, request_hash, response_code, response_body, created_at)
+        VALUES (?, ?, ?, ?, ?, ?)
       `);
 
-      insertIdempotency.run(idempotency_key, payloadHash, 201, JSON.stringify(responseBody), now);
+      insertIdempotency.run(sender.id, idempotency_key, payloadHash, 201, JSON.stringify(responseBody), now);
 
       return responseBody;
     });
@@ -185,6 +194,33 @@ export class TransferService {
       if (err.message === "RECIPIENT_UPDATE_FAILED") {
         return { statusCode: 400, body: { error: "Failed to update recipient balance." } };
       }
+
+      // Handle concurrent race conditions causing SQLITE_CONSTRAINT errors on idempotency_records(user_id, key)
+      if (
+        (err.code && typeof err.code === "string" && err.code.startsWith("SQLITE_CONSTRAINT")) ||
+        (err.message && typeof err.message === "string" && err.message.includes("UNIQUE constraint failed"))
+      ) {
+        const racedRecord = db
+          .prepare("SELECT * FROM idempotency_records WHERE user_id = ? AND key = ?")
+          .get(sender.id, idempotency_key) as IdempotencyRecordEntity | undefined;
+
+        if (racedRecord) {
+          if (racedRecord.request_hash !== payloadHash) {
+            return {
+              statusCode: 409,
+              body: {
+                error: "Conflict: Idempotency key has already been used with a different request payload.",
+                idempotency_key,
+              },
+            };
+          }
+          return {
+            statusCode: racedRecord.response_code,
+            body: JSON.parse(racedRecord.response_body),
+          };
+        }
+      }
+
       console.error("Transfer transaction error:", err);
       return { statusCode: 500, body: { error: "Financial transaction failed during execution." } };
     }
