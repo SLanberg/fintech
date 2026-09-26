@@ -123,8 +123,9 @@ export default function Home() {
   if (loading && !account) {
     return (
       <div className={styles.container}>
-        <div style={{ padding: "40px", textAlign: "center", color: "#888" }}>
-          Loading account data from backend...
+        <div className={styles.loadingContainer}>
+          <div className={styles.spinner} />
+          <span>Loading account data...</span>
         </div>
       </div>
     );
