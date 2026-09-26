@@ -1,54 +1,55 @@
 # Lockin & Build (Monorepo Architecture)
 
-Приложение разделено на **Backend** (Express.js + TypeScript) и **Frontend** (Next.js 16 + React 19).
+The application is split into **Backend** (Express.js + TypeScript) and **Frontend** (Next.js 16 + React 19).
 
-## Структура проекта
+## Project Structure
 
 ```
 /
-├── backend/                # Express.js REST API сервер (порт 5001)
+├── backend/                # Express.js REST API server (port 5001)
 │   ├── src/
-│   │   └── server.ts       # Эндпоинты /api/account, /api/transactions
+│   │   └── server.ts       # /api/account, /api/transactions endpoints
 │   ├── package.json
 │   └── tsconfig.json
-├── frontend/               # Next.js интерфейс приложения (порт 3000)
+├── frontend/               # Next.js application frontend (port 3000)
 │   ├── src/
-│   │   └── app/            # Страницы и компоненты
-│   ├── public/             # Статические ресурсы (аватары, иконки)
+│   │   └── app/            # Pages and components
+│   ├── public/             # Static assets (avatars, icons)
 │   ├── package.json
 │   └── tsconfig.json
-├── package.json            # Root workspace конфиг для параллельного запуска
+├── package.json            # Root workspace config for concurrent execution
 └── README.md
 ```
 
-## Запуск приложения
+## Running the Application
 
-### 1. Одновременный запуск Frontend и Backend (Рекомендуется)
-В корневой директории выполните:
+### 1. Concurrent Frontend & Backend Startup (Recommended)
+In the root directory, run:
 ```bash
 npm run dev
 ```
-Это запустит:
+This will launch:
 - **Backend API:** `http://localhost:5001`
 - **Frontend App:** `http://localhost:3000`
 
-### 2. Раздельный запуск
+### 2. Individual Startup
 
-#### Только Backend:
+#### Backend Only:
 ```bash
 npm run dev:backend
-# или: cd backend && npm run dev
+# or: cd backend && npm run dev
 ```
 
-#### Только Frontend:
+#### Frontend Only:
 ```bash
 npm run dev:frontend
-# или: cd frontend && npm run dev
+# or: cd frontend && npm run dev
 ```
 
-## API Эндпоинты Backend (`http://localhost:5001/api`)
+## Backend API Endpoints (`http://localhost:5001/api`)
 
-- `GET /api/account` - получение профиля пользователя, текущего баланса и статистики доходов/расходов.
-- `GET /api/transactions` - получение списка транзакций.
-- `POST /api/transactions` - проведение пополнения / перевода (динамически обновляет баланс).
-- `GET /api/health` - проверка статуса сервера.
+- `GET /api/account` - Retrieve user profile, current balance, and income/expense statistics.
+- `GET /api/transactions` - Retrieve full transactions list.
+- `POST /api/transactions` - Perform deposit / top-up (dynamically updates balance).
+- `GET /api/health` - Server health check.
+
