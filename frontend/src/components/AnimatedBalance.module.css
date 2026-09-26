@@ -1,0 +1,117 @@
+.balanceWrapper {
+  display: inline-flex;
+  align-items: baseline;
+  font-variant-numeric: tabular-nums;
+  position: relative;
+}
+
+.digitSlot {
+  display: inline-flex;
+  flex-direction: column;
+  height: 1em;
+  line-height: 1;
+  overflow: hidden;
+  position: relative;
+  vertical-align: baseline;
+}
+
+.digitColumn {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  will-change: transform;
+}
+
+.digitItem {
+  height: 1em;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.separator {
+  display: inline-block;
+  line-height: 1;
+  user-select: none;
+}
+
+@keyframes rollDownFromTop {
+  0% {
+    transform: translateY(var(--roll-from, -5em));
+    opacity: 0.4;
+    filter: blur(1.5px);
+  }
+  25% {
+    opacity: 0.9;
+    filter: blur(0.5px);
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+    filter: blur(0px);
+  }
+}
+
+.digitAnimated {
+  animation-name: rollDownFromTop;
+  animation-duration: 0.75s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-fill-mode: both;
+}
+
+/* Subtle pulse when balance is added */
+@keyframes balanceAddGlow {
+  0% {
+    filter: drop-shadow(0 0 0 rgba(16, 185, 129, 0));
+  }
+  30% {
+    filter: drop-shadow(0 0 12px rgba(16, 185, 129, 0.35));
+  }
+  100% {
+    filter: drop-shadow(0 0 0 rgba(16, 185, 129, 0));
+  }
+}
+
+.balanceAdded {
+  animation: balanceAddGlow 1.2s ease-out;
+}
+
+/* Floating badge "+ €50.00" when funds are added */
+.depositChip {
+  position: absolute;
+  top: -26px;
+  right: 0;
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  pointer-events: none;
+  animation: chipFloat 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  letter-spacing: -0.2px;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.12);
+  white-space: nowrap;
+}
+
+@keyframes chipFloat {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.9);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1);
+  }
+  75% {
+    opacity: 1;
+    transform: translateY(-6px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.95);
+  }
+}
