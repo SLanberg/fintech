@@ -1,0 +1,363 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(9, 9, 11, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal {
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border: 1px solid #e4e4e7;
+  border-radius: 24px;
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 28px 24px;
+  animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px) scale(0.97);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.brandGroup {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.titleArea {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.symbolRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.symbol {
+  font-size: 20px;
+  font-weight: 700;
+  color: #09090b;
+  letter-spacing: -0.4px;
+}
+
+.exchangeBadge {
+  font-size: 11px;
+  font-weight: 600;
+  color: #71717a;
+  background: #f4f4f5;
+  padding: 2px 7px;
+  border-radius: 6px;
+  border: 1px solid #e4e4e7;
+}
+
+.companyName {
+  font-size: 13px;
+  color: #71717a;
+  font-weight: 500;
+}
+
+.closeBtn {
+  background: #f4f4f5;
+  border: 1px solid #e4e4e7;
+  color: #52525b;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.15s ease;
+}
+
+.closeBtn:hover {
+  background: #e4e4e7;
+  color: #09090b;
+}
+
+/* Price Section */
+.priceSection {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.price {
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: -1.5px;
+  color: #09090b;
+  line-height: 1;
+}
+
+.currency {
+  font-size: 18px;
+  font-weight: 500;
+  color: #a1a1aa;
+}
+
+.changeRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.changeBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 8px;
+}
+
+.changeBadgePositive {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.changeBadgeNegative {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.marketTime {
+  font-size: 12px;
+  color: #71717a;
+}
+
+/* Interactive Chart Area */
+.chartContainer {
+  background: #fafafa;
+  border: 1px solid #f4f4f5;
+  border-radius: 18px;
+  padding: 16px 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.chartHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.timeframeTabs {
+  display: flex;
+  gap: 6px;
+  background: #f4f4f5;
+  padding: 3px;
+  border-radius: 10px;
+}
+
+.timeframeBtn {
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: #71717a;
+  padding: 4px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.timeframeBtnActive {
+  background: #ffffff;
+  color: #09090b;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.chartScrubTooltip {
+  font-size: 12px;
+  font-weight: 600;
+  color: #09090b;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chartSvgWrapper {
+  width: 100%;
+  height: 180px;
+  position: relative;
+  cursor: crosshair;
+}
+
+.chartSvg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Key Statistics Dashboard Grid */
+.statsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.statsSectionTitle {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #71717a;
+  margin: 0;
+}
+
+.rangeBarWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+  background: #ffffff;
+  border: 1px solid #f4f4f5;
+  border-radius: 14px;
+}
+
+.rangeBarHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #71717a;
+}
+
+.rangeBarTrack {
+  height: 6px;
+  background: #f4f4f5;
+  border-radius: 9999px;
+  position: relative;
+  overflow: hidden;
+}
+
+.rangeBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #059669);
+  border-radius: 9999px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.statItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 14px;
+  background: #ffffff;
+  border: 1px solid #f4f4f5;
+  border-radius: 12px;
+}
+
+.statLabel {
+  font-size: 12px;
+  color: #71717a;
+  font-weight: 500;
+}
+
+.statValue {
+  font-size: 13px;
+  font-weight: 600;
+  color: #09090b;
+}
+
+/* Action Buttons Bar */
+.actionRow {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.tradeBtn {
+  background: #09090b;
+  color: #ffffff;
+  border: none;
+  padding: 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+.tradeBtn:hover {
+  background: #27272a;
+  transform: translateY(-1px);
+}
+
+.alertBtn {
+  background: #f4f4f5;
+  color: #18181b;
+  border: 1px solid #e4e4e7;
+  padding: 14px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.alertBtn:hover {
+  background: #e4e4e7;
+}

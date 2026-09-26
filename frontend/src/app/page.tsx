@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
+import Watchlist from "./components/Watchlist";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
 
@@ -345,6 +346,9 @@ export default function Home() {
               </div>
             </div>
 
+            {/* Real-time Finnhub Market Watchlist */}
+            <Watchlist apiBase={API_BASE} />
+
             {/* Recent Transactions */}
             <section className={styles.section}>
               <div className={styles.sectionHeader}>
@@ -445,6 +449,9 @@ export default function Home() {
                 <span className={`${styles.transactionAmount} ${styles.incomeAmount}`}>+18.9%</span>
               </div>
             </div>
+
+            {/* Real-time Finnhub Market Watchlist on Invest Tab */}
+            <Watchlist apiBase={API_BASE} />
           </section>
         )}
 

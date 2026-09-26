@@ -4,6 +4,10 @@ import crypto from "crypto";
 import { initDatabase } from "./db/database";
 import { UserRepository } from "./repositories/user.repository";
 import { TransferService } from "./services/transfer.service";
+import { QuoteService, loadEnvFiles } from "./services/quote.service";
+
+// Load environment variables (.env)
+loadEnvFiles();
 
 // Initialize SQLite Database and seed primary User Entity (Tyler Durden, 1964)
 initDatabase();
@@ -222,6 +226,25 @@ app.post("/api/transactions", (req: Request, res: Response) => {
     });
 
     return res.status(transferRes.statusCode).json(transferRes.body);
+  }
+});
+
+/**
+ * GET /api/quote/:symbol
+ * Fetches real-time stock quote from Finnhub API with 60-second in-memory cache
+ * and automatic fallback to mock/quotes.json.
+ * Strictly never exposes FINNHUB_KEY to the client.
+ */
+app.get("/api/quote/:symbol", async (req: Request, res: Response) => {
+  try {
+    const symbol = req.params.symbol;
+    if (!symbol || typeof symbol !== "string") {
+      return res.status(400).json({ error: "Symbol parameter is required." });
+    }
+    const quote = await QuoteService.getQuote(symbol);
+    return res.json(quote);
+  } catch (err: any) {
+    return res.status(404).json({ error: err.message || "Failed to fetch stock quote." });
   }
 });
 
