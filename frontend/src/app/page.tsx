@@ -548,7 +548,46 @@ export default function Home() {
                   })}
                 </div>
 
-
+                {/* Direct Money Transfer Form */}
+                <form
+                  onSubmit={handleDirectTransfer}
+                  className={styles.transferInputForm}
+                  style={{ marginTop: "16px", paddingTop: "16px", borderTop: "1px solid #f4f4f5" }}
+                >
+                  <div style={{ fontSize: "13px", fontWeight: 600, color: "#71717a", marginBottom: "4px" }}>
+                    Send to <span style={{ color: "#09090b" }}>@{recipientTag}</span>
+                  </div>
+                  <div className={styles.transferInputRow}>
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0.01"
+                      placeholder="Amount (€)"
+                      value={transferAmount}
+                      onChange={(e) => setTransferAmount(e.target.value)}
+                      className={styles.inputField}
+                      required
+                    />
+                    <input
+                      type="text"
+                      placeholder="Note / Description (optional)"
+                      value={transferDesc}
+                      onChange={(e) => setTransferDesc(e.target.value)}
+                      className={styles.inputField}
+                    />
+                    <button
+                      type="submit"
+                      className={styles.transferSubmitBtn}
+                      disabled={actionLoading}
+                    >
+                      {actionLoading ? "Sending..." : "Send"}
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <line x1="7" y1="17" x2="17" y2="7" />
+                        <polyline points="7 7 17 7 17 17" />
+                      </svg>
+                    </button>
+                  </div>
+                </form>
               </div>
             </section>
 

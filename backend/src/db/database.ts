@@ -102,21 +102,16 @@ export function initDatabase() {
 function seedInitialData() {
   const userCount = (db.prepare("SELECT COUNT(*) as count FROM users").get() as { count: number }).count;
 
+  const now = new Date().toISOString();
+
   if (userCount === 0) {
     console.log("Seeding database with primary user Tyler Durden...");
-
-    const now = new Date().toISOString();
-    
-    // Create Tyler Durden (First Entity User) using Node's cryptographically secure UUID generator
     const tylerId = crypto.randomUUID();
-    const alexId = crypto.randomUUID();
-
     const insertUser = db.prepare(`
       INSERT INTO users (id, tag, display_name, email, birth_date, status, balance_cents, created_at, updated_at)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
-    // Primary User: Tyler Durden, born on June 18, 1964
     insertUser.run(
       tylerId,
       "tyler",
@@ -128,23 +123,32 @@ function seedInitialData() {
       now,
       now
     );
+  }
 
-    // Recipient User for transfer demonstrations: Alexander B.
-    insertUser.run(
-      alexId,
-      "alexander",
-      "Alexander B.",
-      "alexander.b@bank.com",
-      "1988-03-25",
-      "ACTIVE",
-      500000, // €5,000.00
+  // Guarantee recipient contacts exist
+  const insertContact = db.prepare(`
+    INSERT OR IGNORE INTO users (id, tag, display_name, email, birth_date, status, balance_cents, created_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, 'ACTIVE', ?, ?, ?)
+  `);
+
+  const contacts = [
+    { tag: "alexander", name: "Alexander B.", email: "alexander.b@bank.com", birth: "1988-03-25", balance: 500000 },
+    { tag: "marla", name: "Marla Singer", email: "marla.singer@paperstreet.com", birth: "1966-08-13", balance: 120000 },
+    { tag: "edward", name: "Edward Norton", email: "edward.norton@bank.com", birth: "1969-08-18", balance: 350000 },
+    { tag: "jack", name: "Jack Durden", email: "jack.durden@paperstreet.com", birth: "1970-01-01", balance: 150000 },
+  ];
+
+  for (const c of contacts) {
+    insertContact.run(
+      crypto.randomUUID(),
+      c.tag,
+      c.name,
+      c.email,
+      c.birth,
+      c.balance,
       now,
       now
     );
-
-    /* No fake transactions seeded; ledger starts clean */
-
-    console.log("Primary User 'Tyler Durden' (Birth Date: 1964-06-18) seeded successfully.");
   }
 }
 
