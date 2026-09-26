@@ -1,14 +1,55 @@
 "use client";
 
-import React, { useState, useId, useEffect, useMemo, useRef } from "react";
+import {
+  ColorType,
+  createChart,
+  CrosshairMode,
+  LineStyle,
+  LineSeries,
+  type LineData,
+  type Time,
+  type UTCTimestamp,
+} from "lightweight-charts";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./StockDashboardModal.module.css";
 import StockIcon from "./StockIcons";
 import { StockQuote } from "./Watchlist";
+
+type ChartTimeframe = "1M" | "3M" | "6M" | "1Y";
+type ChartStatus = "loading" | "ready" | "empty" | "error";
+type CandleSource = "finnhub" | "demo";
+
+interface HistoricalCandle {
+  time: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+}
+
+interface HistoricalResponse {
+  source: CandleSource;
+  candles: HistoricalCandle[];
+}
 
 interface StockDashboardModalProps {
   quote: StockQuote;
   companyName: string;
   onClose: () => void;
+}
+
+function formatCandleTime(time: Time, timeframe: ChartTimeframe): string {
+  if (typeof time === "string") return time;
+
+  const date = typeof time === "number"
+    ? new Date(time * 1000)
+    : new Date(Date.UTC(time.year, time.month - 1, time.day));
+
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    ...(timeframe === "1Y" ? { year: "numeric" } : {}),
+  });
 }
 
 const STOCK_EXTRA_METRICS: Record<
@@ -27,10 +68,13 @@ export default function StockDashboardModal({
   companyName,
   onClose,
 }: StockDashboardModalProps) {
-  const gradientId = useId().replace(/:/g, "_");
-  const [timeframe, setTimeframe] = useState<"1D" | "1W" | "1M" | "1Y">("1D");
-  const [scrubIndex, setScrubIndex] = useState<number | null>(null);
-  const svgRef = useRef<SVGSVGElement | null>(null);
+  const [timeframe, setTimeframe] = useState<ChartTimeframe>("1M");
+  const [prices, setPrices] = useState<LineData<Time>[]>([]);
+  const [chartStatus, setChartStatus] = useState<ChartStatus>("loading");
+  const [historySource, setHistorySource] = useState<CandleSource | null>(null);
+  const [activePrice, setActivePrice] = useState<LineData<Time> | null>(null);
+  const chartContainerRef = useRef<HTMLDivElement | null>(null);
+  const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
 
   const metrics = STOCK_EXTRA_METRICS[quote.symbol.toUpperCase()] || {
     exchange: "NASDAQ",
@@ -42,8 +86,9 @@ export default function StockDashboardModal({
   };
 
   const isPositive = quote.dp !== null ? quote.dp >= 0 : true;
-  const strokeColor = isPositive ? "#10b981" : "#ef4444";
-  const stopColor = isPositive ? "rgba(16, 185, 129, 0.28)" : "rgba(239, 68, 68, 0.28)";
+  const isChartPositive = prices.length > 0
+    ? prices[prices.length - 1].value >= prices[0].value
+    : isPositive;
 
   // Close on ESC
   useEffect(() => {
@@ -54,110 +99,92 @@ export default function StockDashboardModal({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
 
-  // Generate 24 chart points based on timeframe and real quote values
-  const chartPoints = useMemo(() => {
-    const pointsCount = 24;
-    const baseOpen = quote.o || quote.pc || quote.c * (isPositive ? 0.98 : 1.02);
-    const dayHigh = quote.h || Math.max(quote.c, baseOpen) * 1.01;
-    const dayLow = quote.l || Math.min(quote.c, baseOpen) * 0.99;
-    const dayClose = quote.c;
+  useEffect(() => {
+    const controller = new AbortController();
 
-    // Adjust variance based on selected timeframe
-    const varianceMultipliers = { "1D": 0.4, "1W": 1.2, "1M": 2.5, "1Y": 4.5 };
-    const mult = varianceMultipliers[timeframe];
-    const spread = (dayHigh - dayLow) * mult;
+    const loadCandles = async () => {
+      try {
+        const response = await fetch(
+          `${apiBase}/candles/${encodeURIComponent(quote.symbol)}?timeframe=${timeframe}`,
+          { signal: controller.signal }
+        );
+        if (!response.ok) throw new Error("Historical prices request failed.");
 
-    let seed = quote.symbol.split("").reduce((acc, c) => acc + c.charCodeAt(0), 101);
-    const nextRand = () => {
-      seed = (seed * 9301 + 49297) % 233280;
-      return seed / 233280;
+        const payload = (await response.json()) as HistoricalResponse;
+        if (
+          !Array.isArray(payload.candles) ||
+          (payload.source !== "demo" && payload.source !== "finnhub")
+        ) {
+          throw new Error("Invalid historical prices response.");
+        }
+
+        const chartPrices = payload.candles.flatMap((candle) => {
+          const values = [candle.time, candle.close];
+          if (!values.every(Number.isFinite)) return [];
+
+          return [{ time: candle.time as UTCTimestamp, value: candle.close }];
+        });
+
+        setPrices(chartPrices);
+        setHistorySource(payload.source);
+        setChartStatus(chartPrices.length ? "ready" : "empty");
+      } catch {
+        if (!controller.signal.aborted) setChartStatus("error");
+      }
     };
 
-    const pts: { time: string; price: number }[] = [];
-    const startTimeHour = 9.5; // 9:30 AM
-    const endTimeHour = 16.0; // 4:00 PM
+    void loadCandles();
+    return () => controller.abort();
+  }, [apiBase, quote.symbol, timeframe]);
 
-    for (let i = 0; i < pointsCount; i++) {
-      const progress = i / (pointsCount - 1);
-      const trend = baseOpen + (dayClose - baseOpen) * progress;
-      const noise = (nextRand() - 0.5) * spread;
-      const price = Math.max(dayLow * 0.95, trend + noise);
+  useEffect(() => {
+    const container = chartContainerRef.current;
+    if (!container || chartStatus !== "ready") return;
 
-      // Label
-      let timeLabel = "";
-      if (timeframe === "1D") {
-        const h = Math.floor(startTimeHour + progress * (endTimeHour - startTimeHour));
-        const m = Math.floor(((startTimeHour + progress * (endTimeHour - startTimeHour)) % 1) * 60);
-        timeLabel = `${h > 12 ? h - 12 : h}:${m < 10 ? "0" : ""}${m} ${h >= 12 ? "PM" : "AM"}`;
-      } else if (timeframe === "1W") {
-        const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
-        timeLabel = days[Math.floor(progress * (days.length - 0.01))];
-      } else if (timeframe === "1M") {
-        timeLabel = `Day ${Math.floor(progress * 29) + 1}`;
-      } else {
-        const months = ["Jan", "Mar", "May", "Jul", "Sep", "Nov"];
-        timeLabel = months[Math.floor(progress * (months.length - 0.01))];
-      }
-
-      pts.push({
-        time: timeLabel,
-        price: Number((i === pointsCount - 1 ? dayClose : price).toFixed(2)),
-      });
-    }
-
-    return pts;
-  }, [quote, timeframe, isPositive]);
-
-  // Map to SVG coordinates (width 500, height 170)
-  const svgData = useMemo(() => {
-    const width = 500;
-    const height = 170;
-    const padY = 16;
-    const padX = 8;
-
-    const prices = chartPoints.map((p) => p.price);
-    const min = Math.min(...prices);
-    const max = Math.max(...prices);
-    const diff = max - min || 1;
-
-    const coords = chartPoints.map((p, i) => {
-      const x = padX + (i / (chartPoints.length - 1)) * (width - padX * 2);
-      const y = height - padY - ((p.price - min) / diff) * (height - padY * 2);
-      return { x, y, price: p.price, time: p.time };
+    const chart = createChart(container, {
+      autoSize: true,
+      layout: {
+        background: { type: ColorType.Solid, color: "#fafafa" },
+        textColor: "#71717a",
+        attributionLogo: true,
+      },
+      grid: {
+        vertLines: { color: "#f4f4f5" },
+        horzLines: { color: "#e4e4e7" },
+      },
+      rightPriceScale: { borderVisible: false },
+      timeScale: { borderVisible: false },
+      crosshair: { mode: CrosshairMode.Magnet },
+      localization: { priceFormatter: (price: number) => `$${price.toFixed(2)}` },
     });
+    const series = chart.addSeries(LineSeries, {
+      color: isChartPositive ? "#059669" : "#dc2626",
+      lineWidth: 2,
+      crosshairMarkerVisible: true,
+      lastValueVisible: false,
+    });
+    series.setData(prices);
+    series.createPriceLine({
+      price: quote.c,
+      color: isChartPositive ? "#059669" : "#dc2626",
+      lineWidth: 1,
+      lineStyle: LineStyle.Dashed,
+      axisLabelVisible: true,
+      title: "Latest",
+    });
+    chart.subscribeCrosshairMove((param) => {
+      const point = param.seriesData.get(series);
+      setActivePrice(point && "value" in point ? point : null);
+    });
+    chart.timeScale().fitContent();
 
-    let linePath = `M ${coords[0].x.toFixed(1)} ${coords[0].y.toFixed(1)}`;
-    for (let i = 0; i < coords.length - 1; i++) {
-      const curr = coords[i];
-      const next = coords[i + 1];
-      const cpX = (curr.x + next.x) / 2;
-      linePath += ` C ${cpX.toFixed(1)} ${curr.y.toFixed(1)}, ${cpX.toFixed(1)} ${next.y.toFixed(1)}, ${next.x.toFixed(1)} ${next.y.toFixed(1)}`;
-    }
+    return () => chart.remove();
+  }, [prices, chartStatus, isChartPositive, quote.c, timeframe]);
 
-    const first = coords[0];
-    const last = coords[coords.length - 1];
-    const areaPath = `${linePath} L ${last.x.toFixed(1)} ${height} L ${first.x.toFixed(1)} ${height} Z`;
-
-    return { coords, linePath, areaPath, width, height, min, max };
-  }, [chartPoints]);
-
-  const activeCoord = scrubIndex !== null ? svgData.coords[scrubIndex] : null;
-  const displayPrice = activeCoord ? activeCoord.price : quote.c;
-  const displayTime = activeCoord ? activeCoord.time : "Real-time Finnhub";
-
-  // Mouse scrubbing handler
-  const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
-    if (!svgRef.current) return;
-    const rect = svgRef.current.getBoundingClientRect();
-    const clientX = e.clientX - rect.left;
-    const ratio = Math.max(0, Math.min(1, clientX / rect.width));
-    const idx = Math.round(ratio * (chartPoints.length - 1));
-    setScrubIndex(idx);
-  };
-
-  const handleMouseLeave = () => {
-    setScrubIndex(null);
-  };
+  const displayPrice = activePrice ? activePrice.value : quote.c;
+  const displayTime = activePrice
+    ? formatCandleTime(activePrice.time, timeframe)
+    : "Latest quote";
 
   // Day Range position
   const dayLow = quote.l || quote.c * 0.98;
@@ -220,84 +247,56 @@ export default function StockDashboardModal({
         {/* Minimalistic Interactive Graph */}
         <div className={styles.chartContainer}>
           <div className={styles.chartHeader}>
-            <div className={styles.timeframeTabs}>
-              {(["1D", "1W", "1M", "1Y"] as const).map((t) => (
-                <button
-                  key={t}
-                  type="button"
-                  className={`${styles.timeframeBtn} ${
-                    timeframe === t ? styles.timeframeBtnActive : ""
-                  }`}
-                  onClick={() => {
-                    setTimeframe(t);
-                    setScrubIndex(null);
-                  }}
-                >
-                  {t}
-                </button>
-              ))}
+            <div className={styles.chartControls}>
+              <div className={styles.timeframeTabs}>
+                {(["1M", "3M", "6M", "1Y"] as const).map((t) => (
+                  <button
+                    key={t}
+                    type="button"
+                    className={`${styles.timeframeBtn} ${
+                      timeframe === t ? styles.timeframeBtnActive : ""
+                    }`}
+                    onClick={() => {
+                      setTimeframe(t);
+                      setChartStatus("loading");
+                      setHistorySource(null);
+                      setActivePrice(null);
+                    }}
+                    aria-pressed={timeframe === t}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
+              {historySource && (
+                <span className={styles.chartSource}>
+                  {historySource === "demo" ? "Demo history" : "Finnhub history"}
+                </span>
+              )}
             </div>
 
-            {activeCoord && (
+            {activePrice && (
               <div className={styles.chartScrubTooltip}>
-                <span>${activeCoord.price.toFixed(2)}</span>
-                <span style={{ color: "#71717a", fontWeight: 400 }}>({activeCoord.time})</span>
+                <span>{displayTime}</span>
+                <span>${activePrice.value.toFixed(2)}</span>
               </div>
             )}
           </div>
 
           <div className={styles.chartSvgWrapper}>
-            <svg
-              ref={svgRef}
-              className={styles.chartSvg}
-              viewBox={`0 0 ${svgData.width} ${svgData.height}`}
-              preserveAspectRatio="none"
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-            >
-              <defs>
-                <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor={stopColor} />
-                  <stop offset="100%" stopColor={stopColor} stopOpacity="0" />
-                </linearGradient>
-              </defs>
-
-              {/* Area Under Curve */}
-              <path d={svgData.areaPath} fill={`url(#${gradientId})`} />
-
-              {/* Curve Line */}
-              <path
-                d={svgData.linePath}
-                stroke={strokeColor}
-                strokeWidth="2.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-
-              {/* Crosshair indicator on hover */}
-              {activeCoord && (
-                <>
-                  <line
-                    x1={activeCoord.x}
-                    y1={0}
-                    x2={activeCoord.x}
-                    y2={svgData.height}
-                    stroke="#71717a"
-                    strokeWidth="1"
-                    strokeDasharray="3 3"
-                    opacity="0.6"
-                  />
-                  <circle
-                    cx={activeCoord.x}
-                    cy={activeCoord.y}
-                    r="5"
-                    fill={strokeColor}
-                    stroke="#ffffff"
-                    strokeWidth="2"
-                  />
-                </>
-              )}
-            </svg>
+            <div
+              ref={chartContainerRef}
+              className={styles.chartCanvas}
+              role="img"
+              aria-label={`${quote.symbol} historical price chart`}
+            />
+            {chartStatus !== "ready" && (
+              <div className={styles.chartStatus} role="status">
+                {chartStatus === "loading" && "Loading historical prices..."}
+                {chartStatus === "empty" && "Historical price data is unavailable."}
+                {chartStatus === "error" && "Could not load historical prices."}
+              </div>
+            )}
           </div>
         </div>
 
@@ -308,7 +307,7 @@ export default function StockDashboardModal({
           {/* Day Range Progress Bar */}
           <div className={styles.rangeBarWrapper}>
             <div className={styles.rangeBarHeader}>
-              <span>Day's Range</span>
+                <span>Day&apos;s Range</span>
               <span>
                 ${dayLow.toFixed(2)} - ${dayHigh.toFixed(2)}
               </span>
