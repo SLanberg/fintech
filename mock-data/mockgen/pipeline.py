@@ -75,8 +75,10 @@ def build_world(cfg, log=print) -> World:
 def to_frames(world: World) -> dict[str, pd.DataFrame]:
     cust = pd.DataFrame(world.customers)
     cust["created_at"] = cust["created_at"].map(lambda t: t.strftime("%Y-%m-%dT%H:%M:%SZ"))
+    if "date_of_birth" in cust:
+        cust["birth_date"] = cust["date_of_birth"]
     cols = ["id", "type", "name", "first_name", "last_name", "trading_name", "country", "city", "postcode", "address",
-            "email", "phone", "date_of_birth", "registration_number", "created_at", "timezone", "language", "segment",
+            "email", "phone", "date_of_birth", "birth_date", "registration_number", "created_at", "timezone", "language", "segment",
             "sector"]
     if "trading_name" not in cust:
         cust["trading_name"] = None
