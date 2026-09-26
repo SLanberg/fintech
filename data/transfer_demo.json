@@ -1,0 +1,84 @@
+{
+  "note": "FICTITIOUS DEMO DATA. Every IBAN uses invented bank code ZZZZ and sort code 000000. Checksum validity is only for testing, not evidence of a real bank account or reported beneficiary. All names, reports and approval events are simulated.",
+  "account": {
+    "name": "Transfer protection demo account",
+    "balance": 3000,
+    "currency": "EUR"
+  },
+  "directory": [
+    {
+      "iban": "GB92ZZZZ00000000001001",
+      "accountHolder": "Paper Street Rentals",
+      "closeNames": [
+        "Paper Street Rental"
+      ],
+      "tag": "landlord"
+    },
+    {
+      "iban": "GB65ZZZZ00000000001002",
+      "accountHolder": "Demo Energy Services",
+      "closeNames": [
+        "Demo Energy"
+      ],
+      "tag": "energy"
+    },
+    {
+      "iban": "GB38ZZZZ00000000001003",
+      "accountHolder": "Demo Bike Seller",
+      "closeNames": [
+        "Bike Seller"
+      ],
+      "tag": "new-payee"
+    },
+    {
+      "iban": "GB11ZZZZ00000000001004",
+      "accountHolder": "Fictitious Merchant Ltd",
+      "closeNames": [],
+      "tag": "safe-account"
+    },
+    {
+      "iban": "GB29ZZZZ00000000000001",
+      "accountHolder": "Demo Investments",
+      "closeNames": [],
+      "tag": "reported"
+    }
+  ],
+  "history": [
+    {
+      "id": "2026-06-01-rent",
+      "recipientName": "Paper Street Rentals",
+      "iban": "GB92ZZZZ00000000001001",
+      "amount": 850,
+      "reference": "Rent",
+      "instant": false,
+      "completedAt": 1780315200000
+    },
+    {
+      "id": "2026-05-12-electricity",
+      "recipientName": "Demo Energy Services",
+      "iban": "GB65ZZZZ00000000001002",
+      "amount": 78,
+      "reference": "Electricity",
+      "instant": false,
+      "completedAt": 1778587200000
+    },
+    {
+      "id": "2026-05-01-rent",
+      "recipientName": "Paper Street Rentals",
+      "iban": "GB92ZZZZ00000000001001",
+      "amount": 850,
+      "reference": "Rent",
+      "instant": false,
+      "completedAt": 1777636800000
+    },
+    {
+      "id": "2026-04-12-electricity",
+      "recipientName": "Demo Energy Services",
+      "iban": "GB65ZZZZ00000000001002",
+      "amount": 78,
+      "reference": "Electricity",
+      "instant": false,
+      "completedAt": 1775995200000
+    }
+  ]
+}

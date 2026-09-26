@@ -13,6 +13,9 @@ import { useSpendingState } from "../lib/use-spending-state";
 import { categoryForMcc, CATEGORY_LABELS } from "../lib/purchase-nudge";
 import type { SpendingSettings as SpendingPreferences } from "../lib/spending-settings";
 import { AnimatedBalance } from "@/components/AnimatedBalance";
+import TransferProtection from "./components/TransferProtection";
+import TransferSettings from "./components/TransferSettings";
+import { useTransferState } from "../lib/use-transfer-state";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
 const createTransferRequestId = () => typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : `tx-${Date.now()}`;
@@ -74,6 +77,7 @@ const DEMO_ACCOUNT: AccountState = {
 const DEMO_TRANSACTIONS: Transaction[] = spendingScenario.transactions.map(tx => ({ ...tx, amount: `${tx.isIncome ? "+" : "−"} €${tx.amount.toFixed(2)}` }));
 
 export default function Home() {
+  const transferProtection = useTransferState();
   const { state: spendingState, setState: setSpendingState, ready: settingsReady, storageUnavailable } = useSpendingState();
   const changeSpendingSettings = (settings: SpendingPreferences) => setSpendingState(current => ({ ...current, settings }));
   const [isDemo, setIsDemo] = useState(true);
@@ -84,7 +88,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
 
   // Tab navigation state
-  const [activeTab, setActiveTab] = useState<"home" | "invest" | "payments" | "settings">("home");
+  const [activeTab, setActiveTab] = useState<"home" | "invest" | "payments" | "settings" | "transfer">("home");
   const [paymentViewFilter, setPaymentViewFilter] = useState<"all" | "contacts">("all");
   const [txVisibleCount, setTxVisibleCount] = useState(10);
 
@@ -193,7 +197,7 @@ export default function Home() {
 
   const handleQuickAction = async (type: "deposit" | "transfer") => {
     if (type === "transfer") {
-      openTransferModal();
+      setActiveTab("transfer");
       return;
     }
 
@@ -545,7 +549,11 @@ export default function Home() {
             </section>
         </div>
 
-        {activeTab === "settings" && settingsReady && <SpendingSettings settings={spendingState.settings} onChange={changeSpendingSettings} onBack={() => setActiveTab('home')} />}
+        {activeTab === "settings" && settingsReady && <>
+          <SpendingSettings settings={spendingState.settings} onChange={changeSpendingSettings} onBack={() => setActiveTab('home')} />
+          {transferProtection.ready && <TransferSettings state={transferProtection.state} setState={transferProtection.setState} disabled={!!transferProtection.storageError} />}
+        </>}
+        {activeTab === "transfer" && <TransferProtection {...transferProtection} onBack={() => setActiveTab('home')} onSettings={() => setActiveTab('settings')} />}
         <div style={{ display: activeTab === "invest" ? "contents" : "none" }}>
           <section className={styles.section}>
             <div className={styles.balanceCard}>
@@ -602,6 +610,7 @@ export default function Home() {
         </div>
 
         <div style={{ display: activeTab === "payments" ? "contents" : "none" }}>
+          <button className={styles.actionBtn} type="button" onClick={() => setActiveTab('transfer')}>New transfer{transferProtection.state.held.length ? ` · ${transferProtection.state.held.length} held` : ''}</button>
           <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
 
               {/* Instant Transfer Box - Revolut Chat Style */}
@@ -823,7 +832,7 @@ export default function Home() {
         </button>
 
         <button
-          className={`${styles.navItem} ${activeTab === "payments" ? styles.navItemActive : ""}`}
+          className={`${styles.navItem} ${activeTab === "payments" || activeTab === "transfer" ? styles.navItemActive : ""}`}
           onClick={() => setActiveTab("payments")}
           type="button"
         >

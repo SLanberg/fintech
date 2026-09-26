@@ -1,0 +1,353 @@
+{
+  "note": "FICTITIOUS DEMO DATA. Every IBAN uses invented bank code ZZZZ and sort code 000000. Checksum validity is only for testing, not evidence of a real bank account or reported beneficiary. All names, reports and approval events are simulated.",
+  "entries": [
+    {
+      "iban": "GB29ZZZZ00000000000001",
+      "scamType": "investment scam",
+      "dateReported": "2026-05-01",
+      "sourceLabel": "Fictitious demo report 1"
+    },
+    {
+      "iban": "GB02ZZZZ00000000000002",
+      "scamType": "safe-account scam",
+      "dateReported": "2026-05-02",
+      "sourceLabel": "Fictitious demo report 2"
+    },
+    {
+      "iban": "GB72ZZZZ00000000000003",
+      "scamType": "fake online shop",
+      "dateReported": "2026-05-03",
+      "sourceLabel": "Fictitious demo report 3"
+    },
+    {
+      "iban": "GB45ZZZZ00000000000004",
+      "scamType": "romance scam",
+      "dateReported": "2026-05-04",
+      "sourceLabel": "Fictitious demo report 4"
+    },
+    {
+      "iban": "GB18ZZZZ00000000000005",
+      "scamType": "investment scam",
+      "dateReported": "2026-05-05",
+      "sourceLabel": "Fictitious demo report 5"
+    },
+    {
+      "iban": "GB88ZZZZ00000000000006",
+      "scamType": "safe-account scam",
+      "dateReported": "2026-05-06",
+      "sourceLabel": "Fictitious demo report 6"
+    },
+    {
+      "iban": "GB61ZZZZ00000000000007",
+      "scamType": "fake online shop",
+      "dateReported": "2026-05-07",
+      "sourceLabel": "Fictitious demo report 7"
+    },
+    {
+      "iban": "GB34ZZZZ00000000000008",
+      "scamType": "romance scam",
+      "dateReported": "2026-05-08",
+      "sourceLabel": "Fictitious demo report 8"
+    },
+    {
+      "iban": "GB07ZZZZ00000000000009",
+      "scamType": "investment scam",
+      "dateReported": "2026-05-09",
+      "sourceLabel": "Fictitious demo report 9"
+    },
+    {
+      "iban": "GB77ZZZZ00000000000010",
+      "scamType": "safe-account scam",
+      "dateReported": "2026-05-10",
+      "sourceLabel": "Fictitious demo report 10"
+    },
+    {
+      "iban": "GB50ZZZZ00000000000011",
+      "scamType": "fake online shop",
+      "dateReported": "2026-05-11",
+      "sourceLabel": "Fictitious demo report 11"
+    },
+    {
+      "iban": "GB23ZZZZ00000000000012",
+      "scamType": "romance scam",
+      "dateReported": "2026-05-12",
+      "sourceLabel": "Fictitious demo report 12"
+    },
+    {
+      "iban": "GB93ZZZZ00000000000013",
+      "scamType": "investment scam",
+      "dateReported": "2026-05-13",
+      "sourceLabel": "Fictitious demo report 13"
+    },
+    {
+      "iban": "GB66ZZZZ00000000000014",
+      "scamType": "safe-account scam",
+      "dateReported": "2026-05-14",
+      "sourceLabel": "Fictitious demo report 14"
+    },
+    {
+      "iban": "GB39ZZZZ00000000000015",
+      "scamType": "fake online shop",
+      "dateReported": "2026-05-15",
+      "sourceLabel": "Fictitious demo report 15"
+    },
+    {
+      "iban": "GB12ZZZZ00000000000016",
+      "scamType": "romance scam",
+      "dateReported": "2026-05-16",
+      "sourceLabel": "Fictitious demo report 16"
+    },
+    {
+      "iban": "GB82ZZZZ00000000000017",
+      "scamType": "investment scam",
+      "dateReported": "2026-05-17",
+      "sourceLabel": "Fictitious demo report 17"
+    },
+    {
+      "iban": "GB55ZZZZ00000000000018",
+      "scamType": "safe-account scam",
+      "dateReported": "2026-05-18",
+      "sourceLabel": "Fictitious demo report 18"
+    },
+    {
+      "iban": "GB28ZZZZ00000000000019",
+      "scamType": "fake online shop",
+      "dateReported": "2026-05-19",
+      "sourceLabel": "Fictitious demo report 19"
+    },
+    {
+      "iban": "GB98ZZZZ00000000000020",
+      "scamType": "romance scam",
+      "dateReported": "2026-05-20",
+      "sourceLabel": "Fictitious demo report 20"
+    },
+    {
+      "iban": "GB71ZZZZ00000000000021",
+      "scamType": "investment scam",
+      "dateReported": "2026-05-21",
+      "sourceLabel": "Fictitious demo report 21"
+    },
+    {
+      "iban": "GB44ZZZZ00000000000022",
+      "scamType": "safe-account scam",
+      "dateReported": "2026-05-22",
+      "sourceLabel": "Fictitious demo report 22"
+    },
+    {
+      "iban": "GB17ZZZZ00000000000023",
+      "scamType": "fake online shop",
+      "dateReported": "2026-05-23",
+      "sourceLabel": "Fictitious demo report 23"
+    },
+    {
+      "iban": "GB87ZZZZ00000000000024",
+      "scamType": "romance scam",
+      "dateReported": "2026-05-24",
+      "sourceLabel": "Fictitious demo report 24"
+    },
+    {
+      "iban": "GB60ZZZZ00000000000025",
+      "scamType": "investment scam",
+      "dateReported": "2026-05-25",
+      "sourceLabel": "Fictitious demo report 25"
+    },
+    {
+      "iban": "GB33ZZZZ00000000000026",
+      "scamType": "safe-account scam",
+      "dateReported": "2026-05-26",
+      "sourceLabel": "Fictitious demo report 26"
+    },
+    {
+      "iban": "GB06ZZZZ00000000000027",
+      "scamType": "fake online shop",
+      "dateReported": "2026-05-27",
+      "sourceLabel": "Fictitious demo report 27"
+    },
+    {
+      "iban": "GB76ZZZZ00000000000028",
+      "scamType": "romance scam",
+      "dateReported": "2026-05-28",
+      "sourceLabel": "Fictitious demo report 28"
+    },
+    {
+      "iban": "GB49ZZZZ00000000000029",
+      "scamType": "investment scam",
+      "dateReported": "2026-05-01",
+      "sourceLabel": "Fictitious demo report 29"
+    },
+    {
+      "iban": "GB22ZZZZ00000000000030",
+      "scamType": "safe-account scam",
+      "dateReported": "2026-05-02",
+      "sourceLabel": "Fictitious demo report 30"
+    },
+    {
+      "iban": "GB92ZZZZ00000000000031",
+      "scamType": "fake online shop",
+      "dateReported": "2026-05-03",
+      "sourceLabel": "Fictitious demo report 31"
+    },
+    {
+      "iban": "GB65ZZZZ00000000000032",
+      "scamType": "romance scam",
+      "dateReported": "2026-05-04",
+      "sourceLabel": "Fictitious demo report 32"
+    },
+    {
+      "iban": "GB38ZZZZ00000000000033",
+      "scamType": "investment scam",
+      "dateReported": "2026-05-05",
+      "sourceLabel": "Fictitious demo report 33"
+    },
+    {
+      "iban": "GB11ZZZZ00000000000034",
+      "scamType": "safe-account scam",
+      "dateReported": "2026-05-06",
+      "sourceLabel": "Fictitious demo report 34"
+    },
+    {
+      "iban": "GB81ZZZZ00000000000035",
+      "scamType": "fake online shop",
+      "dateReported": "2026-05-07",
+      "sourceLabel": "Fictitious demo report 35"
+    },
+    {
+      "iban": "GB54ZZZZ00000000000036",
+      "scamType": "romance scam",
+      "dateReported": "2026-05-08",
+      "sourceLabel": "Fictitious demo report 36"
+    },
+    {
+      "iban": "GB27ZZZZ00000000000037",
+      "scamType": "investment scam",
+      "dateReported": "2026-05-09",
+      "sourceLabel": "Fictitious demo report 37"
+    },
+    {
+      "iban": "GB97ZZZZ00000000000038",
+      "scamType": "safe-account scam",
+      "dateReported": "2026-05-10",
+      "sourceLabel": "Fictitious demo report 38"
+    },
+    {
+      "iban": "GB70ZZZZ00000000000039",
+      "scamType": "fake online shop",
+      "dateReported": "2026-05-11",
+      "sourceLabel": "Fictitious demo report 39"
+    },
+    {
+      "iban": "GB43ZZZZ00000000000040",
+      "scamType": "romance scam",
+      "dateReported": "2026-05-12",
+      "sourceLabel": "Fictitious demo report 40"
+    },
+    {
+      "iban": "GB16ZZZZ00000000000041",
+      "scamType": "investment scam",
+      "dateReported": "2026-05-13",
+      "sourceLabel": "Fictitious demo report 41"
+    },
+    {
+      "iban": "GB86ZZZZ00000000000042",
+      "scamType": "safe-account scam",
+      "dateReported": "2026-05-14",
+      "sourceLabel": "Fictitious demo report 42"
+    },
+    {
+      "iban": "GB59ZZZZ00000000000043",
+      "scamType": "fake online shop",
+      "dateReported": "2026-05-15",
+      "sourceLabel": "Fictitious demo report 43"
+    },
+    {
+      "iban": "GB32ZZZZ00000000000044",
+      "scamType": "romance scam",
+      "dateReported": "2026-05-16",
+      "sourceLabel": "Fictitious demo report 44"
+    },
+    {
+      "iban": "GB05ZZZZ00000000000045",
+      "scamType": "investment scam",
+      "dateReported": "2026-05-17",
+      "sourceLabel": "Fictitious demo report 45"
+    },
+    {
+      "iban": "GB75ZZZZ00000000000046",
+      "scamType": "safe-account scam",
+      "dateReported": "2026-05-18",
+      "sourceLabel": "Fictitious demo report 46"
+    },
+    {
+      "iban": "GB48ZZZZ00000000000047",
+      "scamType": "fake online shop",
+      "dateReported": "2026-05-19",
+      "sourceLabel": "Fictitious demo report 47"
+    },
+    {
+      "iban": "GB21ZZZZ00000000000048",
+      "scamType": "romance scam",
+      "dateReported": "2026-05-20",
+      "sourceLabel": "Fictitious demo report 48"
+    },
+    {
+      "iban": "GB91ZZZZ00000000000049",
+      "scamType": "investment scam",
+      "dateReported": "2026-05-21",
+      "sourceLabel": "Fictitious demo report 49"
+    },
+    {
+      "iban": "GB64ZZZZ00000000000050",
+      "scamType": "safe-account scam",
+      "dateReported": "2026-05-22",
+      "sourceLabel": "Fictitious demo report 50"
+    },
+    {
+      "iban": "GB37ZZZZ00000000000051",
+      "scamType": "fake online shop",
+      "dateReported": "2026-05-23",
+      "sourceLabel": "Fictitious demo report 51"
+    },
+    {
+      "iban": "GB10ZZZZ00000000000052",
+      "scamType": "romance scam",
+      "dateReported": "2026-05-24",
+      "sourceLabel": "Fictitious demo report 52"
+    },
+    {
+      "iban": "GB80ZZZZ00000000000053",
+      "scamType": "investment scam",
+      "dateReported": "2026-05-25",
+      "sourceLabel": "Fictitious demo report 53"
+    },
+    {
+      "iban": "GB53ZZZZ00000000000054",
+      "scamType": "safe-account scam",
+      "dateReported": "2026-05-26",
+      "sourceLabel": "Fictitious demo report 54"
+    },
+    {
+      "iban": "GB26ZZZZ00000000000055",
+      "scamType": "fake online shop",
+      "dateReported": "2026-05-27",
+      "sourceLabel": "Fictitious demo report 55"
+    },
+    {
+      "iban": "GB96ZZZZ00000000000056",
+      "scamType": "romance scam",
+      "dateReported": "2026-05-28",
+      "sourceLabel": "Fictitious demo report 56"
+    },
+    {
+      "iban": "GB69ZZZZ00000000000057",
+      "scamType": "investment scam",
+      "dateReported": "2026-05-01",
+      "sourceLabel": "Fictitious demo report 57"
+    },
+    {
+      "iban": "GB42ZZZZ00000000000058",
+      "scamType": "safe-account scam",
+      "dateReported": "2026-05-02",
+      "sourceLabel": "Fictitious demo report 58"
+    }
+  ]
+}
