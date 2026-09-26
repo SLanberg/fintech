@@ -119,7 +119,7 @@ function seedInitialData() {
       "tyler.durden@paperstreet.com",
       "1964-06-18",
       "ACTIVE",
-      0, // €0.00
+      10000, // €100.00
       now,
       now
     );
@@ -149,6 +149,20 @@ function seedInitialData() {
       now,
       now
     );
+  }
+
+  // Ensure Tyler has initial deposit in audit ledger
+  const tylerUser = db.prepare("SELECT * FROM users WHERE tag = 'tyler'").get() as any;
+  if (tylerUser) {
+    const hasTopup = db.prepare("SELECT COUNT(*) as count FROM ledger_entries WHERE recipient_user_id = ?").get(tylerUser.id) as { count: number };
+    if (hasTopup.count === 0) {
+      const alexander = db.prepare("SELECT * FROM users WHERE tag = 'alexander'").get() as any;
+      const senderId = alexander ? alexander.id : tylerUser.id;
+      db.prepare(`
+        INSERT INTO ledger_entries (id, idempotency_key, sender_user_id, recipient_user_id, amount_cents, currency, description, status, created_at)
+        VALUES (?, ?, ?, ?, 10000, 'EUR', 'Account Initial Top-Up (€100.00)', 'COMPLETED', ?)
+      `).run(crypto.randomUUID(), 'seed-topup-tyler-100', senderId, tylerUser.id, now);
+    }
   }
 }
 
