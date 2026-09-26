@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lockin & Build (Monorepo Architecture)
 
-## Getting Started
+Приложение разделено на **Backend** (Express.js + TypeScript) и **Frontend** (Next.js 16 + React 19).
 
-First, run the development server:
+## Структура проекта
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+/
+├── backend/                # Express.js REST API сервер (порт 5001)
+│   ├── src/
+│   │   └── server.ts       # Эндпоинты /api/account, /api/transactions
+│   ├── package.json
+│   └── tsconfig.json
+├── frontend/               # Next.js интерфейс приложения (порт 3000)
+│   ├── src/
+│   │   └── app/            # Страницы и компоненты
+│   ├── public/             # Статические ресурсы (аватары, иконки)
+│   ├── package.json
+│   └── tsconfig.json
+├── package.json            # Root workspace конфиг для параллельного запуска
+└── README.md
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Запуск приложения
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 1. Одновременный запуск Frontend и Backend (Рекомендуется)
+В корневой директории выполните:
+```bash
+npm run dev
+```
+Это запустит:
+- **Backend API:** `http://localhost:5001`
+- **Frontend App:** `http://localhost:3000`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 2. Раздельный запуск
 
-## Learn More
+#### Только Backend:
+```bash
+npm run dev:backend
+# или: cd backend && npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+#### Только Frontend:
+```bash
+npm run dev:frontend
+# или: cd frontend && npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## API Эндпоинты Backend (`http://localhost:5001/api`)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `GET /api/account` - получение профиля пользователя, текущего баланса и статистики доходов/расходов.
+- `GET /api/transactions` - получение списка транзакций.
+- `POST /api/transactions` - проведение пополнения / перевода (динамически обновляет баланс).
+- `GET /api/health` - проверка статуса сервера.
