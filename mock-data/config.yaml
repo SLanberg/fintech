@@ -1,0 +1,83 @@
+# Mock-data generator config. Same seed + same config (incl. end_date) => byte-identical output.
+seed: 42
+
+period:
+  # "today" rolls with the calendar. Pin a date (e.g. 2026-09-26) before the demo to freeze the data.
+  end_date: today
+  months: 12
+
+# --- PRODUCT CONTEXT (informational; copied into out/manifest.json) -----------------------------
+demo:
+  product: "<one sentence: what the prototype does and for whom>"
+  extra_entities: []          # e.g. [invoices, subscriptions, loans] - see README "Adding an entity"
+
+countries: [DE, FR, NL, ES, IT, PL, EE, LV, LT, FI, IE, AT, BE, PT, SE, CZ]
+
+scale:
+  customers: 300              # incl. businesses; ~1.5 accounts and ~500 transactions per customer-year
+  business_share: 0.15
+  local_merchants_per_country: 90
+
+profiles:                     # mix of individual customers
+  student: 0.14
+  salaried: 0.52
+  freelancer: 0.12
+  retiree: 0.22
+
+business_sectors:
+  cafe: 0.25
+  retail: 0.20
+  consulting: 0.25
+  construction: 0.15
+  design: 0.15
+
+accounts:
+  savings_share: 0.35
+  eur_account_share_non_euro: 0.4   # PL/SE/CZ customers who also hold a EUR account
+  overdraft_share: 0.2
+  new_customer_share: 0.07          # onboarded during the period
+  closed_savings_share: 0.05
+
+behaviour:
+  card_decline_rate: 0.004
+  card_reversal_rate: 0.004
+  refund_rate: 0.05
+  technical_fail_rate: 0.002
+  pending_days: 2
+  card_fx_markup: 0.0125
+  cross_border_employer_share: 0.12
+  linked_employer_share: 0.3        # salaried customers employed by a business customer in the dataset
+  p2p_per_month: 1.3
+
+email_domains: [example.com, example.net, example.org]   # RFC 2606 reserved: never reach a real inbox
+
+output:
+  dir: out
+  formats: [csv]              # csv | jsonl | parquet (parquet needs `pip install pyarrow`)
+
+# --- DEMO SCENARIOS ---------------------------------------------------------------------------
+# Each entry creates a dedicated customer; out/scenarios.csv tells the presenter where to look.
+# Types: failed_payments, fraud_burst, overdraft_user, subscription_creep, new_customer
+# month: YYYY-MM, date: YYYY-MM-DD. Omit them to use a date relative to end_date (stays valid when rolling).
+scenarios:
+  - type: failed_payments
+    name: "3 failed payments after a car repair"
+    country: DE
+    profile: salaried
+    count: 3
+    # month: "2026-05"
+  - type: fraud_burst
+    name: "Night-time card fraud abroad"
+    country: FR
+    count: 8
+  - type: overdraft_user
+    name: "Lives in the overdraft"
+    country: IT
+  - type: subscription_creep
+    name: "Subscription creep"
+    country: NL
+    profile: student
+  - type: new_customer
+    name: "Onboarded last week"
+    country: EE
+    days_ago: 8
