@@ -64,8 +64,29 @@ const transfer3 = TransferService.executeTransfer({
 console.log("Transfer 3 Result Status (Should be 409):", transfer3.statusCode);
 console.log("Transfer 3 Response:", transfer3.body);
 
-// 8. Test Double-Spending Prevention
-console.log("\n[TEST 7] Testing Double Spending / Overdraft Protection:");
+// 8. Test Concurrency Guard / Processing Lock
+console.log("\n[TEST 7] Testing Processing Lock (status = IN_PROGRESS -> 409 Conflict):");
+const db = require("./db/database").default;
+const lockKey = "in-progress-lock-key-" + Date.now();
+
+db.prepare(`
+  INSERT INTO idempotency_records (user_id, key, request_hash, response_code, response_body, status, created_at)
+  VALUES (?, ?, 'lock-hash', 0, '', 'IN_PROGRESS', ?)
+`).run(tyler.id, lockKey, new Date().toISOString());
+
+const lockTransfer = TransferService.executeTransfer({
+  idempotency_key: lockKey,
+  sender_tag: "tyler",
+  recipient_tag: "alexander",
+  amount_cents: 1000,
+  description: "Lock test",
+});
+console.log("Processing Lock Result Status (Should be 409):", lockTransfer.statusCode);
+console.log("Processing Lock Response:", lockTransfer.body);
+db.prepare("DELETE FROM idempotency_records WHERE user_id = ? AND key = ?").run(tyler.id, lockKey);
+
+// 9. Test Double-Spending Prevention
+console.log("\n[TEST 8] Testing Double Spending / Overdraft Protection:");
 const excessiveTransfer = TransferService.executeTransfer({
   idempotency_key: "excessive-key-" + Date.now(),
   sender_tag: "tyler",

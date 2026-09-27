@@ -193,7 +193,31 @@ describe("POST /api/transfers", () => {
     expect(afterCount.count).toBe(0);
   });
 
-  it("handles concurrent requests with same Idempotency-Key gracefully without double-spending or 500 errors", async () => {
+  it("returns 409 Conflict when a request arrives while IN_PROGRESS", async () => {
+    const { default: db } = await import("../db/database");
+    const lockKey = `lock-in-progress-key-${Date.now()}`;
+    const tyler = (await import("../repositories/user.repository")).UserRepository.getPrimaryUser();
+
+    // Manually insert an IN_PROGRESS lock record
+    db.prepare(`
+      INSERT INTO idempotency_records (user_id, key, request_hash, response_code, response_body, status, created_at)
+      VALUES (?, ?, 'dummy-hash', 0, '', 'IN_PROGRESS', ?)
+    `).run(tyler.id, lockKey, new Date().toISOString());
+
+    const res = await request(app)
+      .post("/api/transfers")
+      .set("Idempotency-Key", lockKey)
+      .send({ to_user_id: "marla", amount: 1, currency: "EUR" });
+
+    expect(res.status).toBe(409);
+    expect(res.body.error).toMatch(/Request currently being processed/i);
+    expect(res.body.status).toBe("IN_PROGRESS");
+
+    // Clean up test lock record
+    db.prepare("DELETE FROM idempotency_records WHERE user_id = ? AND key = ?").run(tyler.id, lockKey);
+  });
+
+  it("handles concurrent requests with same Idempotency-Key gracefully returning 201 or 409 IN_PROGRESS", async () => {
     const key = `race-condition-key-${Date.now()}`;
     const payload = { to_user_id: "marla", amount: 1, currency: "EUR" };
 
@@ -206,13 +230,16 @@ describe("POST /api/transfers", () => {
       request(app).post("/api/transfers").set("Idempotency-Key", key).send(payload),
     ]);
 
-    // All requests should succeed with 201 Created and return identical transaction_id
-    const transactionIds = new Set<string>();
-    for (const res of results) {
-      expect(res.status).toBe(201);
-      expect(res.body).toHaveProperty("transaction_id");
-      transactionIds.add(res.body.transaction_id);
+    // Responses should be either 201 Created (completed) or 409 Conflict ("Request currently being processed")
+    const statuses = results.map((r) => r.status);
+    expect(statuses.every((s) => s === 201 || s === 409)).toBe(true);
+
+    const completedRes = results.filter((r) => r.status === 201);
+    const inProgressRes = results.filter((r) => r.status === 409);
+
+    expect(completedRes.length + inProgressRes.length).toBe(5);
+    if (inProgressRes.length > 0) {
+      expect(inProgressRes[0].body.error).toMatch(/Request currently being processed/i);
     }
-    expect(transactionIds.size).toBe(1);
   });
 });

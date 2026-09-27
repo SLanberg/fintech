@@ -48,13 +48,14 @@ export interface IdempotencyRecordEntity {
   request_hash: string;
   response_code: number;
   response_body: string;
+  status: "IN_PROGRESS" | "COMPLETED";
   created_at: string;
 }
 
 export function initDatabase() {
-  // Migrate idempotency_records if existing table lacks user_id column
+  // Migrate idempotency_records if existing table lacks user_id or status column
   const tableInfo = db.prepare("PRAGMA table_info(idempotency_records)").all() as Array<{ name: string }>;
-  if (tableInfo.length > 0 && !tableInfo.some((col) => col.name === "user_id")) {
+  if (tableInfo.length > 0 && (!tableInfo.some((col) => col.name === "user_id") || !tableInfo.some((col) => col.name === "status"))) {
     db.exec("DROP TABLE idempotency_records;");
   }
 
@@ -99,13 +100,14 @@ export function initDatabase() {
     CREATE INDEX IF NOT EXISTS idx_ledger_sender ON ledger_entries(sender_user_id);
     CREATE INDEX IF NOT EXISTS idx_ledger_recipient ON ledger_entries(recipient_user_id);
 
-    -- Idempotency tracking table (scoped to user_id)
+    -- Idempotency tracking table (scoped to user_id) with Processing Lock status
     CREATE TABLE IF NOT EXISTS idempotency_records (
       user_id TEXT NOT NULL,
       key TEXT NOT NULL,
       request_hash TEXT NOT NULL,
       response_code INTEGER NOT NULL,
       response_body TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'COMPLETED',
       created_at TEXT NOT NULL,
       PRIMARY KEY (user_id, key)
     );
