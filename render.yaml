@@ -1,0 +1,33 @@
+services:
+  # Backend Web Service (Node.js + Express + SQLite)
+  - type: web
+    name: lockin-backend
+    env: node
+    buildCommand: npm install --prefix backend && npm run build --prefix backend
+    startCommand: npm run start --prefix backend
+    envVars:
+      - key: PORT
+        value: 5001
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_PATH
+        value: /opt/render/project/src/backend/data/lockin.db
+    disk:
+      name: sqlite-data
+      mountPath: /opt/render/project/src/backend/data
+      sizeGB: 1
+
+  # Frontend Web Service (Next.js)
+  - type: web
+    name: lockin-frontend
+    env: node
+    buildCommand: npm install --prefix frontend && npm run build --prefix frontend
+    startCommand: npm run start --prefix frontend
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: lockin-backend
+          property: host

@@ -2,7 +2,7 @@ import Database from "better-sqlite3";
 import crypto from "crypto";
 import path from "path";
 
-const dbPath = path.join(__dirname, "../../lockin.db");
+const dbPath = process.env.DATABASE_PATH || path.join(__dirname, "../../lockin.db");
 const db = new Database(dbPath);
 
 // Enable Foreign Keys & WAL mode for concurrency
