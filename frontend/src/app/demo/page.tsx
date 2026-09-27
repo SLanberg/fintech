@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "../page.module.css";
+import BackendInspectorWidget from "../components/BackendInspectorWidget";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
 
@@ -466,6 +467,9 @@ export default function DemoPage() {
 
   return (
     <div className={styles.container}>
+      {/* Floating Interactive Backend Engine Inspector Widget */}
+      <BackendInspectorWidget />
+
       {/* Header */}
       <header className={styles.header}>
         <div className={styles.brand}>
