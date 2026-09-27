@@ -1,4 +1,5 @@
 import { Router, Request, Response } from "express";
+import db from "../db/database";
 import { UserRepository } from "../repositories/user.repository";
 import { TransferService } from "../services/transfer.service";
 
@@ -96,6 +97,43 @@ router.get("/user/entity", (req: Request, res: Response) => {
     });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * POST /api/demo/reset
+ * Resets demo accounts (Tyler/Alice to €100.00, Bob/Alexander to €0.00)
+ * and purges idempotency & ledger records created during testing.
+ */
+router.post("/demo/reset", (req: Request, res: Response) => {
+  try {
+    const tyler = UserRepository.getPrimaryUser();
+    const bob = UserRepository.findByTag("alexander");
+
+    const now = new Date().toISOString();
+
+    // Reset Tyler (Alice) balance to 10000 cents (€100.00)
+    db.prepare("UPDATE users SET balance_cents = 10000, updated_at = ? WHERE id = ?").run(now, tyler.id);
+
+    // Reset Bob (Alexander) balance to 0 cents (€0.00) if found
+    if (bob) {
+      db.prepare("UPDATE users SET balance_cents = 0, updated_at = ? WHERE id = ?").run(now, bob.id);
+    }
+
+    // Clear ledger entries and idempotency records for clean presentation state
+    db.prepare("DELETE FROM ledger_entries WHERE sender_user_id = ? OR recipient_user_id = ?").run(tyler.id, tyler.id);
+    db.prepare("DELETE FROM idempotency_records WHERE user_id = ?").run(tyler.id);
+
+    console.log("[DEMO RESET] Reset demo balances: Alice = €100.00, Bob = €0.00. Cleared ledger & idempotency locks.");
+
+    return res.json({
+      message: "Demo state successfully reset.",
+      alice_balance_cents: 10000,
+      bob_balance_cents: 0,
+    });
+  } catch (err: any) {
+    console.error("Error resetting demo state:", err);
+    return res.status(500).json({ error: err.message });
   }
 });
 

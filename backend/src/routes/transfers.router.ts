@@ -86,6 +86,9 @@ transfersRouter.post("/", (req: Request, res: Response) => {
     return res.status(400).json({ error: "amount must be a positive number." });
   }
 
+  const startTime = Date.now();
+  console.log(`\n[TRANSFER REQ] ${new Date().toISOString()} | Key: ${idempotencyKey.slice(0, 18)}... | Recipient: @${recipientTag} | Amount: €${(amountCents / 100).toFixed(2)}`);
+
   const result = TransferService.executeTransfer({
     idempotency_key: idempotencyKey,
     sender_tag: req.body.sender_tag, // optional, defaults to tyler
@@ -94,5 +97,64 @@ transfersRouter.post("/", (req: Request, res: Response) => {
     description: req.body.description,
   });
 
+  const duration = Date.now() - startTime;
+  if (result.statusCode === 201) {
+    console.log(`[TRANSFER RES] 201 CREATED (${duration}ms) | Tx ID: ${result.body.transaction_id} | Status: ACCEPTED & EXECUTED`);
+  } else if (result.statusCode === 409) {
+    console.log(`[TRANSFER RES] 409 CONFLICT (${duration}ms) | Idempotency Key: ${idempotencyKey.slice(0, 18)}... | Status: ✕ DUPLICATE BLOCKED`);
+  } else {
+    console.log(`[TRANSFER RES] ${result.statusCode} (${duration}ms) | Error: ${result.body.error}`);
+  }
+
   return res.status(result.statusCode).json(result.body);
 });
+
+/**
+ * POST /api/transfers/intent
+ *
+ * Step 1 (Prepare): Creates a draft payment intent in 'REQUIRES_CONFIRMATION' status.
+ * Returns intent_id (e.g., pi_98765...).
+ */
+transfersRouter.post("/intent", (req: Request, res: Response) => {
+  const recipientTag = req.body.to_user_id || req.body.recipient_tag || req.body.tag;
+  if (!recipientTag) {
+    return res.status(400).json({ error: "to_user_id or recipient_tag is required." });
+  }
+
+  const amountCents =
+    req.body.amount_cents !== undefined
+      ? req.body.amount_cents
+      : req.body.amount !== undefined
+      ? Math.round(parseFloat(req.body.amount) * 100)
+      : 0;
+
+  if (amountCents <= 0) {
+    return res.status(400).json({ error: "amount must be a positive number." });
+  }
+
+  const result = TransferService.createPaymentIntent({
+    sender_tag: req.body.sender_tag,
+    recipient_tag: recipientTag,
+    amount_cents: amountCents,
+    description: req.body.description,
+  });
+
+  return res.status(result.statusCode).json(result.body);
+});
+
+/**
+ * POST /api/transfers/confirm
+ *
+ * Step 2 (Confirm): Confirms and executes the transaction using intent_id.
+ * Safe against socket timeouts & retries (atomic check on intent status).
+ */
+transfersRouter.post("/confirm", (req: Request, res: Response) => {
+  const { intent_id } = req.body;
+  if (!intent_id) {
+    return res.status(400).json({ error: "intent_id is required." });
+  }
+
+  const result = TransferService.confirmPaymentIntent(intent_id);
+  return res.status(result.statusCode).json(result.body);
+});
+

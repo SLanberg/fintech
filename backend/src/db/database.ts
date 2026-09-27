@@ -52,6 +52,18 @@ export interface IdempotencyRecordEntity {
   created_at: string;
 }
 
+export interface PaymentIntentEntity {
+  id: string;
+  sender_user_id: string;
+  recipient_user_id: string;
+  amount_cents: number;
+  currency: string;
+  description: string | null;
+  status: "REQUIRES_CONFIRMATION" | "PROCESSING" | "SUCCEEDED" | "FAILED" | "CANCELED";
+  created_at: string;
+  updated_at: string;
+}
+
 export function initDatabase() {
   // Migrate idempotency_records if existing table lacks user_id or status column
   const tableInfo = db.prepare("PRAGMA table_info(idempotency_records)").all() as Array<{ name: string }>;
@@ -117,6 +129,23 @@ export function initDatabase() {
 
     -- Index for fast range queries and TTL cleanup policies
     CREATE INDEX IF NOT EXISTS idx_idempotency_created_at ON idempotency_records(created_at);
+
+    -- Payment Intents table (Stripe/Adyen Intent Pattern)
+    CREATE TABLE IF NOT EXISTS payment_intents (
+      id TEXT PRIMARY KEY NOT NULL,
+      sender_user_id TEXT NOT NULL,
+      recipient_user_id TEXT NOT NULL,
+      amount_cents INTEGER NOT NULL,
+      currency TEXT NOT NULL DEFAULT 'EUR',
+      description TEXT,
+      status TEXT NOT NULL DEFAULT 'REQUIRES_CONFIRMATION',
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL,
+      FOREIGN KEY (sender_user_id) REFERENCES users(id),
+      FOREIGN KEY (recipient_user_id) REFERENCES users(id)
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_intents_sender ON payment_intents(sender_user_id);
   `);
 
   // Purge idempotency records older than 2 years on startup & scheduled maintenance

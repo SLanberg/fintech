@@ -242,4 +242,58 @@ describe("POST /api/transfers", () => {
       expect(inProgressRes[0].body.error).toMatch(/Request currently being processed/i);
     }
   });
+
+  // ─────────────────────────────────────────────
+  // Payment Intent Pattern (Prepare & Confirm)
+  // ─────────────────────────────────────────────
+  describe("Payment Intent Pattern (POST /api/transfers/intent & /confirm)", () => {
+    it("creates an intent on POST /api/transfers/intent and confirms on /confirm", async () => {
+      // Step 1: Prepare
+      const intentRes = await request(app)
+        .post("/api/transfers/intent")
+        .send({ to_user_id: "marla", amount: 15, currency: "EUR" });
+
+      expect(intentRes.status).toBe(201);
+      expect(intentRes.body).toHaveProperty("intent_id");
+      expect(intentRes.body.intent_id).toMatch(/^pi_/);
+      expect(intentRes.body.status).toBe("REQUIRES_CONFIRMATION");
+
+      const intentId = intentRes.body.intent_id;
+
+      // Step 2: Confirm
+      const confirmRes = await request(app)
+        .post("/api/transfers/confirm")
+        .send({ intent_id: intentId });
+
+      expect(confirmRes.status).toBe(200);
+      expect(confirmRes.body).toHaveProperty("status", "SUCCEEDED");
+      expect(confirmRes.body).toHaveProperty("intent_id", intentId);
+      expect(confirmRes.body).toHaveProperty("transaction_id");
+    });
+
+    it("returns previous result without duplicate debit when retry confirmation happens (socket timeout simulation)", async () => {
+      // Step 1: Prepare
+      const intentRes = await request(app)
+        .post("/api/transfers/intent")
+        .send({ to_user_id: "edward", amount: 10, currency: "EUR" });
+
+      const intentId = intentRes.body.intent_id;
+
+      // Step 2: First Confirm
+      const confirmFirst = await request(app)
+        .post("/api/transfers/confirm")
+        .send({ intent_id: intentId });
+
+      // Step 3: Retried Confirm (simulating socket timeout / retry)
+      const confirmSecond = await request(app)
+        .post("/api/transfers/confirm")
+        .send({ intent_id: intentId });
+
+      expect(confirmFirst.status).toBe(200);
+      expect(confirmSecond.status).toBe(200);
+      expect(confirmFirst.body.transaction_id).toBe(confirmSecond.body.transaction_id);
+      expect(confirmSecond.body.status).toBe("SUCCEEDED");
+    });
+  });
 });
+
