@@ -340,146 +340,145 @@ export default function Home() {
 
       <main className={styles.main}>
         <div style={{ display: activeTab === "home" ? "contents" : "none" }}>
-            {/* Balance Card */}
-            <section className={styles.balanceCard}>
-              <div className={styles.balanceHeader}>
-                <span className={styles.balanceLabel}>Total Balance</span>
-                <button
-                  onClick={() => setShowBalance(!showBalance)}
-                  className={styles.hideToggle}
-                  type="button"
-                >
-                  {showBalance ? "Hide" : "Show"}
-                </button>
-              </div>
-
-              <div className={styles.balanceAmountRow}>
-                <AnimatedBalance
-                  value={balance}
-                  show={showBalance}
-                  className={styles.balanceAmount}
-                />
-                <span className={styles.currency}>{currency}</span>
-              </div>
-
-              <div className={styles.actionGrid}>
-                <button
-                  className={`${styles.actionBtn} ${styles.actionBtnPrimary}`}
-                  onClick={() => handleQuickAction("deposit")}
-                  disabled={actionLoading}
-                  type="button"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <line x1="12" y1="5" x2="12" y2="19" />
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                  </svg>
-                  Deposit
-                </button>
-                <button
-                  className={styles.actionBtn}
-                  onClick={() => handleQuickAction("transfer")}
-                  disabled={actionLoading}
-                  type="button"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <line x1="7" y1="17" x2="17" y2="7" />
-                    <polyline points="7 7 17 7 17 17" />
-                  </svg>
-                  Transfer
-                </button>
-                <button
-                  className={styles.actionBtn}
-                  onClick={() => alert("Exchange feature coming soon!")}
-                  type="button"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="m16 3 4 4-4 4" />
-                    <path d="M20 7H4" />
-                    <path d="m8 21-4-4 4-4" />
-                    <path d="M4 17h16" />
-                  </svg>
-                  Exchange
-                </button>
-                <button
-                  className={styles.actionBtn}
-                  onClick={() => alert("Account details coming soon!")}
-                  type="button"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect width="20" height="14" x="2" y="5" rx="2" />
-                    <line x1="2" x2="22" y1="10" y2="10" />
-                  </svg>
-                  Details
-                </button>
-              </div>
-            </section>
-
-            {/* Quick Stats */}
-            <div className={styles.statsRow}>
-              <div className={styles.statCard}>
-                <span className={styles.statTitle}>Monthly Income</span>
-                <span className={`${styles.statValue} ${styles.positive}`}>
-                  +€{monthlyIncome.toLocaleString("de-DE", { minimumFractionDigits: 2 })}
-                </span>
-              </div>
-              <div className={styles.statCard}>
-                <span className={styles.statTitle}>Monthly Expenses</span>
-                <span className={styles.statValue}>
-                  -€{monthlyExpenses.toLocaleString("de-DE", { minimumFractionDigits: 2 })}
-                </span>
-              </div>
+          {/* Balance Card */}
+          <section className={styles.balanceCard}>
+            <div className={styles.balanceHeader}>
+              <span className={styles.balanceLabel}>Total Balance</span>
+              <button
+                onClick={() => setShowBalance(!showBalance)}
+                className={styles.hideToggle}
+                type="button"
+              >
+                {showBalance ? "Hide" : "Show"}
+              </button>
             </div>
 
+            <div className={styles.balanceAmountRow}>
+              <AnimatedBalance
+                value={balance}
+                show={showBalance}
+                className={styles.balanceAmount}
+              />
+              <span className={styles.currency}>{currency}</span>
+            </div>
+
+            <div className={styles.actionGrid}>
+              <button
+                className={`${styles.actionBtn} ${styles.actionBtnPrimary}`}
+                onClick={() => handleQuickAction("deposit")}
+                disabled={actionLoading}
+                type="button"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Deposit
+              </button>
+              <button
+                className={styles.actionBtn}
+                onClick={() => handleQuickAction("transfer")}
+                disabled={actionLoading}
+                type="button"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <line x1="7" y1="17" x2="17" y2="7" />
+                  <polyline points="7 7 17 7 17 17" />
+                </svg>
+                Transfer
+              </button>
+              <button
+                className={styles.actionBtn}
+                onClick={() => alert("Exchange feature coming soon!")}
+                type="button"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="m16 3 4 4-4 4" />
+                  <path d="M20 7H4" />
+                  <path d="m8 21-4-4 4-4" />
+                  <path d="M4 17h16" />
+                </svg>
+                Exchange
+              </button>
+              <button
+                className={styles.actionBtn}
+                onClick={() => alert("Account details coming soon!")}
+                type="button"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect width="20" height="14" x="2" y="5" rx="2" />
+                  <line x1="2" x2="22" y1="10" y2="10" />
+                </svg>
+                Details
+              </button>
+            </div>
+          </section>
+
+          {/* Quick Stats */}
+          <div className={styles.statsRow}>
+            <div className={styles.statCard}>
+              <span className={styles.statTitle}>Monthly Income</span>
+              <span className={`${styles.statValue} ${styles.positive}`}>
+                +€{monthlyIncome.toLocaleString("de-DE", { minimumFractionDigits: 2 })}
+              </span>
+            </div>
+            <div className={styles.statCard}>
+              <span className={styles.statTitle}>Monthly Expenses</span>
+              <span className={styles.statValue}>
+                -€{monthlyExpenses.toLocaleString("de-DE", { minimumFractionDigits: 2 })}
+              </span>
+            </div>
+          </div>
 
 
-            {/* Recent Transactions */}
-            <section className={styles.section}>
-              <div className={styles.sectionHeader}>
-                <h2 className={styles.sectionTitle}>Recent Transactions</h2>
-                <span className={styles.viewAll} onClick={() => setActiveTab("payments")}>
-                  View All
-                </span>
-              </div>
 
-              <div className={styles.transactionList}>
-                {transactions.length === 0 ? (
-                  <div className={styles.emptyTransactions}>No recent transactions</div>
-                ) : (
-                  transactions.slice(0, 5).map((t) => (
-                    <div key={t.id} className={styles.transactionItem}>
-                      <div className={styles.transactionLeft}>
-                        <div className={styles.iconCircle}>
-                          {t.isIncome ? (
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.5">
-                              <line x1="17" y1="7" x2="7" y2="17" />
-                              <polyline points="17 17 7 17 7 7" />
-                            </svg>
-                          ) : (
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#09090b" strokeWidth="2.5">
-                              <line x1="7" y1="17" x2="17" y2="7" />
-                              <polyline points="7 7 17 7 17 17" />
-                            </svg>
-                          )}
-                        </div>
-                        <div className={styles.transactionDetails}>
-                          <span className={styles.transactionName}>{t.name}</span>
-                          <span className={styles.transactionDate}>
-                            {t.date} • {t.category}
-                          </span>
-                        </div>
+          {/* Recent Transactions */}
+          <section className={styles.section}>
+            <div className={styles.sectionHeader}>
+              <h2 className={styles.sectionTitle}>Recent Transactions</h2>
+              <span className={styles.viewAll} onClick={() => setActiveTab("payments")}>
+                View All
+              </span>
+            </div>
+
+            <div className={styles.transactionList}>
+              {transactions.length === 0 ? (
+                <div className={styles.emptyTransactions}>No recent transactions</div>
+              ) : (
+                transactions.slice(0, 5).map((t) => (
+                  <div key={t.id} className={styles.transactionItem}>
+                    <div className={styles.transactionLeft}>
+                      <div className={styles.iconCircle}>
+                        {t.isIncome ? (
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.5">
+                            <line x1="17" y1="7" x2="7" y2="17" />
+                            <polyline points="17 17 7 17 7 7" />
+                          </svg>
+                        ) : (
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#09090b" strokeWidth="2.5">
+                            <line x1="7" y1="17" x2="17" y2="7" />
+                            <polyline points="7 7 17 7 17 17" />
+                          </svg>
+                        )}
                       </div>
-                      <span
-                        className={`${styles.transactionAmount} ${
-                          t.isIncome ? styles.incomeAmount : ""
-                        }`}
-                      >
-                        {t.amount}
-                      </span>
+                      <div className={styles.transactionDetails}>
+                        <span className={styles.transactionName}>{t.name}</span>
+                        <span className={styles.transactionDate}>
+                          {t.date} • {t.category}
+                        </span>
+                      </div>
                     </div>
-                  ))
-                )}
-              </div>
-            </section>
+                    <span
+                      className={`${styles.transactionAmount} ${t.isIncome ? styles.incomeAmount : ""
+                        }`}
+                    >
+                      {t.amount}
+                    </span>
+                  </div>
+                ))
+              )}
+            </div>
+          </section>
         </div>
 
         <div style={{ display: activeTab === "invest" ? "contents" : "none" }}>
@@ -540,172 +539,172 @@ export default function Home() {
         <div style={{ display: activeTab === "payments" ? "contents" : "none" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
 
-              {/* Instant Transfer Box - Revolut Chat Style */}
-              <div className={styles.quickTransferCard}>
-                <div className={styles.quickTransferHeader}>
-                  <div>
-                    <span className={styles.quickTransferTitle}>Transactions & Instant Transfers</span>
-                    <div className={styles.quickTransferSubtitle}>Live transaction ledger • Tap to repeat transfer</div>
-                  </div>
-                  <div className={styles.filterPills}>
-                    <button
-                      type="button"
-                      className={`${styles.filterPill} ${paymentViewFilter === "all" ? styles.filterPillActive : ""}`}
-                      onClick={() => { setPaymentViewFilter("all"); setTxVisibleCount(10); }}
-                    >
-                      All ({transactions.length})
-                    </button>
-                    <button
-                      type="button"
-                      className={`${styles.filterPill} ${paymentViewFilter === "contacts" ? styles.filterPillActive : ""}`}
-                      onClick={() => setPaymentViewFilter("contacts")}
-                    >
-                      Contacts ({REVOLUT_CONTACTS.length})
-                    </button>
-                  </div>
+            {/* Instant Transfer Box - Revolut Chat Style */}
+            <div className={styles.quickTransferCard}>
+              <div className={styles.quickTransferHeader}>
+                <div>
+                  <span className={styles.quickTransferTitle}>Transactions & Instant Transfers</span>
+                  <div className={styles.quickTransferSubtitle}>Live transaction ledger • Tap to repeat transfer</div>
                 </div>
-
-                {/* Quick-send contacts strip */}
-                <div className={styles.quickContactsStrip}>
-                  <span className={styles.quickContactsLabel}>Quick send</span>
-                  <div className={styles.quickContactsList}>
-                    {REVOLUT_CONTACTS.map((c) => (
-                      <button
-                        key={c.tag}
-                        type="button"
-                        className={styles.quickContactBtn}
-                        onClick={() => openTransferModal(c.tag)}
-                        title={`Send money to ${c.name} (@${c.tag})`}
-                      >
-                        <div className={styles.quickContactAvatarBubble} style={{ background: c.gradient }}>
-                          {c.initials}
-                        </div>
-                        <div className={styles.quickContactMeta}>
-                          <span className={styles.quickContactName}>{c.name.split(" ")[0]}</span>
-                          <span className={styles.quickContactTag}>@{c.tag}</span>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Transaction history list or Contacts list depending on filter */}
-                <div className={styles.contactsChatList}>
-                  {paymentViewFilter === "contacts"
-                    ? REVOLUT_CONTACTS.map((c) => (
-                        <button
-                          key={c.tag}
-                          type="button"
-                          className={styles.contactChatItem}
-                          onClick={() => openTransferModal(c.tag)}
-                        >
-                          <div className={styles.contactLeft}>
-                            <div className={styles.contactAvatar} style={{ background: c.gradient }}>
-                              {c.initials}
-                            </div>
-                            <div className={styles.contactDetails}>
-                              <span className={styles.contactName}>{c.name}</span>
-                              <span className={styles.contactTag}>@{c.tag}</span>
-                            </div>
-                          </div>
-                          <div className={styles.contactDigits}>
-                            <span>{c.digits}</span>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                              <line x1="7" y1="17" x2="17" y2="7" />
-                              <polyline points="7 7 17 7 17 17" />
-                            </svg>
-                          </div>
-                        </button>
-                      ))
-                    : transactions.length === 0
-                    ? (
-                        <div style={{ padding: "24px 16px", textAlign: "center", color: "var(--text-secondary, #6b7280)", fontSize: "14px" }}>
-                          No transactions yet
-                        </div>
-                      )
-                    : transactions.slice(0, txVisibleCount).map((t) => {
-                        const info = getContactInfo(t);
-                        const senderTag = t.sender_tag || (t.isIncome ? info.tag : "tyler");
-                        const recipientTag = t.recipient_tag || (t.isIncome ? "tyler" : info.tag);
-                        return (
-                          <button
-                            key={t.id}
-                            type="button"
-                            className={styles.contactChatItem}
-                            onClick={() => !t.isIncome && openTransferModal(info.tag)}
-                            style={{ cursor: t.isIncome ? "default" : "pointer" }}
-                          >
-                            <div className={styles.contactLeft}>
-                              <div
-                                className={styles.contactAvatar}
-                                style={{ background: info.gradient }}
-                              >
-                                {info.initials}
-                              </div>
-                              <div className={styles.contactDetails}>
-                                <span className={styles.contactName}>{info.name}</span>
-                                <span className={styles.contactTag}>
-                                  @{senderTag} → @{recipientTag} · {t.date}
-                                </span>
-                              </div>
-                            </div>
-                            <div
-                              className={styles.contactDigits}
-                              style={{ color: t.isIncome ? "#10b981" : undefined }}
-                            >
-                              <span>{t.amount}</span>
-                              {t.isIncome ? (
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.5">
-                                  <line x1="17" y1="7" x2="7" y2="17" />
-                                  <polyline points="17 17 7 17 7 7" />
-                                </svg>
-                              ) : (
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                  <line x1="7" y1="17" x2="17" y2="7" />
-                                  <polyline points="7 7 17 7 17 17" />
-                                </svg>
-                              )}
-                            </div>
-                          </button>
-                        );
-                      })
-                  }
-                </div>
-
-                {/* Load more button */}
-                {paymentViewFilter === "all" && txVisibleCount < transactions.length && (
+                <div className={styles.filterPills}>
                   <button
                     type="button"
-                    onClick={() => setTxVisibleCount((n) => n + 10)}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: "6px",
-                      width: "100%",
-                      marginTop: "8px",
-                      padding: "10px 0",
-                      background: "none",
-                      border: "1px solid rgba(99,102,241,0.25)",
-                      borderRadius: "10px",
-                      color: "#6366f1",
-                      fontSize: "13px",
-                      fontWeight: 600,
-                      cursor: "pointer",
-                      transition: "background 0.15s",
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(99,102,241,0.08)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.background = "none")}
+                    className={`${styles.filterPill} ${paymentViewFilter === "all" ? styles.filterPillActive : ""}`}
+                    onClick={() => { setPaymentViewFilter("all"); setTxVisibleCount(10); }}
                   >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                      <polyline points="6 9 12 15 18 9" />
-                    </svg>
-                    Load more ({transactions.length - txVisibleCount} remaining)
+                    All ({transactions.length})
                   </button>
-                )}
-
-
+                  <button
+                    type="button"
+                    className={`${styles.filterPill} ${paymentViewFilter === "contacts" ? styles.filterPillActive : ""}`}
+                    onClick={() => setPaymentViewFilter("contacts")}
+                  >
+                    Contacts ({REVOLUT_CONTACTS.length})
+                  </button>
+                </div>
               </div>
+
+              {/* Quick-send contacts strip */}
+              <div className={styles.quickContactsStrip}>
+                <span className={styles.quickContactsLabel}>Quick send</span>
+                <div className={styles.quickContactsList}>
+                  {REVOLUT_CONTACTS.map((c) => (
+                    <button
+                      key={c.tag}
+                      type="button"
+                      className={styles.quickContactBtn}
+                      onClick={() => openTransferModal(c.tag)}
+                      title={`Send money to ${c.name} (@${c.tag})`}
+                    >
+                      <div className={styles.quickContactAvatarBubble} style={{ background: c.gradient }}>
+                        {c.initials}
+                      </div>
+                      <div className={styles.quickContactMeta}>
+                        <span className={styles.quickContactName}>{c.name.split(" ")[0]}</span>
+                        <span className={styles.quickContactTag}>@{c.tag}</span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Transaction history list or Contacts list depending on filter */}
+              <div className={styles.contactsChatList}>
+                {paymentViewFilter === "contacts"
+                  ? REVOLUT_CONTACTS.map((c) => (
+                    <button
+                      key={c.tag}
+                      type="button"
+                      className={styles.contactChatItem}
+                      onClick={() => openTransferModal(c.tag)}
+                    >
+                      <div className={styles.contactLeft}>
+                        <div className={styles.contactAvatar} style={{ background: c.gradient }}>
+                          {c.initials}
+                        </div>
+                        <div className={styles.contactDetails}>
+                          <span className={styles.contactName}>{c.name}</span>
+                          <span className={styles.contactTag}>@{c.tag}</span>
+                        </div>
+                      </div>
+                      <div className={styles.contactDigits}>
+                        <span>{c.digits}</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                          <line x1="7" y1="17" x2="17" y2="7" />
+                          <polyline points="7 7 17 7 17 17" />
+                        </svg>
+                      </div>
+                    </button>
+                  ))
+                  : transactions.length === 0
+                    ? (
+                      <div style={{ padding: "24px 16px", textAlign: "center", color: "var(--text-secondary, #6b7280)", fontSize: "14px" }}>
+                        No transactions yet
+                      </div>
+                    )
+                    : transactions.slice(0, txVisibleCount).map((t) => {
+                      const info = getContactInfo(t);
+                      const senderTag = t.sender_tag || (t.isIncome ? info.tag : "tyler");
+                      const recipientTag = t.recipient_tag || (t.isIncome ? "tyler" : info.tag);
+                      return (
+                        <button
+                          key={t.id}
+                          type="button"
+                          className={styles.contactChatItem}
+                          onClick={() => !t.isIncome && openTransferModal(info.tag)}
+                          style={{ cursor: t.isIncome ? "default" : "pointer" }}
+                        >
+                          <div className={styles.contactLeft}>
+                            <div
+                              className={styles.contactAvatar}
+                              style={{ background: info.gradient }}
+                            >
+                              {info.initials}
+                            </div>
+                            <div className={styles.contactDetails}>
+                              <span className={styles.contactName}>{info.name}</span>
+                              <span className={styles.contactTag}>
+                                @{senderTag} → @{recipientTag} · {t.date}
+                              </span>
+                            </div>
+                          </div>
+                          <div
+                            className={styles.contactDigits}
+                            style={{ color: t.isIncome ? "#10b981" : undefined }}
+                          >
+                            <span>{t.amount}</span>
+                            {t.isIncome ? (
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.5">
+                                <line x1="17" y1="7" x2="7" y2="17" />
+                                <polyline points="17 17 7 17 7 7" />
+                              </svg>
+                            ) : (
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                <line x1="7" y1="17" x2="17" y2="7" />
+                                <polyline points="7 7 17 7 17 17" />
+                              </svg>
+                            )}
+                          </div>
+                        </button>
+                      );
+                    })
+                }
+              </div>
+
+              {/* Load more button */}
+              {paymentViewFilter === "all" && txVisibleCount < transactions.length && (
+                <button
+                  type="button"
+                  onClick={() => setTxVisibleCount((n) => n + 10)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "6px",
+                    width: "100%",
+                    marginTop: "8px",
+                    padding: "10px 0",
+                    background: "none",
+                    border: "1px solid rgba(99,102,241,0.25)",
+                    borderRadius: "10px",
+                    color: "#6366f1",
+                    fontSize: "13px",
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    transition: "background 0.15s",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(99,102,241,0.08)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = "none")}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                  Load more ({transactions.length - txVisibleCount} remaining)
+                </button>
+              )}
+
+
+            </div>
 
 
           </div>
@@ -858,7 +857,7 @@ export default function Home() {
                     >
                       <div
                         className={styles.quickContactAvatar}
-                        style={{ background: isActive ? "rgba(255,255,255,0.25)" : c.gradient }}
+                        style={{ background: isActive ? "rgba(0, 0, 0, 0.25)" : c.gradient }}
                       >
                         {c.initials}
                       </div>

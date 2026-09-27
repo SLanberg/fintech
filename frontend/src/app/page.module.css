@@ -958,6 +958,10 @@
   border-color: #09090b;
 }
 
+.quickContactChipActive .quickContactName {
+  color: #ffffff;
+}
+
 .quickContactAvatar {
   width: 24px;
   height: 24px;
