@@ -58,6 +58,14 @@ export class UserRepository {
   }
 
   /**
+   * Retrieve all users from database.
+   */
+  static getAll(): UserEntity[] {
+    const stmt = db.prepare("SELECT * FROM users");
+    return stmt.all() as UserEntity[];
+  }
+
+  /**
    * Map UserEntity to PublicUserProfile, ensuring internal UUID is NEVER exposed.
    */
   static toPublicProfile(user: UserEntity): PublicUserProfile {

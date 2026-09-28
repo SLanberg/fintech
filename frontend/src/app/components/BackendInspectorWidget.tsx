@@ -6,15 +6,14 @@ import styles from "./BackendInspectorWidget.module.css";
 interface ActiveTab {
   id: "architecture" | "idempotency" | "transaction" | "intent" | "db";
   label: string;
-  icon: string;
 }
 
 const TABS: ActiveTab[] = [
-  { id: "architecture", label: "Overview", icon: "⚡" },
-  { id: "idempotency", label: "Idempotency Lock", icon: "🔒" },
-  { id: "transaction", label: "Atomic ACID", icon: "🛡️" },
-  { id: "intent", label: "Payment Intent", icon: "💳" },
-  { id: "db", label: "SQL Ledger", icon: "🗄️" },
+  { id: "architecture", label: "Overview" },
+  { id: "idempotency", label: "Idempotency Lock" },
+  { id: "transaction", label: "Atomic ACID" },
+  { id: "intent", label: "Payment Intent" },
+  { id: "db", label: "SQL Ledger" },
 ];
 
 export default function BackendInspectorWidget() {
@@ -85,7 +84,7 @@ export default function BackendInspectorWidget() {
         title="Open Backend Architecture Inspector"
       >
         <span className={styles.pulseDot}></span>
-        🔍 Backend Under The Hood
+        Backend Under The Hood
       </button>
     );
   }
@@ -102,7 +101,7 @@ export default function BackendInspectorWidget() {
       <div className={styles.header} onMouseDown={handleMouseDown}>
         <div className={styles.headerTitle}>
           <span className={styles.badgeLive}>LIVE INSPECTOR</span>
-          <span className={styles.titleText}>⚙️ Backend Engine Architecture</span>
+          <span className={styles.titleText}>Backend Engine Architecture</span>
         </div>
         <div className={styles.headerControls}>
           <button
@@ -132,7 +131,6 @@ export default function BackendInspectorWidget() {
                 className={`${styles.tabItem} ${activeTab === tab.id ? styles.activeTab : ""}`}
                 onClick={() => setActiveTab(tab.id)}
               >
-                <span>{tab.icon}</span>
                 <span>{tab.label}</span>
               </button>
             ))}
@@ -143,7 +141,7 @@ export default function BackendInspectorWidget() {
             {activeTab === "architecture" && (
               <div className={styles.tabContent}>
                 <div className={styles.heroBanner}>
-                  🎯 <strong>Why Lockin &amp; Build Backend is Bulletproof:</strong>
+                  <strong>Why Lockin &amp; Build Backend is Bulletproof:</strong>
                   <p>
                     Financial transactions cannot afford race conditions, network dropouts, or double-clicks.
                     Our architecture guarantees zero double-debiting with 100% deterministic consistency.
@@ -152,7 +150,6 @@ export default function BackendInspectorWidget() {
 
                 <div className={styles.featureGrid}>
                   <div className={styles.featureCard}>
-                    <div className={styles.featureIcon}>🔒</div>
                     <div>
                       <div className={styles.featureTitle}>Atomic Processing Lock</div>
                       <div className={styles.featureDesc}>
@@ -162,7 +159,6 @@ export default function BackendInspectorWidget() {
                   </div>
 
                   <div className={styles.featureCard}>
-                    <div className={styles.featureIcon}>🔑</div>
                     <div>
                       <div className={styles.featureTitle}>Payload Hash Integrity</div>
                       <div className={styles.featureDesc}>
@@ -172,7 +168,6 @@ export default function BackendInspectorWidget() {
                   </div>
 
                   <div className={styles.featureCard}>
-                    <div className={styles.featureIcon}>⚖️</div>
                     <div>
                       <div className={styles.featureTitle}>SQLite ACID Transactions</div>
                       <div className={styles.featureDesc}>
@@ -182,7 +177,6 @@ export default function BackendInspectorWidget() {
                   </div>
 
                   <div className={styles.featureCard}>
-                    <div className={styles.featureIcon}>🔄</div>
                     <div>
                       <div className={styles.featureTitle}>Replay &amp; Intent Safety</div>
                       <div className={styles.featureDesc}>
@@ -197,7 +191,7 @@ export default function BackendInspectorWidget() {
             {activeTab === "idempotency" && (
               <div className={styles.tabContent}>
                 <div className={styles.sectionHeader}>
-                  <span>🔒 Processing Lock &amp; SHA-256 Hash Guard</span>
+                  <span>Processing Lock &amp; SHA-256 Hash Guard</span>
                 </div>
                 <p className={styles.prose}>
                   Before executing any monetary logic, backend queries <code>idempotency_records</code> table scoped by <code>(user_id, key)</code>.
@@ -225,7 +219,7 @@ VALUES (?, ?, ?, 'IN_PROGRESS');
             {activeTab === "transaction" && (
               <div className={styles.tabContent}>
                 <div className={styles.sectionHeader}>
-                  <span>🛡️ Atomic Balance Updates &amp; DB Constraints</span>
+                  <span>Atomic Balance Updates &amp; DB Constraints</span>
                 </div>
                 <p className={styles.prose}>
                   Double spending is physically impossible because balance deduction specifies a non-negative constraint directly inside SQL.
@@ -252,7 +246,7 @@ VALUES (?, ?, ?, 'IN_PROGRESS');
             {activeTab === "intent" && (
               <div className={styles.tabContent}>
                 <div className={styles.sectionHeader}>
-                  <span>💳 Payment Intent Pattern (Stripe Standard)</span>
+                  <span>Payment Intent Pattern (Stripe Standard)</span>
                 </div>
                 <p className={styles.prose}>
                   Separates payment initialization (Prepare) from authorization &amp; settlement (Confirm).
@@ -287,7 +281,7 @@ VALUES (?, ?, ?, 'IN_PROGRESS');
             {activeTab === "db" && (
               <div className={styles.tabContent}>
                 <div className={styles.sectionHeader}>
-                  <span>🗄️ Database Tables Schema</span>
+                  <span>Database Tables Schema</span>
                 </div>
 
                 <div className={styles.schemaCard}>
@@ -316,7 +310,7 @@ VALUES (?, ?, ?, 'IN_PROGRESS');
               <span className={styles.statusDot}></span>
               <span>Backend Server: <strong>http://localhost:5001</strong></span>
             </div>
-            <span className={styles.dragHint}>💡 Drag top bar to move</span>
+            <span className={styles.dragHint}>Drag top bar to move</span>
           </div>
         </>
       )}

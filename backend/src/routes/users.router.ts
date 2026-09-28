@@ -55,6 +55,19 @@ router.get("/account", (req: Request, res: Response) => {
 });
 
 /**
+ * GET /api/users
+ * Returns list of user public profiles with current balances for inspector view.
+ */
+router.get("/users", (req: Request, res: Response) => {
+  try {
+    const users = UserRepository.getAll();
+    res.json(users);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/**
  * GET /api/users/tag/:tag
  * Optimized public tag lookup (uses database unique index idx_users_tag).
  * Resolves public tag to public user profile without exposing internal UUID.
